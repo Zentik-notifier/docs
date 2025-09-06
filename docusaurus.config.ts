@@ -5,6 +5,8 @@ import { themes as prismThemes } from 'prism-react-renderer';
 
 import 'dotenv/config';
 
+const backendApi = process.env.BACKEND_API ?? 'https://notifier-api.zentik.app/api/openapi.json';
+
 const config: Config = {
   title: 'Zentik',
   tagline: 'Advanced notification system for your mobile app',
@@ -141,7 +143,7 @@ const config: Config = {
         configuration: {
           // url: 'http://192.168.1.193:3000/api/openapi.json',
           // url: 'https://notifier-api.zentik.app/api/openapi.json',
-          url: `${process.env.BACKEND_API}/api/openapi.json`,
+          url: backendApi,
         },
       } as ScalarOptions,
     ],
