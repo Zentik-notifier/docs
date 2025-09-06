@@ -14,6 +14,13 @@ import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
  */
 const sidebars: SidebarsConfig = {
   // By default, Docusaurus generates a sidebar from the docs folder structure
+  // TEMPORANEAMENTE DISABILITATO - TUTTA LA DOCUMENTAZIONE È IN WIP
+  tutorialSidebar: [
+    'intro', // Solo intro per ora, tutto il resto è WIP
+  ],
+
+  // Sezioni commentate temporaneamente:
+  /*
   tutorialSidebar: [
     'intro',
     'applications',
@@ -22,6 +29,7 @@ const sidebars: SidebarsConfig = {
     'self-hosted',
     'administration',
   ],
+   */
 
   // But you can create a sidebar manually
   /*
