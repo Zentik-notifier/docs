@@ -52,7 +52,7 @@ cp .env.example .env
 
 ```bash
 # Navigate to mobile directory
-cd ../mobile
+cd ../frontend
 
 # Install dependencies
 npm install
