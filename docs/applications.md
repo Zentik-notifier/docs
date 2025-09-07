@@ -93,7 +93,7 @@ zentik/
 │   │   ├── buckets/   # Content organization
 │   │   └── webhooks/  # Webhook system
 │   └── test/          # Test suite
-├── mobile/            # React Native app
+├── frontend/            # React Native app
 │   ├── app/           # App screens
 │   ├── components/    # Reusable components
 │   ├── services/      # Business logic
