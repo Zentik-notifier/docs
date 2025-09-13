@@ -59,7 +59,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/apocaliss92/zentik',
+            'https://github.com/Zentik-notifier',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -88,7 +88,12 @@ const config: Config = {
           label: 'Documentation',
         },
         {
-          href: 'https://github.com/apocaliss92/zentik',
+          href: 'https://discord.gg/DzhJ4s7N',
+          label: 'Discord',
+          position: 'right',
+        },
+        {
+          href: 'https://github.com/Zentik-notifier',
           label: 'GitHub',
           position: 'right',
         },
@@ -111,7 +116,7 @@ const config: Config = {
       //     items: [
       //       {
       //         label: 'GitHub',
-      //         href: 'https://github.com/apocaliss92/zentik',
+      //         href: 'https://github.com/Zentik-notifier',
       //       },
       //     ],
       //   },

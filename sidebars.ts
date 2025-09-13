@@ -16,7 +16,8 @@ const sidebars: SidebarsConfig = {
   // By default, Docusaurus generates a sidebar from the docs folder structure
   // TEMPORANEAMENTE DISABILITATO - TUTTA LA DOCUMENTAZIONE È IN WIP
   tutorialSidebar: [
-    'intro', // Solo intro per ora, tutto il resto è WIP
+    'intro',
+    'notifications',
   ],
 
   // Sezioni commentate temporaneamente:

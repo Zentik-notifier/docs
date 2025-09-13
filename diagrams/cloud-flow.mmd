@@ -1,0 +1,11 @@
+flowchart LR
+  subgraph UserAction[1. Message submission]
+    A["Client / Integration<br/>(HTTPS POST /messages)"]
+  end
+  A --> B["2. Persist message & schedule<br/>Store message + per-device dispatch"]
+  B --> C["3. Encrypt & dispatch<br/>Provider-specific payload"]
+  C --> D["4. External Push Networks<br/>APNs / FCM / Web Push"]
+  D --> E["5. Devices receive & ACK"]
+  E --> F{"All ACKs or TTL 7d"}
+  F -->|Yes| G["Prune message & attachments"]
+  F -->|No| C

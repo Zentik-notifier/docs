@@ -23,6 +23,29 @@
   gap: 1rem;
 }
 
+.platformButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.buttonIcon {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.disabledButton {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transition: opacity .2s ease;
+}
+.disabledButton:hover {
+  opacity: 0.55;
+}
+
 .features {
   display: flex;
   align-items: center;

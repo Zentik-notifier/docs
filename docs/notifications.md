@@ -2,9 +2,24 @@
 sidebar_position: 3
 ---
 
-# Notifications - API Reference
+# Notifications
 
 This section describes in detail how to use Zentik's notification endpoints, including all possible values and available configurations.
+
+## Delivery Flows Overview
+
+### Cloud & Self-hosted Flows (Side by Side)
+
+<div style={{display:'flex',gap:'1.5rem',flexWrap:'wrap',alignItems:'flex-start'}}>
+  <figure style={{margin:0,flex:'1 1 420px',minWidth:'340px'}}>
+    <img src="/img/cloud-flow-vertical.svg" alt="Cloud (Managed) Flow" style={{width:'100%',height:'auto',border:'1px solid var(--ifm-toc-border-color)',borderRadius:8,padding:'4px',background:'var(--ifm-background-surface-color)'}} />
+    <figcaption style={{textAlign:'center',marginTop:'.5rem',fontSize:'0.85rem',opacity:.8}}>Cloud (Managed) Flow</figcaption>
+  </figure>
+  <figure style={{margin:0,flex:'1 1 420px',minWidth:'340px'}}>
+    <img src="/img/self-hosted-flow-vertical.svg" alt="Self-hosted Flow" style={{width:'100%',height:'auto',border:'1px solid var(--ifm-toc-border-color)',borderRadius:8,padding:'4px',background:'var(--ifm-background-surface-color)'}} />
+  <figcaption style={{textAlign:'center',marginTop:'.5rem',fontSize:'0.85rem',opacity:.8}}>Self-hosted Flow (Encrypted payload via Pass-through Relay)</figcaption>
+  </figure>
+</div>
 
 ## Authentication
 

@@ -1,0 +1,12 @@
+flowchart TB
+  subgraph Submit[1. Message submission]
+    A["Internal Client / System\n(HTTPS POST /messages)"]
+  end
+  A --> B["2. Persist message & schedule\nStore + per-device dispatch"]
+  B --> C["3. Encrypt (optional) & package\nEncrypted (opaque) payload"]
+  C --> D["4. Pass-through Relay\n(Encrypted in, forward out)"]
+  D --> E["5. External Push Networks\nAPNs / FCM / Web Push"]
+  E --> F["6. Devices receive & ACK"]
+  F --> G{"All ACKs or TTL 7d"}
+  G -->|Yes| H["Prune message & attachments"]
+  G -->|No| E

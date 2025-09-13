@@ -81,6 +81,8 @@ Attachments are automatically deleted when:
 1. **Maximum age exceeded**: Attachment is older than the configured limit
 2. **File no longer referenced**: No message uses it anymore
 
+**Note**: Icons (`MediaType.ICON`) are **excluded** from automatic cleanup to preserve bucket and notification icons permanently.
+
 ### Configuration
 
 ```env
@@ -98,10 +100,29 @@ ATTACHMENTS_DELETE_CRON_JOB=0 0 * * * *
 
 ### Attachment Cleanup Process
 
-1. **Scanning**: Identifies attachments older than `ATTACHMENTS_MAX_AGE`
+1. **Scanning**: Identifies attachments older than `ATTACHMENTS_MAX_AGE` (excluding icons)
 2. **Physical deletion**: Removes files from filesystem
 3. **Database cleanup**: Deletes records from database
 4. **Logging**: Records number of deleted attachments
+
+### Icon Preservation
+
+Icons are permanently preserved and never deleted by the cleanup process:
+
+```typescript
+// Attachment cleanup logic
+const oldAttachments = await this.attachmentsRepository.find({
+  where: { 
+    createdAt: LessThan(cutoff),
+    mediaType: Not(MediaType.ICON) // Icons are excluded
+  },
+});
+```
+
+This ensures that:
+- **Bucket icons** remain available for UI display
+- **Notification icons** are preserved for historical notifications
+- **Custom icons** uploaded by users are never lost
 
 ## Cleanup Cron Jobs
 
