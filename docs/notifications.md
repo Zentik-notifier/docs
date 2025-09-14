@@ -1,7 +1,6 @@
 ---
 sidebar_position: 3
 ---
-
 # Notifications
 
 This section describes in detail how to use Zentik's notification endpoints, including all possible values and available configurations.
@@ -21,364 +20,155 @@ This section describes in detail how to use Zentik's notification endpoints, inc
   </figure>
 </div>
 
-## Authentication
+## Quick Start: Create and Send a Message
+This concise guide covers only the essentials: (1) authenticate, (2) create a bucket and an access token, (3) create and send your first message. For advanced options see the API Reference.
 
-Before using the notification endpoints, you need to authenticate with the system. Zentik supports two authentication methods:
+### Step 1 · Login with Username/Password
+Endpoint: **POST** `/api/v1/auth/login`  <a href="/scalar#tag/Auth/POST/api/v1/auth/login" target="_blank" rel="noopener">Open in API Reference ↗</a>
 
-### 1. Username/Password Authentication
-
-#### Login via REST API
-```bash
-POST /auth/login
-Content-Type: application/json
-
+Request:
+```jsonc
 {
   "email": "user@example.com",
   "password": "your_password"
 }
 ```
-
-**Response:**
+Response (excerpt):
 ```json
 {
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "id": "user-uuid",
-    "email": "user@example.com",
-    "username": "username"
-  }
+  "accessToken": "<jwt-access-token>",
+  "refreshToken": "<jwt-refresh-token>",
+  "user": { "id": "<user-uuid>", "email": "user@example.com" }
 }
 ```
+Keep the `accessToken`; you'll use it in `Authorization: Bearer <accessToken>` for the next steps.
 
-#### Login via GraphQL
-```graphql
-mutation Login($input: LoginDto!) {
-  login(input: $input) {
-    accessToken
-    refreshToken
-    user {
-      id
-      email
-      username
-    }
-  }
+### Step 2 · Create a Bucket
+Endpoint: **POST** `/api/v1/buckets`  <a href="/scalar#tag/buckets/post/api/v1/buckets" target="_blank" rel="noopener">Open in API Reference ↗</a>
+
+Request:
+```jsonc
+{
+  "name": "Marketing",
+  "description": "Marketing campaign bucket"
 }
 ```
-
-**Variables:**
+Response (excerpt):
 ```json
 {
-  "input": {
-    "email": "user@example.com",
-    "password": "your_password"
-  }
+  "id": "<bucket-uuid>",
+  "name": "Marketing",
+  "description": "Marketing campaign bucket"
 }
 ```
+Store `id` as `bucketId`.
 
-### 2. Access Token Authentication
+### Step 3 · Create a User Access Token
+Endpoint: **POST** `/api/v1/access-tokens`  <a href="/scalar#tag/access-tokens/post/api/v1/access-tokens" target="_blank" rel="noopener">Open in API Reference ↗</a>
 
-#### Creating Access Tokens via REST
-```bash
-POST /access-tokens
-Authorization: Bearer <jwt-token>
+Header: `Authorization: Bearer <jwt-access-token>`
+
+Minimal request:
+```jsonc
+{
+  "name": "CI Pipeline",
+  "scopes": ["messages:create"]
+}
+```
+Response (excerpt):
+```json
+{
+  "id": "<token-uuid>",
+  "token": "zat_<raw-token>",
+  "scopes": ["messages:create"],
+  "createdAt": "2025-01-01T00:00:00.000Z"
+}
+```
+Store the full `token` (with `zat_` prefix). You can now use `Authorization: Bearer zat_<raw-token>` for server-to-server calls.
+
+### Step 4 · Create a Message (REST)
+Endpoint: **POST** `/api/v1/messages`  <a href="http://localhost:3001/scalar#tag/messages/post/api/v1/messages" target="_blank" rel="noopener">Open in API Reference ↗</a>
+
+Typical headers:
+```http
+Authorization: Bearer <jwt-access-token>
 Content-Type: application/json
-
+```
+Minimal body:
+```jsonc
 {
-  "name": "API Integration",
-  "expiresAt": "2024-12-31T23:59:59Z",
-  "scopes": ["messages:create", "notifications:read"]
+  "title": "Welcome!",
+  "bucketId": "<bucket-uuid>",
+  "deliveryType": "NORMAL"
 }
 ```
-
-**Response:**
+Response (excerpt):
 ```json
 {
-  "token": "zat_abc123def456...",
-  "id": "token-uuid",
-  "name": "API Integration",
-  "expiresAt": "2024-12-31T23:59:59Z",
-  "createdAt": "2024-01-01T00:00:00Z"
+  "id": "<message-uuid>",
+  "title": "Order Confirmed",
+  "bucketId": "<bucket-uuid>",
+  "createdAt": "2025-01-01T12:00:00.000Z"
 }
 ```
 
-#### Creating Access Tokens via GraphQL
-```graphql
-mutation CreateAccessToken($input: CreateAccessTokenDto!) {
-  createAccessToken(input: $input) {
-    token
-    id
-    name
-    expiresAt
-    createdAt
-  }
-}
-```
+### Message Parameters
+Below is the complete list of fields you can send when creating a message. Unless marked Required, all fields are optional.
 
-**Variables:**
-```json
-{
-  "input": {
-    "name": "API Integration",
-    "expiresAt": "2024-12-31T23:59:59Z",
-    "scopes": ["messages:create", "notifications:read"]
-  }
-}
-```
+| Field | Type | Required | Default | Description | Example |
+|-------|------|----------|---------|-------------|---------|
+| title | string (max 100) | Yes | - | Primary title shown to user | "Order Confirmed" |
+| subtitle | string (max 100) | No | - | Secondary line below title | "Payment received" |
+| body | string (max 500) | No | - | Longer descriptive text | "Your order #12345 has been confirmed" |
+| bucketId | string | Yes | - | Bucket UUID or name; name will be resolved server-side | "d3f0..." or "Marketing" |
+| deliveryType | enum NotificationDeliveryType | Yes | - | Delivery strategy (e.g. NORMAL, SILENT, CRITICAL if supported) | "NORMAL" |
+| attachments | AttachmentDto[] | No | [] | Rich media attachments (see attachment fields) | See below |
+| actions | ActionDto[] | No | [] | Array of interactive actions/buttons | See below |
+| tapAction | ActionDto | No | - | Primary action when user taps message | `{ "type":"NAVIGATE", "value":"/orders/123" }` |
+| sound | string | No | - | Custom sound identifier | "ping.aiff" |
+| addMarkAsReadAction | boolean | No | false | Adds a predefined "Mark as Read" action | true |
+| addOpenNotificationAction | boolean | No | false | Adds a predefined "Open" action | true |
+| addDeleteAction | boolean | No | false | Adds a predefined "Delete" action | true |
+| snoozes | number[] | No | [] | Allowed snooze durations (minutes) | [5,10,30] |
+| locale | string | No | - | Locale override for client rendering | "en-EN" |
+| groupId | string | No | bucketId | Logical group for stacking | "orders" |
+| collapseId | string | No | - | APNs collapse identifier (replaces by same id) | "order-update-123" |
+| userIds | string[] | No | All bucket users | Target subset of users (IDs or usernames) | ["user-uuid-1","user-uuid-2"] |
+| imageUrl | string | No | - | Shortcut: creates image attachment automatically | "https://.../image.png" |
+| videoUrl | string | No | - | Shortcut: creates video attachment automatically | "https://.../clip.mp4" |
+| gifUrl | string | No | - | Shortcut: creates GIF attachment automatically | "https://.../fun.gif" |
+| tapUrl | string | No | - | Shortcut: sets tapAction to NAVIGATE with this URL | "https://app.zentik.app/orders/123" |
 
-#### Using Access Tokens
-```bash
-Authorization: Bearer zat_<raw-token>
-```
+AttachmentDto fields:
 
-**Format**: `zat_` followed by the raw token (32 hexadecimal characters)
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| mediaType | enum MediaType | Yes | IMAGE, VIDEO, GIF, DOCUMENT, etc. |
+| name | string | No | Friendly filename / label |
+| url | string | Cond. | Provide either url or attachmentUuid |
+| attachmentUuid | string | Cond. | Server-stored attachment reference |
+| saveOnServer | boolean | No | If true with url, server persists a copy |
 
-**Note**: Access tokens can also be created directly from the mobile application in the user settings section.
+ActionDto fields (used in actions, tapAction):
 
-## Main Endpoints
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| type | enum NotificationActionType | Yes | e.g. NAVIGATE, OPEN_URL, DISMISS |
+| value | string | Yes | Semantics depend on type (path, url, id) |
+| destructive | boolean | No | Mark action as destructive (UI hint) |
+| icon | string | No | Icon identifier/name |
+| title | string | No | Button label override |
 
-### 1. Notification Creation
+Automatic shortcuts:
+- imageUrl / videoUrl / gifUrl => injects an attachment of corresponding mediaType.
+- tapUrl => sets tapAction `{ type: NAVIGATE, value: tapUrl }` if tapAction not explicitly provided.
+- userIds can be CSV or JSON array; server normalizes.
+- attachments / actions / tapAction accept JSON strings (when sent as multipart form fields) which are parsed server-side.
 
-#### POST `/messages`
-Creates a new notification and sends push notifications to users of the specified bucket.
+Validation & limits:
+- title ≤ 100 chars; subtitle ≤ 100; body ≤ 500.
+- Each attachment/action object validated individually; unknown fields ignored.
+- Invalid JSON in stringified arrays will cause a validation error.ƒ
 
-**Authentication**: Requires JWT token or User Access Token
-
-**Supported Content-Types**:
-- `application/json`
-- `application/x-www-form-urlencoded`
-- `text/plain`
-
-**Rate Limiting**: Configurable via environment variables
-- `RATE_LIMIT_MESSAGES_RPS`: Requests per second (default: 10)
-- `RATE_LIMIT_MESSAGES_TTL_MS`: Time interval in milliseconds (default: 1000)
-
-#### POST `/messages/with-attachment`
-Creates a notification with file attachment. Supports multipart/form-data upload.
-
-### 2. GraphQL Endpoints
-
-#### Mutation `createMessage`
-```graphql
-mutation CreateMessage($input: CreateMessageDto!) {
-  createMessage(input: $input) {
-    id
-    title
-    body
-    bucketId
-    createdAt
-    # ... other fields
-  }
-}
-```
-
-## Input Parameters
-
-### Required Fields
-
-| Field | Type | Description | Example |
-|-------|------|-------------|---------|
-| `title` | string | Notification title (max 100 characters) | "New message" |
-| `bucketId` | string | Destination bucket ID | "bucket-uuid" |
-| `deliveryType` | enum | Delivery type | `NORMAL` |
-
-### Optional Fields
-
-#### Content
-| Field | Type | Description | Example |
-|-------|------|-------------|---------|
-| `subtitle` | string | Subtitle (max 100 characters) | "Important update" |
-| `body` | string | Message body (max 500 characters) | "Detailed content..." |
-| `locale` | string | Notification language | "en-US" |
-
-#### Actions and Interactions
-| Field | Type | Description | Example |
-|-------|------|-------------|---------|
-| `addMarkAsReadAction` | boolean | Adds "Mark as read" action | `true` |
-| `addOpenNotificationAction` | boolean | Adds "Open notification" action | `true` |
-| `addDeleteAction` | boolean | Adds "Delete" action | `false` |
-
-#### Custom Actions
-| Field | Type | Description | Example |
-|-------|------|-------------|---------|
-| `actions` | array | List of custom actions | See Actions section |
-| `tapAction` | object | Action executed on tap | See Actions section |
-
-#### Attachments
-| Field | Type | Description | Example |
-|-------|------|-------------|---------|
-| `attachments` | array | List of multimedia attachments | See Attachments section |
-
-#### Advanced Configuration
-| Field | Type | Description | Example |
-|-------|------|-------------|---------|
-| `sound` | string | Custom sound | "notification.wav" |
-| `snoozes` | array | Snooze times in hours | `[2, 4, 8]` |
-
-## Delivery Types
-
-### NotificationDeliveryType
-
-| Value | Description | Behavior |
-|-------|-------------|----------|
-| `SILENT` | Silent notification | No sound, badge only |
-| `NORMAL` | Standard notification | Normal sound and vibration |
-| `CRITICAL` | Critical notification | High priority, bypasses silent mode |
-
-## Notification Actions
-
-### NotificationActionType
-
-| Type | Description | Usage |
-|------|-------------|-------|
-| `NAVIGATE` | Internal navigation | Opens specific app screen |
-| `BACKGROUND_CALL` | Background call | External service integration |
-| `MARK_AS_READ` | Mark as read | Updates notification status |
-| `SNOOZE` | Snooze notification | Postpones for specific hours |
-| `OPEN_NOTIFICATION` | Open notification | Shows complete details |
-| `WEBHOOK` | Webhook call | Notifies external server |
-| `DELETE` | Delete notification | Removes from system |
-
-### Action Structure
-```json
-{
-  "type": "NAVIGATE",
-  "value": "/(mobile)/notifications",
-  "destructive": false,
-  "icon": "arrow-right",
-  "title": "Open Notifications"
-}
-```
-
-## Multimedia Attachments
-
-### MediaType
-
-| Type | Description | Supported Extensions |
-|------|-------------|---------------------|
-| `VIDEO` | Video files | mp4, mov, avi |
-| `IMAGE` | Images | jpg, png, gif |
-| `GIF` | GIF animations | gif |
-| `AUDIO` | Audio files | mp3, wav, aac |
-| `ICON` | Icons | png, svg |
-
-### Attachment Structure
-```json
-{
-  "mediaType": "IMAGE",
-  "name": "Screenshot",
-  "url": "https://example.com/image.jpg",
-  "saveOnServer": true
-}
-```
-
-**Notes**:
-- `url`: External attachment URL
-- `attachmentUuid`: UUID of already saved attachment in the system
-- `saveOnServer`: If `true`, saves attachment locally
-
-## Multiple Data Sources
-
-The `/messages` endpoint supports sending data from multiple sources with priority:
-
-1. **HTTP Headers** (`x-message-*`) - Highest priority
-2. **Path Parameters** - Second priority  
-3. **Query Parameters** - Third priority
-4. **Body** - Lowest priority
-
-### Header Examples
-```bash
-x-message-title: "Title via header"
-x-message-body: "Body via header"
-x-message-bucket-id: "bucket-uuid"
-x-message-delivery-type: "CRITICAL"
-```
-
-## Practical Examples
-
-### Simple Notification
-```bash
-curl -X POST http://localhost:3000/api/messages \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Welcome!",
-    "body": "Thank you for installing Zentik",
-    "bucketId": "bucket-uuid",
-    "deliveryType": "NORMAL"
-  }'
-```
-
-### Notification with Actions
-```bash
-curl -X POST http://localhost:3000/api/messages \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "New Order",
-    "body": "Order #12345 confirmed",
-    "bucketId": "bucket-uuid",
-    "deliveryType": "NORMAL",
-    "actions": [
-      {
-        "type": "NAVIGATE",
-        "value": "/(mobile)/orders/12345",
-        "destructive": false,
-        "icon": "shopping-cart",
-        "title": "View Order"
-      }
-    ],
-    "addMarkAsReadAction": true
-  }'
-```
-
-### Notification with Attachment
-```bash
-curl -X POST http://localhost:3000/api/messages/with-attachment \
-  -H "Authorization: Bearer <token>" \
-  -F "title=New Image" \
-  -F "body=Image shared in bucket" \
-  -F "bucketId=bucket-uuid" \
-  -F "deliveryType=NORMAL" \
-  -F "attachment=@image.jpg"
-```
-
-### Notification via Headers
-```bash
-curl -X POST http://localhost:3000/api/messages \
-  -H "Authorization: Bearer <token>" \
-  -H "x-message-title: Notification via Header" \
-  -H "x-message-body: Content via header" \
-  -H "x-message-bucket-id: bucket-uuid" \
-  -H "x-message-delivery-type: CRITICAL"
-```
-
-## Error Handling
-
-### Common Response Codes
-
-| Code | Description | Solution |
-|------|-------------|----------|
-| `400` | Invalid data | Verify format and required values |
-| `401` | Unauthorized | Verify authentication token |
-| `403` | Access denied | Verify bucket permissions |
-| `404` | Bucket not found | Verify bucket ID |
-| `429` | Rate limit exceeded | Slow down request frequency |
-| `500` | Internal error | Contact support |
-
-### Input Validation
-
-- **Title**: Required, max 100 characters
-- **Body**: Optional, max 500 characters  
-- **BucketId**: Required, valid UUID format
-- **DeliveryType**: Required, valid enum value
-- **Attachments**: Valid object array if provided
-
-## Best Practices
-
-1. **Rate Limiting**: Respect configured limits
-2. **Validation**: Always verify data before sending
-3. **Error Handling**: Handle errors appropriately
-4. **Logging**: Maintain operation logs for debugging
-5. **Security**: Use HTTPS in production
-6. **Token Management**: Regularly rotate access tokens
+---
+For advanced features (custom actions, multiple attachments, snooze, media types) visit the <a href="/scalar" target="_blank" rel="noopener">full API Reference ↗</a>.
