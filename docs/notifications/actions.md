@@ -7,17 +7,33 @@ Detailed reference for `NotificationActionType` and how actions are generated, d
 
 ## Action Types
 
-| Type | Purpose | Backend Behavior | Typical `value` | UI Notes |
-|------|---------|------------------|-----------------|----------|
-| `NAVIGATE` | Navigate user to in-app route or deep-link | Client interprets value as path/URL | `/orders/123` | Primary tapAction commonly uses this |
-| `BACKGROUND_CALL` | Trigger background logic without opening UI | Server/client dispatch to internal handler | `job:refresh-cache` | Should appear subtle (no navigation) |
-| `MARK_AS_READ` | Mark related notification/message as read | Backend sets read flag | `mark_as_read_notification` | Often auto-generated via flag |
-| `SNOOZE` | Temporarily hide and re-schedule notification | Backend schedules re-delivery after minutes | `snooze_10` | One entry per allowed duration |
-| `OPEN_NOTIFICATION` | Open detailed view of notification | Client locates notification by ID | `<notification-id>` | Auto-generated when enabled |
-| `WEBHOOK` | Server-side POST to configured endpoint | Backend performs outbound call | `webhook:<id>` | Advanced / admin usage |
-| `DELETE` | Delete notification from user inbox | Backend deletes or flags removed | `delete_notification` | Marked destructive |
+Each action adds an interactive capability to a delivered message. Below are the allowed `type` values, the expected `value` format (when applicable) and the intended effect. Client implementations may vary; this section is agnostic of a specific mobile/web codebase.
 
-All values are UPPER_SNAKE_CASE except free-form navigation paths or structured strings.
+| Type | Value Required | Value Format / Examples | Effect |
+|------|----------------|-------------------------|--------|
+| `NAVIGATE` | Yes | Internal path (`/orders/123`) or external URL (`https://example.com`) | Opens a screen (internal) or external link. |
+| `OPEN_NOTIFICATION` | Optional | Notification ID (e.g. `550e8400-e29b...`) | Opens the detailed view of that notification (or inbox if empty). |
+| `MARK_AS_READ` | Yes | Arbitrary non-empty token (e.g. `mark_as_read_notification`) | Marks the notification/message as read. |
+| `DELETE` | Yes | Arbitrary non-empty token (e.g. `delete_notification`) | Removes the notification from the user list. |
+| `SNOOZE` | Yes | `snooze_<minutes>` (e.g. `snooze_5`, `snooze_30`) | Temporarily hides the notification for the specified minutes. |
+| `WEBHOOK` | Yes | Webhook ID or identifier (UUID) | Triggers a configured outbound webhook. |
+| `BACKGROUND_CALL` | Yes | `METHOD::URL` (e.g. `GET::https://api.example.com/ping`) | Invokes a background HTTP request without opening UI. |
+
+Guidelines:
+- `value` must match the format listed; clients that do not understand the format may ignore the action.
+- For `SNOOZE` provide only values corresponding to allowed durations (also listed in the message `snoozes` array when auto-generated).
+- `OPEN_NOTIFICATION` can omit `value` to mean: open the general notifications area.
+- Use distinct values to differentiate similar actions if needed; values are opaque to the server except where format is specified.
+
+Minimal JSON shape:
+```jsonc
+{ "type": "DELETE", "value": "delete_notification" }
+```
+
+Optional fields applicable to any action object:
+- `title`: Custom button label (string)
+- `icon`: Icon identifier (string). On iOS this should be a valid SF Symbol name, e.g. `sfsymbols:arrow.down.circle`.
+- `destructive`: Boolean hint for UI styling (commonly true for `DELETE`)
 
 ## Adding Automatic Actions
 Flags in the message payload generate actions automatically:

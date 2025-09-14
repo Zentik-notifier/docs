@@ -21,6 +21,7 @@ Understanding how `NotificationDeliveryType` influences user experience and plat
 ## Platform Notes
 - Actual platform enforcement for `CRITICAL` depends on OS/device capabilities and user settings.
 - Overuse of high-priority alerts can lead users to disable notifications entirely.
+- iOS: support for truly critical interruption-level notifications is **not yet enabled** in the current mobile client build; `CRITICAL` will behave like a strong `NORMAL` (standard alert) until implemented.
 
 ## Example
 ```jsonc
