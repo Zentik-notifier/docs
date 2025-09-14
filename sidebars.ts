@@ -17,7 +17,18 @@ const sidebars: SidebarsConfig = {
   // TEMPORANEAMENTE DISABILITATO - TUTTA LA DOCUMENTAZIONE È IN WIP
   tutorialSidebar: [
     'intro',
-    'notifications',
+    {
+      type: 'category',
+      label: 'Notifications',
+      collapsed: false,
+      items: [
+        { type: 'doc', id: 'notifications', label: 'General info' },
+        'notifications/attachments',
+        'notifications/actions',
+        'notifications/delivery-types',
+        'notifications/transform-parsers'
+      ],
+    },
   ],
 
   // Sezioni commentate temporaneamente:
