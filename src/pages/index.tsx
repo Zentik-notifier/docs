@@ -113,7 +113,7 @@ function HomepageSteps() {
             <div className="text--center">
               <div className={styles.stepNumber}>3</div>
               <video 
-                src="/video/homepage.mp4" 
+                src="/video/home-hub.mp4" 
                 className={styles.stepVideo}
                 autoPlay
                 loop
