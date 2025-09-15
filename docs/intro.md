@@ -83,7 +83,7 @@ Follow these initial actions to get a working end‑to‑end notification in sec
 1. Start sending messages: [Notifications](./notifications)
 2. Manage application identities: [Applications](./applications)
 3. Configure delivery & retention: [Retention Policy](./retention-policy)
-4. Integrate devices & tokens: [Device Management](./device-management)
+4. Configure your experience: [Settings](./settings)
 5. Explore real-time & webhooks: [Webhooks](./webhooks)
 
 ---
