@@ -16,7 +16,7 @@ function HomepageHeader() {
           The Native-first Notification Hub
         </Heading>
         <p className="hero__subtitle">
-          One streamlined platform to design, send and observe mission‑critical push notifications across your native ecosystem.
+          A notification system (self-hostable) with focus on native applications, for the best experience. Yet full featured
         </p>
         <div className={styles.buttons}>
           <Link
@@ -49,8 +49,8 @@ function HomepageHeader() {
             className={clsx('button button--outline button--lg', styles.platformButton, styles.disabledButton)}
             disabled
             aria-disabled="true"
-            title="Web dashboard coming soon">
-            Web Dashboard · Coming soon
+            title="Web (PWA) coming soon">
+            Web (PWA) · Coming soon
           </button>
         </div>
       </div>
@@ -58,56 +58,74 @@ function HomepageHeader() {
   );
 }
 
-function HomepageFeatures() {
+function HomepageSteps() {
   return (
-    <section className={styles.features}>
+    <section className={styles.steps}>
       <div className="container">
+        <div className="text--center margin-bottom--lg">
+          <Heading as="h2">Get Started in 3 Simple Steps</Heading>
+          <p className="hero__subtitle">
+            From setup to notifications in seconds
+          </p>
+        </div>
         <div className="row">
           <div className="col col--4">
             <div className="text--center">
-              <img 
-                src="/img/feature1.gif" 
-                alt="Feature 1" 
-                className={styles.featureGif}
+              <div className={styles.stepNumber}>1</div>
+              <video 
+                src="/video/bucketAccestokenCreation.MP4" 
+                className={styles.stepVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
               />
             </div>
             <div className="text--center padding-horiz--md">
-              <Heading as="h3">Feature‑rich Native Apps</Heading>
+              <Heading as="h3">Create a Bucket & Access Token</Heading>
               <p>
-                Built for native experiences first: rich media, actionable interactions, 
-                background handling and precise device targeting out of the box.
+                Create a bucket and an access token to track one system. 
+                This gives you the foundation to start sending notifications.
               </p>
             </div>
           </div>
           <div className="col col--4">
             <div className="text--center">
-              <img 
-                src="/img/feature2.gif" 
-                alt="Feature 2" 
-                className={styles.featureGif}
+              <div className={styles.stepNumber}>2</div>
+              <video 
+                src="/video/testPushNotification.mp4" 
+                className={styles.stepVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
               />
             </div>
             <div className="text--center padding-horiz--md">
-              <Heading as="h3">Self‑hostable Server</Heading>
+              <Heading as="h3">Send Your First Notification</Heading>
               <p>
-                Run Zentik on your own infrastructure for compliance and data control, 
-                or use the managed cloud. Same APIs, zero vendor lock‑in.
+                Send a notification using the newly created entities. 
+                Try the push notifications section to build the payload and test it out.
               </p>
             </div>
           </div>
           <div className="col col--4">
             <div className="text--center">
-              <img 
-                src="/img/feature3.gif" 
-                alt="Feature 3" 
-                className={styles.featureGif}
+              <div className={styles.stepNumber}>3</div>
+              <video 
+                src="/video/homepage.mp4" 
+                className={styles.stepVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
               />
             </div>
             <div className="text--center padding-horiz--md">
-              <Heading as="h3">Community‑driven</Heading>
+              <Heading as="h3">Manage All Your Systems</Heading>
               <p>
-                Open roadmap, transparent iteration and extensible architecture. 
-                Shape features via discussions, plugins and contributions.
+                All your notifications will be available in the homepage, 
+                as hub for all your systems! The medias will be shown in their own gallery.
               </p>
             </div>
           </div>
@@ -125,7 +143,7 @@ export default function Home(): ReactNode {
   description="Zentik is a native-first notification hub: unified APIs, device intelligence, multi-channel delivery analytics and secure token management for iOS (TestFlight), Android & Web (coming soon).">
       <HomepageHeader />
       <main>
-        <HomepageFeatures />
+        <HomepageSteps />
       </main>
     </Layout>
   );

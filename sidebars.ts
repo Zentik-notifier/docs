@@ -29,6 +29,8 @@ const sidebars: SidebarsConfig = {
         'notifications/transform-parsers'
       ],
     },
+    'webhooks',
+    'settings',
   ],
 
   // Sezioni commentate temporaneamente:
