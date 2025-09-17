@@ -31,6 +31,29 @@ const sidebars: SidebarsConfig = {
     },
     'webhooks',
     'settings',
+    {
+      type: 'category',
+      label: 'Integrations',
+      collapsed: false,
+      items: [
+        'integrations/unraid',
+        'integrations/homeassistant',
+        'integrations/servarr',
+        'integrations/authentik'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Development',
+      collapsed: false,
+      items: [
+        'development/backend',
+        'development/ios',
+        'development/android',
+        'development/web'
+      ],
+    },
+    'roadmap',
   ],
 
   // Sezioni commentate temporaneamente:
