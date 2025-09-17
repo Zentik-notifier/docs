@@ -15,7 +15,7 @@ Each action adds an interactive capability to a delivered message. Below are the
 | `OPEN_NOTIFICATION` | Optional | Notification ID (e.g. `550e8400-e29b...`) | Opens the detailed view of that notification (or inbox if empty). |
 | `MARK_AS_READ` | Yes | Arbitrary non-empty token (e.g. `mark_as_read_notification`) | Marks the notification/message as read. |
 | `DELETE` | Yes | Arbitrary non-empty token (e.g. `delete_notification`) | Removes the notification from the user list. |
-| `SNOOZE` | Yes | `snooze_<minutes>` (e.g. `snooze_5`, `snooze_30`) | Temporarily hides the notification for the specified minutes. |
+| `SNOOZE` | Yes | `<minutes>` (e.g. `5`, `30`) | Temporarily hides the notification for the specified minutes. |
 | `WEBHOOK` | Yes | Webhook ID or identifier (UUID) | Triggers a configured outbound webhook. |
 | `BACKGROUND_CALL` | Yes | `METHOD::URL` (e.g. `GET::https://api.example.com/ping`) | Invokes a background HTTP request without opening UI. |
 
