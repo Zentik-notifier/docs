@@ -215,16 +215,9 @@ Required query params:
 - `parser` – the builtin parser name (e.g. `authentik`)
 - `bucketId` – target bucket id or name
 
-Current built‑in parsers:
-
-| Parser (query) | Type Enum | Description |
-|----------------|-----------|-------------|
-| `authentik` | ZENTIK_AUTHENTIK | Maps Authentik event payloads (e.g. user login) into a concise message (title/body/actions). |
-| `servarr` | ZENTIK_SERVARR | Converts Servarr (Sonarr/Radarr stack) webhook events into messages (e.g. download/import notifications). |
-
-Need another integration? Open a request and a new parser can be added. A self-service UI for creating and editing custom parsers (your own mapping logic) will be available once the web version launches; until then only built‑ins + on‑request additions are supported.
-
 Body: raw JSON payload from the source system.
+
+For a complete list of available parsers, examples, and detailed usage instructions, see [Transform Parsers](./notifications/transform-parsers.md).
 
 Example:
 ```bash

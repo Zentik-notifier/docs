@@ -17,6 +17,7 @@ Builtin payload transformers convert external webhook payloads into standard mes
 |--------|------------|-----------|-------------|-----------------|
 | Authentik | `authentik` | ZENTIK_AUTHENTIK | Maps Authentik event bodies (login/logout/loginFailed + unmapped) | `body`, `user_email`, `user_username`, embedded JSON after colon |
 | Servarr | `servarr` | ZENTIK_SERVARR | Handles Radarr/Sonarr/Prowlarr events (download/import/indexer status) | `eventType`, `movie` / `series` / `episodes` / `indexer*` |
+| Railway | `railway` | ZENTIK_RAILWAY | Transforms Railway.com webhook events (deployments, alerts) | `type`, `project`, `environment`, `deployment`, `timestamp` |
 
 ## Delivery Type Mapping
 Parsers decide `deliveryType` based on severity / eventType (implementation may evolve; inspect produced messages if tuning priority is needed).
@@ -37,6 +38,39 @@ curl -X POST \
   -H "Authorization: Bearer <jwt-access-token>" \
   -H "Content-Type: application/json" \
   -d '{"eventType":"download","instanceName":"radarr-main","movie":{"title":"Inception","year":2010,"tmdbId":123}}'
+```
+
+## Example Railway
+```bash
+curl -X POST \
+  "http://localhost:3001/api/v1/messages/transform?parser=railway&bucketId=<bucket-uuid>" \
+  -H "Authorization: Bearer <jwt-access-token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "DEPLOY",
+    "timestamp": "2025-02-01T12:00:00.000Z",
+    "project": {
+      "id": "proj_12345",
+      "name": "my-app",
+      "description": "My application",
+      "createdAt": "2025-01-01T00:00:00.000Z"
+    },
+    "environment": {
+      "id": "env_67890",
+      "name": "production"
+    },
+    "deployment": {
+      "id": "deploy_abcde",
+      "creator": {
+        "id": "user_12345",
+        "name": "Developer Name"
+      },
+      "meta": {
+        "branch": "main",
+        "commit": "abc123"
+      }
+    }
+  }'
 ```
 
 ## Adding New Parsers
