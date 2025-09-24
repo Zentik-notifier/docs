@@ -65,7 +65,7 @@ Conflicts: If you manually add an action of the same logical effect as an auto-g
 
 ## tapAction
 
-`tapAction` is a single action executed when the notification itself is tapped (not from the buttons row). If absent and `tapUrl` is provided, it is auto-created as a `NAVIGATE`.
+`tapAction` is a single action executed when the notification itself is tapped (not from the buttons row). If absent and `tapUrl` is provided, it is auto-created as a `NAVIGATE`. Default will be open the notification.
 
 ## Icons & Localization
 
@@ -76,7 +76,7 @@ Platform-specific icon hints are applied to automatic actions; custom actions sh
 - `type` must be one of the enum values exactly.
 - `value` is not required; semantics depend on `type`.
 - `destructive` optional, hint for UI styling.
-- `icon` & `title` optional; backend does not enforce uniqueness.
+- `icon` & `title` optional;
 
 ## Example Combined
 
