@@ -78,7 +78,7 @@ const config: Config = {
       title: 'Zentik',
       logo: {
         alt: 'Zentik Logo',
-        src: 'logos/zentik_logo_FINAL_square_aqua_whiteZ_1024_80.png',
+        src: 'logos/glass_default.png',
       },
       items: [
         {
