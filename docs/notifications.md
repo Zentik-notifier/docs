@@ -127,9 +127,9 @@ Below is the complete list of fields you can send when creating a message. Unles
 | actions | ActionDto[] | No | [] | Array of interactive actions/buttons | See below |
 | tapAction | ActionDto | No | - | Primary action when user taps message | `{ "type":"NAVIGATE", "value":"/orders/123" }` |
 | sound | string | No | - | Custom sound identifier | "ping.aiff" |
-| addMarkAsReadAction | boolean | No | false | Adds a predefined "Mark as Read" action | true |
+| addMarkAsReadAction | boolean | No | true | Adds a predefined "Mark as Read" action | true |
 | addOpenNotificationAction | boolean | No | false | Adds a predefined "Open" action | true |
-| addDeleteAction | boolean | No | false | Adds a predefined "Delete" action | true |
+| addDeleteAction | boolean | No | true | Adds a predefined "Delete" action | true |
 | snoozes | number[] | No | [] | Allowed snooze durations (minutes) | [5,10,30] |
 | locale | string | No | - | Locale override for client rendering | "en-EN" |
 | groupId | string | No | bucketId | Logical group for stacking | "orders" |
