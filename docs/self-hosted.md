@@ -119,7 +119,6 @@ Create a `.env` file in the `backend/` directory:
 # =============================================================================
 NODE_ENV=development
 PORT=3000
-BACKEND_API_PREFIX=/api
 
 # =============================================================================
 # DATABASE
@@ -148,13 +147,10 @@ JWT_REFRESH_TOKEN_EXPIRATION=7d
 RATE_LIMIT_TTL_MS=60000
 RATE_LIMIT_LIMIT=100
 RATE_LIMIT_BLOCK_MS=300000
-RATE_LIMIT_MESSAGES_RPS=10
-RATE_LIMIT_MESSAGES_TTL_MS=1000
 
 # =============================================================================
 # ATTACHMENTS AND STORAGE
 # =============================================================================
-ATTACHMENTS_STORAGE_PATH=./storage/attachments
 ATTACHMENTS_MAX_FILE_SIZE=10485760
 ATTACHMENTS_ALLOWED_MIME_TYPES=image/jpeg,image/png,image/gif,video/mp4,audio/mpeg,application/pdf,text/plain
 ATTACHMENTS_MAX_AGE=30d
@@ -237,12 +233,10 @@ LOG_LEVEL=debug
 | `RATE_LIMIT_TTL_MS` | Rate limit interval | `60000` | `30000`, `120000` |
 | `RATE_LIMIT_LIMIT` | Requests per interval | `100` | `50`, `200` |
 | `RATE_LIMIT_BLOCK_MS` | Block on exceed | - | `300000` (5 min) |
-| `RATE_LIMIT_MESSAGES_RPS` | Message requests/sec | `10` | `5`, `20` |
 
 #### Attachments
 | Variable | Description | Default | Example |
 |----------|-------------|---------|---------|
-| `ATTACHMENTS_STORAGE_PATH` | Storage path | `./storage/attachments` | `/var/zentik/attachments` |
 | `ATTACHMENTS_MAX_FILE_SIZE` | Max file size (bytes) | `10485760` | `5242880` (5MB) |
 | `ATTACHMENTS_MAX_AGE` | Max attachment age | `30d` | `7d`, `90d` |
 | `ATTACHMENTS_DELETE_JOB_ENABLED` | Enable cleanup | `true` | `true`, `false` |
@@ -459,7 +453,6 @@ DB_SYNCHRONIZE=false  # Only in production
 ```env
 # Conservative rate limit for development
 RATE_LIMIT_LIMIT=1000
-RATE_LIMIT_MESSAGES_RPS=50
 ```
 
 ### Cleanup Configuration
