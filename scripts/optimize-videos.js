@@ -1,15 +1,19 @@
 #!/usr/bin/env node
 
 /**
- * Script per ottimizzare i video dalla cartella docs/static/videoSrc/ alla cartella docs/static/video/
- * Riduce le dimensioni dei file mantenendo una buona qualità
- * 
+ * Script per ottimizzare e convertire i video dalla cartella docs/static/videoSrc/ alla cartella docs/static/video/
+ * Riduce le dimensioni dei file mantenendo una buona qualità, rimuove l'audio e converte tutti i formati a MP4
+ *
  * Requisiti:
  * - FFmpeg installato e disponibile nel PATH
  * - Node.js
- * 
+ *
  * Uso:
  * node scripts/optimize-videos.js
+ *
+ * Note:
+ * - L'audio viene sempre rimosso per ridurre le dimensioni dei file
+ * - Tutti i video vengono convertiti al formato MP4 per compatibilità web ottimale
  */
 
 const fs = require('fs');
@@ -36,10 +40,6 @@ const COMPRESSION_SETTINGS = {
   level: '4.0',
   // Pixel format
   pixelFormat: 'yuv420p',
-  // Audio codec
-  audioCodec: 'aac',
-  // Bitrate audio (kbps)
-  audioBitrate: '128k',
   // Scala video (opzionale, commentare per mantenere risoluzione originale)
   // scale: '1280:720',
 };
@@ -119,30 +119,34 @@ function optimizeVideo(inputPath, outputPath) {
   console.log(`🎬 Ottimizzando: ${path.basename(inputPath)}`);
   console.log(`   Risoluzione originale: ${originalResolution}`);
   console.log(`   Dimensione originale: ${originalSize} MB`);
+  console.log(`   Audio: ❌ Rimosso`);
 
-  // Costruisce il comando FFmpeg
+  // Determina il percorso di output in formato MP4
+  const mp4OutputPath = outputPath.replace(/\.[^/.]+$/, '.mp4');
+
+  // Costruisce il comando FFmpeg con conversione a MP4
   let command = `ffmpeg -i "${inputPath}" -c:v ${COMPRESSION_SETTINGS.codec}`;
   command += ` -crf ${COMPRESSION_SETTINGS.crf}`;
   command += ` -preset ${COMPRESSION_SETTINGS.preset}`;
   command += ` -profile:v ${COMPRESSION_SETTINGS.profile}`;
   command += ` -level ${COMPRESSION_SETTINGS.level}`;
   command += ` -pix_fmt ${COMPRESSION_SETTINGS.pixelFormat}`;
-  command += ` -c:a ${COMPRESSION_SETTINGS.audioCodec}`;
-  command += ` -b:a ${COMPRESSION_SETTINGS.audioBitrate}`;
-  
+  command += ` -an`; // Rimuove sempre l'audio
+  command += ` -f mp4`; // Forza formato MP4
+
   // Aggiunge scala se specificata
   if (COMPRESSION_SETTINGS.scale) {
     command += ` -vf scale=${COMPRESSION_SETTINGS.scale}`;
   }
-  
+
   command += ` -movflags +faststart`; // Ottimizza per streaming web
-  command += ` -y "${outputPath}"`; // Sovrascrive file esistente
+  command += ` -y "${mp4OutputPath}"`; // Sovrascrive file esistente
 
   try {
     console.log('   ⏳ Compressione in corso...');
     execSync(command, { stdio: 'pipe' });
     
-    const newSize = getFileSizeMB(outputPath);
+    const newSize = getFileSizeMB(mp4OutputPath);
     const reduction = ((originalSize - newSize) / originalSize * 100).toFixed(1);
     
     console.log(`   ✅ Completato!`);
@@ -225,7 +229,7 @@ function main() {
         const newSize = parseFloat(getFileSizeMB(outputPath));
         totalNewSize += newSize;
         processedCount++;
-        console.log(`📤 File ottimizzato salvato in: ${path.basename(outputPath)}`);
+        console.log(`📤 File ottimizzato salvato in: ${path.basename(mp4OutputPath)} (convertito a MP4)`);
       }
     } catch (error) {
       console.error(`❌ Errore nel processare ${file}: ${error.message}`);

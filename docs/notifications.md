@@ -125,12 +125,13 @@ Below is the complete list of fields you can send when creating a message. Unles
 | deliveryType | enum NotificationDeliveryType | Yes | - | `SILENT` | `NORMAL` | `CRITICAL` (SILENT=no alert, CRITICAL=high priority) | "NORMAL" |
 | attachments | AttachmentDto[] | No | [] | Rich media attachments (see attachment fields) | See below |
 | actions | ActionDto[] | No | [] | Array of interactive actions/buttons | See below |
-| tapAction | ActionDto | No | - | Primary action when user taps message | `{ "type":"NAVIGATE", "value":"/orders/123" }` |
+| tapAction | ActionDto | No | `{ "type":"OPEN_NOTIFICATION" }` | Primary action when user taps message | `{ "type":"NAVIGATE", "value":"/orders/123" }` |
 | sound | string | No | - | Custom sound identifier | "ping.aiff" |
 | addMarkAsReadAction | boolean | No | true | Adds a predefined "Mark as Read" action | true |
 | addOpenNotificationAction | boolean | No | false | Adds a predefined "Open" action | true |
 | addDeleteAction | boolean | No | true | Adds a predefined "Delete" action | true |
-| snoozes | number[] | No | [] | Allowed snooze durations (minutes) | [5,10,30] |
+| snoozes | number[] | No | [] | Predefined snooze actions (minutes) | [5,10,30] |
+| postpones | number[] | No | [] | Predefined postpone actions (minutes) | [5,10,30] |
 | locale | string | No | - | Locale override for client rendering | "en-EN" |
 | groupId | string | No | bucketId | Logical group for stacking | "orders" |
 | collapseId | string | No | - | APNs collapse identifier (replaces by same id) | "order-update-123" |
@@ -139,6 +140,8 @@ Below is the complete list of fields you can send when creating a message. Unles
 | videoUrl | string | No | - | Shortcut: creates video attachment automatically | "https://.../clip.mp4" |
 | gifUrl | string | No | - | Shortcut: creates GIF attachment automatically | "https://.../fun.gif" |
 | tapUrl | string | No | - | Shortcut: sets tapAction to NAVIGATE with this URL | "https://app.zentik.app/orders/123" |
+| maxReminders | number | No | 5 | Maximum reminders to send for a reminder notification | 3 |
+| remindEveryMinutes | number | No | - | Send notification reminders at regular intervals until user opens a notification | 60 |
 
 AttachmentDto fields:
 

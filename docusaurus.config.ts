@@ -12,6 +12,13 @@ const config: Config = {
   tagline: 'Advanced notification system for your mobile app',
   favicon: '/favicon.ico',
 
+  // PWA Configuration
+  url: 'https://docs.zentik.app',
+  baseUrl: '/',
+
+  // Metadata for PWA
+  description: 'Zentik is a native-first notification hub: unified APIs, device intelligence, multi-channel delivery analytics and secure token management for iOS (TestFlight), Android & Web (PWA).',
+
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
@@ -73,6 +80,16 @@ const config: Config = {
   ],
 
   themeConfig: {
+    // PWA Metadata
+    metadata: [
+      {name: 'theme-color', content: '#0056b3'},
+      {name: 'apple-mobile-web-app-capable', content: 'yes'},
+      {name: 'apple-mobile-web-app-status-bar-style', content: 'default'},
+      {name: 'apple-mobile-web-app-title', content: 'Zentik'},
+      {name: 'msapplication-TileColor', content: '#0056b3'},
+      {name: 'msapplication-config', content: '/browserconfig.xml'},
+    ],
+
     // Replace with your project's social card
     navbar: {
       title: 'Zentik',

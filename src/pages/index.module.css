@@ -16,11 +16,33 @@
   }
 }
 
+@media screen and (max-width: 768px) {
+  .heroBanner {
+    padding: 2rem 1rem;
+  }
+}
+
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+@media screen and (max-width: 768px) {
+  .buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .buttons {
+    gap: 0.5rem;
+  }
 }
 
 .platformButton {
@@ -30,10 +52,91 @@
   font-weight: 600;
 }
 
+/* Stile specifico per il pulsante PWA per renderlo più visibile */
+.platformButton:not(.disabledButton) {
+  background: linear-gradient(135deg, #0056b3 0%, #007bff 100%);
+  border-color: #0056b3;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(0, 86, 179, 0.3);
+  transition: all 0.3s ease;
+}
+
+.platformButton:not(.disabledButton) .buttonLabel,
+.platformButton:not(.disabledButton) .buttonSubtext {
+  color: white !important;
+}
+
+.platformButton:not(.disabledButton) svg {
+  color: white !important;
+}
+
+.platformButton:not(.disabledButton):hover {
+  background: linear-gradient(135deg, #004494 0%, #0056b3 100%);
+  border-color: #004494;
+  box-shadow: 0 6px 20px rgba(0, 86, 179, 0.4);
+  transform: translateY(-2px);
+}
+
 .buttonIcon {
   display: inline-flex;
   align-items: center;
   line-height: 0;
+}
+
+.buttonText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.buttonLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.buttonSubtext {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  font-weight: 400;
+  line-height: 1;
+  margin-top: 0.125rem;
+}
+
+@media screen and (max-width: 768px) {
+  .buttonText {
+    align-items: center;
+    text-align: center;
+  }
+
+  .buttonLabel {
+    font-size: 0.85rem;
+  }
+
+  .buttonSubtext {
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .platformButton {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .buttonIcon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .buttonLabel {
+    font-size: 0.8rem;
+  }
+
+  .buttonSubtext {
+    font-size: 0.65rem;
+  }
 }
 
 .disabledButton {
@@ -88,6 +191,7 @@
   font-weight: bold;
   margin-bottom: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
 }
 
 .stepVideo {
@@ -98,20 +202,102 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   margin-bottom: 1.5rem;
   background: white;
+  /* Ottimizzazioni per mobile */
+  object-fit: contain;
+  display: block;
 }
+
 
 @media screen and (max-width: 996px) {
   .steps {
     padding: 2rem 0;
   }
-  
+
   .stepVideo {
     max-width: 250px;
   }
-  
+
   .stepNumber {
     width: 2.5rem;
     height: 2.5rem;
     font-size: 1.25rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .steps {
+    padding: 2rem 0;
+  }
+
+  .stepVideo {
+    max-width: 200px;
+  }
+
+  .stepNumber {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .stepsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .stepColumn {
+    flex: 1;
+  }
+
+  .stepContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .stepVisual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .stepText {
+    max-width: 400px;
+  }
+
+  .stepText h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .stepText p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .steps {
+    padding: 1.5rem 0;
+  }
+
+  .stepsContainer {
+    gap: 1.5rem;
+  }
+
+  .stepVideo {
+    max-width: 180px;
+  }
+
+  .stepText h3 {
+    font-size: 1.1rem;
+  }
+
+  .stepText p {
+    font-size: 0.9rem;
   }
 }

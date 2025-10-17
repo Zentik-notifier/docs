@@ -81,7 +81,16 @@ curl -X POST \
 ```
 
 ## Adding New Parsers
-Need another integration? Request it—new built-ins can be added on demand. A self-service web UI for custom parser creation (upload / edit mapping logic) will be available with the upcoming web release.
+Need another integration? Request it—new built-ins can be added on demand.
+
+You can now create custom parsers directly from the Zentik web app! Visit the Payload Mapper section to upload and edit your own mapping logic, as demonstrated in the video below.
+
+<video controls width="100%" style={{maxWidth: '800px', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)'}}>
+  <source src="/video/payload-mapper-creation.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+<p><em>Video: Creating custom parsers in Zentik web app</em></p>
 
 ## Validation Failures
 | Scenario | Response |

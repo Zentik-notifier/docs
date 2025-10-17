@@ -36,14 +36,6 @@ function HomepageHeader() {
             </span>
             iOS TestFlight
           </Link>
-          <button
-            type="button"
-            className={clsx('button button--outline button--lg', styles.platformButton, styles.disabledButton)}
-            disabled
-            aria-disabled="true"
-            title="Android app coming soon">
-            Android · Coming soon
-          </button>
           <Link
             className={clsx('button button--outline button--lg', styles.platformButton)}
             to="https://notifier.zentik.app/"
@@ -51,11 +43,25 @@ function HomepageHeader() {
             <span className={styles.buttonIcon} aria-hidden="true">
               {/* Simple Web/PWA glyph */}
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" role="img">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" stroke="white" strokeWidth="0.5"/>
               </svg>
             </span>
-            Web (PWA)
+            <span className={styles.buttonText}>
+              <span className={styles.buttonLabel}>Web (PWA)</span>
+              <span className={styles.buttonSubtext}>Available Now</span>
+            </span>
           </Link>
+          <button
+            type="button"
+            className={clsx('button button--outline button--lg', styles.platformButton, styles.disabledButton)}
+            disabled
+            aria-disabled="true"
+            title="Android app coming soon">
+            <span className={styles.buttonText}>
+              <span className={styles.buttonLabel}>Android</span>
+              <span className={styles.buttonSubtext}>Coming Soon</span>
+            </span>
+          </button>
         </div>
       </div>
     </header>
@@ -72,65 +78,74 @@ function HomepageSteps() {
             From setup to notifications in seconds
           </p>
         </div>
-        <div className="row">
-          <div className="col col--4">
-            <div className="text--center">
-              <div className={styles.stepNumber}>1</div>
-              <video 
-                src="/video/bucketAccestokenCreation.MP4" 
-                className={styles.stepVideo}
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
-            </div>
-            <div className="text--center padding-horiz--md">
-              <Heading as="h3">Create a Bucket & Access Token</Heading>
-              <p>
-                Create a bucket and an access token to track one system. 
-                This gives you the foundation to start sending notifications.
-              </p>
-            </div>
-          </div>
-          <div className="col col--4">
-            <div className="text--center">
-              <div className={styles.stepNumber}>2</div>
-              <video 
-                src="/video/testPushNotification.mp4" 
-                className={styles.stepVideo}
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
-            </div>
-            <div className="text--center padding-horiz--md">
-              <Heading as="h3">Send Your First Notification</Heading>
-              <p>
-                Send a notification using the newly created entities. 
-                Try the push notifications section to build the payload and test it out.
-              </p>
+        <div className={clsx('row', styles.stepsContainer)}>
+          <div className={clsx('col col--4', styles.stepColumn)}>
+            <div className={styles.stepContent}>
+              <div className={styles.stepVisual}>
+                <div className={styles.stepNumber}>1</div>
+                <video
+                  src="/video/bucketAccestokenCreation.MP4"
+                  className={styles.stepVideo}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  controls
+                />
+              </div>
+              <div className={styles.stepText}>
+                <Heading as="h3">Create a Bucket & Access Token</Heading>
+                <p>
+                  Create a bucket and an access token to track one system.
+                  This gives you the foundation to start sending notifications.
+                </p>
+              </div>
             </div>
           </div>
-          <div className="col col--4">
-            <div className="text--center">
-              <div className={styles.stepNumber}>3</div>
-              <video 
-                src="/video/home-hub.mp4" 
-                className={styles.stepVideo}
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
+          <div className={clsx('col col--4', styles.stepColumn)}>
+            <div className={styles.stepContent}>
+              <div className={styles.stepVisual}>
+                <div className={styles.stepNumber}>2</div>
+                <video
+                  src="/video/testPushNotification.mp4"
+                  className={styles.stepVideo}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  controls
+                />
+              </div>
+              <div className={styles.stepText}>
+                <Heading as="h3">Send Your First Notification</Heading>
+                <p>
+                  Send a notification using the newly created entities.
+                  Try the push notifications section to build the payload and test it out.
+                </p>
+              </div>
             </div>
-            <div className="text--center padding-horiz--md">
-              <Heading as="h3">Manage All Your Systems</Heading>
-              <p>
-                All your notifications will be available in the homepage, 
-                as hub for all your systems! The medias will be shown in their own gallery.
-              </p>
+          </div>
+          <div className={clsx('col col--4', styles.stepColumn)}>
+            <div className={styles.stepContent}>
+              <div className={styles.stepVisual}>
+                <div className={styles.stepNumber}>3</div>
+                <video
+                  src="/video/home-hub.mp4"
+                  className={styles.stepVideo}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  controls
+                />
+              </div>
+              <div className={styles.stepText}>
+                <Heading as="h3">Manage All Your Systems</Heading>
+                <p>
+                  All your notifications will be available in the homepage,
+                  as hub for all your systems! The medias will be shown in their own gallery.
+                </p>
+              </div>
             </div>
           </div>
         </div>
