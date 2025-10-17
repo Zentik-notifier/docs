@@ -58,8 +58,7 @@ Implemented with **React Native + Expo** (native‑first orientation), focusing 
 
 ### Strengths
 
-- **Local Caching (SQLite)**: Messages, metadata and attachments cached for offline viewing and fast cold starts.
-- **Optimistic & Offline‑first**: Outgoing user actions queued locally and synchronized when connectivity returns.
+- **Local Caching (SQLite,IDB)**: Messages, metadata and attachments cached for offline viewing and fast cold starts.
 - **Rich Native Presentation**: Support for actionable notifications, deep links, category mapping, rich (multiple) media preview, silent/background updates.
 - **Secure Storage Segmentation**: Sensitive tokens / encryption material separated from general cache.
 - **Background Sync Hooks**: Periodic wake to reconcile acknowledgements & fetch newly available attachments.

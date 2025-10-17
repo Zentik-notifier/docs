@@ -52,12 +52,16 @@
   font-weight: 600;
 }
 
-/* Stile specifico per il pulsante PWA per renderlo più visibile */
+/* Stile Apple-like per tutti i pulsanti attivi */
 .platformButton:not(.disabledButton) {
-  background: linear-gradient(135deg, #0056b3 0%, #007bff 100%);
-  border-color: #0056b3;
+  background: linear-gradient(135deg, #007AFF 0%, #0056CC 100%);
+  border-color: #007AFF;
+  border-radius: 20px;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(0, 86, 179, 0.3);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
   transition: all 0.3s ease;
 }
 
@@ -71,10 +75,10 @@
 }
 
 .platformButton:not(.disabledButton):hover {
-  background: linear-gradient(135deg, #004494 0%, #0056b3 100%);
-  border-color: #004494;
-  box-shadow: 0 6px 20px rgba(0, 86, 179, 0.4);
-  transform: translateY(-2px);
+  background: linear-gradient(135deg, #0056CC 0%, #004494 100%);
+  border-color: #0056CC;
+  box-shadow: 0 8px 25px rgba(0, 122, 255, 0.4);
+  transform: translateY(-1px);
 }
 
 .buttonIcon {

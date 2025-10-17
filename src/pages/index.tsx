@@ -25,25 +25,28 @@ function HomepageHeader() {
             Documentation
           </Link>
           <Link
-            className={clsx('button button--success button--lg', styles.platformButton)}
+            className={clsx('button button--success button--lg', styles.platformButton, styles.appleButton)}
             to="https://testflight.apple.com/join/dFqETQEm"
-            aria-label="Join the iOS TestFlight beta">
+            aria-label="Join the iOS TestFlight beta for iPhone, iPad and Mac">
             <span className={styles.buttonIcon} aria-hidden="true">
-              {/* Simple iOS glyph */}
+              {/* Apple logo/icon */}
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" role="img">
-                <path d="M16.365 1.43c0 1.14-.417 2.063-1.25 2.77-.834.708-1.77 1.116-2.807 1.226-.06-.182-.09-.376-.09-.58 0-1.09.39-2.02 1.168-2.79.78-.77 1.72-1.156 2.823-1.156.06.18.09.36.09.53zM21.79 17.32c-.41.94-.9 1.78-1.47 2.52-.78.99-1.43 1.676-1.96 2.06-.63.46-1.31.7-2.05.72-.52 0-1.15-.15-1.9-.45-.75-.3-1.44-.45-2.06-.45-.65 0-1.35.15-2.11.45-.76.3-1.37.46-1.83.48-.71.03-1.41-.21-2.11-.72-.6-.44-1.29-1.15-2.07-2.13-.89-1.14-1.62-2.46-2.19-3.96-.62-1.66-.93-3.27-.93-4.82 0-1.78.39-3.31 1.18-4.57.62-.99 1.45-1.77 2.48-2.33 1.03-.57 2.14-.86 3.32-.88.65 0 1.5.17 2.54.5 1.03.34 1.69.51 1.96.51.21 0 .89-.22 2.05-.66 1.1-.4 2.03-.57 2.79-.53 2.06.17 3.61.98 4.66 2.45-1.84 1.12-2.76 2.69-2.76 4.7 0 1.56.58 2.86 1.73 3.9-.21.6-.43 1.16-.66 1.67z" />
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
               </svg>
             </span>
-            iOS TestFlight
+            <span className={styles.buttonText}>
+              <span className={styles.buttonLabel}>iOS TestFlight</span>
+              <span className={styles.buttonSubtext}>iPhone • iPad • Mac</span>
+            </span>
           </Link>
           <Link
-            className={clsx('button button--outline button--lg', styles.platformButton)}
+            className={clsx('button button--outline button--lg', styles.platformButton, styles.appleButton)}
             to="https://notifier.zentik.app/"
             aria-label="Open Zentik Notifier PWA">
             <span className={styles.buttonIcon} aria-hidden="true">
-              {/* Simple Web/PWA glyph */}
+              {/* Web/PWA globe icon */}
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" role="img">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" stroke="white" strokeWidth="0.5"/>
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
               </svg>
             </span>
             <span className={styles.buttonText}>
