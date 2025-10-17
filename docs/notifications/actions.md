@@ -16,7 +16,7 @@ Each action adds an interactive capability to a delivered message. Below are the
 | `OPEN_NOTIFICATION` | No             | -                                                                     | Opens the detailed view of the notification.                  |
 | `MARK_AS_READ`      | No             | -                                                                     | Marks the notification/message as read.                       |
 | `DELETE`            | No             | -                                                                     | Removes the notification from the user list.                  |
-| `SNOOZE`            | Yes            | `<minutes>` (e.g. `5`, `30`)                                          | Temporarily hides the notification for the specified minutes. |
+| `SNOOZE`            | Yes            | `<minutes>` (e.g. `5`, `30`)                                          | Temporarily stop the notification of the whole bucket for the specified minutes. |
 | `POSTPONE`          | Yes            | `<minutes>` (e.g. `15`, `60`)                                         | Postpones the notification to reappear after specified minutes. |
 | `WEBHOOK`           | Yes            | Webhook ID or identifier (UUID)                                       | Triggers a configured outbound webhook.                       |
 | `BACKGROUND_CALL`   | Yes            | `METHOD::URL` (e.g. `GET::https://api.example.com/ping`)              | Invokes a background HTTP request without opening UI.         |

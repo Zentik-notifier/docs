@@ -17,7 +17,7 @@ const config: Config = {
   baseUrl: '/',
 
   // Metadata for PWA
-  description: 'Zentik is a native-first notification hub: unified APIs, device intelligence, multi-channel delivery analytics and secure token management for iOS (TestFlight), Android & Web (PWA).',
+  // description: 'Zentik is a native-first notification hub: unified APIs, device intelligence, multi-channel delivery analytics and secure token management for iOS (TestFlight), Android & Web (PWA).',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -25,10 +25,10 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://docs.zentik.app',
+  // url: 'https://docs.zentik.app',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  // baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
