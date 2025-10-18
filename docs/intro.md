@@ -18,8 +18,6 @@ Zentik is a **native‑first notification hub** providing secure, multi‑channe
 | Secure Payload Flow | Optional end‑to‑end encrypted “passthrough” messages + provider‑level transport encryption. |
 | Minimal Retention | Messages & attachments retained only until confirmed delivery to all target devices or max 7 days. |
 | Multi Auth Models | Public & private OAuth providers + system access tokens + email links for critical flows. |
-| Extensibility | Webhooks, GraphQL schema, and modular domain packages allow controlled extension. |
-
 ---
 
 ## High-level Architecture
