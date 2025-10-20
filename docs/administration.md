@@ -408,7 +408,6 @@ Enable debug logging for troubleshooting:
 
 ```env
 LOG_LEVEL=debug
-DB_LOGGING=true
 ```
 
 ### Support and Monitoring

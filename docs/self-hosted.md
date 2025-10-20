@@ -130,7 +130,6 @@ DB_USERNAME=zentik_user
 DB_PASSWORD=zentik_password
 DB_NAME=zentik
 DB_SYNCHRONIZE=true
-DB_LOGGING=true
 DB_DROP_SCHEMA=false
 
 # =============================================================================
@@ -155,14 +154,12 @@ ATTACHMENTS_MAX_FILE_SIZE=10485760
 ATTACHMENTS_ALLOWED_MIME_TYPES=image/jpeg,image/png,image/gif,video/mp4,audio/mpeg,application/pdf,text/plain
 ATTACHMENTS_MAX_AGE=30d
 ATTACHMENTS_DELETE_JOB_ENABLED=true
-ATTACHMENTS_DELETE_CRON_JOB=0 0 * * * *
 
 # =============================================================================
 # MESSAGES AND NOTIFICATIONS
 # =============================================================================
 MESSAGES_MAX_AGE=30d
 MESSAGES_DELETE_JOB_ENABLED=true
-MESSAGES_DELETE_CRON_JOB=0 0 * * * *
 
 # =============================================================================
 # PUSH NOTIFICATIONS
@@ -217,7 +214,6 @@ LOG_LEVEL=debug
 | `DB_PASSWORD` | Database password | `zentik_password` | `mypassword` |
 | `DB_NAME` | Database name | `zentik` | `zentik_dev` |
 | `DB_SYNCHRONIZE` | Schema synchronization | `true` | `true`, `false` |
-| `DB_LOGGING` | Database query logging | `true` | `true`, `false` |
 
 #### JWT and Security
 | Variable | Description | Default | Example |
@@ -338,7 +334,6 @@ npx expo run:ios --device
 # .env.development
 NODE_ENV=development
 DB_SYNCHRONIZE=true
-DB_LOGGING=true
 LOG_LEVEL=debug
 ATTACHMENTS_DELETE_JOB_ENABLED=false
 MESSAGES_DELETE_JOB_ENABLED=false
@@ -362,7 +357,6 @@ JWT_SECRET=test-secret
 # .env.production
 NODE_ENV=production
 DB_SYNCHRONIZE=false
-DB_LOGGING=false
 LOG_LEVEL=info
 ATTACHMENTS_DELETE_JOB_ENABLED=true
 MESSAGES_DELETE_JOB_ENABLED=true
@@ -423,7 +417,6 @@ npm install
 #### Enable Detailed Logs
 ```env
 LOG_LEVEL=debug
-DB_LOGGING=true
 ```
 
 #### Check Real-Time Logs
@@ -444,7 +437,6 @@ journalctl -u zentik -f
 
 ```env
 # PostgreSQL optimizations
-DB_LOGGING=false
 DB_SYNCHRONIZE=false  # Only in production
 ```
 
@@ -456,12 +448,6 @@ RATE_LIMIT_LIMIT=1000
 ```
 
 ### Cleanup Configuration
-
-```env
-# Frequent cleanup for development
-ATTACHMENTS_DELETE_CRON_JOB=0 */30 * * * *
-MESSAGES_DELETE_CRON_JOB=0 */30 * * * *
-```
 
 ## Security
 

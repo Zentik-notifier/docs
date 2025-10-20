@@ -35,11 +35,6 @@ MESSAGES_DELETE_JOB_ENABLED=true
 # Supported formats: number (seconds), Xs, Xm, Xh, Xd
 MESSAGES_MAX_AGE=30d
 
-# Cron job schedule (cron format)
-# Default: every hour (0 0 * * * *)
-MESSAGES_DELETE_CRON_JOB=0 0 * * * *
-```
-
 ### Cleanup Logic
 
 ```typescript
@@ -93,11 +88,6 @@ ATTACHMENTS_DELETE_JOB_ENABLED=true
 # Supported formats: number (seconds), Xs, Xm, Xh, Xd
 ATTACHMENTS_MAX_AGE=30d
 
-# Cron job schedule (cron format)
-# Default: every hour (0 0 * * * *)
-ATTACHMENTS_DELETE_CRON_JOB=0 0 * * * *
-```
-
 ### Attachment Cleanup Process
 
 1. **Scanning**: Identifies attachments older than `ATTACHMENTS_MAX_AGE` (excluding icons)
@@ -135,7 +125,7 @@ Zentik uses `@nestjs/schedule` to manage automatic cron jobs:
 @Injectable()
 export class MessagesCleanupScheduler implements OnModuleInit {
   onModuleInit() {
-    const cronExpr = this.configService.get<string>('MESSAGES_DELETE_CRON_JOB') || '0 0 * * * *';
+    const cronExpr = '0 0 * * * *';
     const job = new CronJob(cronExpr, () => this.handleCleanup());
     this.schedulerRegistry.addCronJob('messagesCleanup', job);
     job.start();
@@ -151,22 +141,6 @@ export class MessagesCleanupScheduler implements OnModuleInit {
 | `0 0 2 * * *` | Every day at 2:00 AM | Production (low activity) |
 | `0 */6 * * * *` | Every 6 hours | Performance/update balance |
 | `0 0 0 * * 0` | Every Sunday at midnight | Weekly cleanup |
-
-### Schedule Customization
-
-```env
-# Cleanup every 6 hours
-MESSAGES_DELETE_CRON_JOB=0 0 */6 * * *
-ATTACHMENTS_DELETE_CRON_JOB=0 0 */6 * * *
-
-# Cleanup every day at 3:00 AM
-MESSAGES_DELETE_CRON_JOB=0 0 3 * * *
-ATTACHMENTS_DELETE_CRON_JOB=0 0 3 * * *
-
-# Cleanup every 30 minutes (testing only)
-MESSAGES_DELETE_CRON_JOB=0 */30 * * * *
-ATTACHMENTS_DELETE_CRON_JOB=0 */30 * * * *
-```
 
 ## Session and Token Management
 
@@ -263,10 +237,6 @@ this.logger.log(`Deleted ${deleted} message(s)`);
 
 ### Recommendations
 
-```env
-# Production - Night cleanup
-MESSAGES_DELETE_CRON_JOB=0 0 2 * * *
-ATTACHMENTS_DELETE_CRON_JOB=0 0 3 * * *
 
 # Conservative retention
 MESSAGES_MAX_AGE=90d
@@ -278,11 +248,6 @@ ATTACHMENTS_DELETE_JOB_ENABLED=true
 ```
 
 ### Development Environment
-
-```env
-# Development - Frequent cleanup
-MESSAGES_DELETE_CRON_JOB=0 */15 * * * *
-ATTACHMENTS_DELETE_CRON_JOB=0 */15 * * * *
 
 # Short retention for testing
 MESSAGES_MAX_AGE=1d
