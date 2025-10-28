@@ -23,7 +23,7 @@ const { execSync } = require('child_process');
 // Configurazione
 const VIDEO_SRC_DIR = path.join(__dirname, '../static/videoSrc');
 const VIDEO_OUT_DIR = path.join(__dirname, '../static/video');
-const BACKUP_DIR = path.join(__dirname, '../static/videoSrc/backup');
+// const BACKUP_DIR = path.join(__dirname, '../static/videoSrc/backup');
 const SUPPORTED_FORMATS = ['.mp4', '.mov', '.avi', '.mkv', '.webm'];
 
 // Impostazioni di compressione
@@ -66,10 +66,10 @@ function checkFFmpeg() {
  */
 function createDirectories() {
   // Crea cartella di backup
-  if (!fs.existsSync(BACKUP_DIR)) {
-    fs.mkdirSync(BACKUP_DIR, { recursive: true });
-    console.log(`📁 Creata cartella backup: ${BACKUP_DIR}`);
-  }
+  // if (!fs.existsSync(BACKUP_DIR)) {
+  //   fs.mkdirSync(BACKUP_DIR, { recursive: true });
+  //   console.log(`📁 Creata cartella backup: ${BACKUP_DIR}`);
+  // }
   
   // Crea cartella di output
   if (!fs.existsSync(VIDEO_OUT_DIR)) {
@@ -214,12 +214,12 @@ function main() {
   for (const file of videoFiles) {
     const inputPath = path.join(VIDEO_SRC_DIR, file);
     const outputPath = path.join(VIDEO_OUT_DIR, file);
-    const backupPath = path.join(BACKUP_DIR, file);
+    // const backupPath = path.join(BACKUP_DIR, file);
 
     try {
       // Backup del file originale
-      fs.copyFileSync(inputPath, backupPath);
-      console.log(`💾 Backup creato: ${path.basename(backupPath)}`);
+      // fs.copyFileSync(inputPath, backupPath);
+      // console.log(`💾 Backup creato: ${path.basename(backupPath)}`);
 
       // Ottimizza il video
       const originalSize = parseFloat(getFileSizeMB(inputPath));
@@ -242,7 +242,7 @@ function main() {
   console.log('📊 RIEPILOGO FINALE');
   console.log('==================');
   console.log(`✅ File processati con successo: ${processedCount}/${videoFiles.length}`);
-  console.log(`📁 File di backup salvati in: ${BACKUP_DIR}`);
+  // console.log(`📁 File di backup salvati in: ${BACKUP_DIR}`);
   
   if (processedCount > 0) {
     const totalReduction = ((totalOriginalSize - totalNewSize) / totalOriginalSize * 100).toFixed(1);

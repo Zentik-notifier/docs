@@ -1,5 +1,6 @@
 ---
-sidebar_position: 5
+sidebar_position: 2
+title: Self hosted
 ---
 
 # Self Hosted - Local Setup

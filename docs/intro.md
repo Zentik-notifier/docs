@@ -3,85 +3,56 @@ sidebar_position: 1
 title: Introduction
 ---
 
-Zentik is a **native‑first notification hub** providing secure, multi‑channel delivery (mobile + web) with a self‑hostable backend and an offline‑capable mobile client. This page gives you a concise architectural overview before you dive into specific guides.
+import Carousel from '@site/src/components/Carousel';
 
-> Goal: Deliver the right message to the right device, exactly once, with strong guarantees on security, retention and observability.
+## What is this
 
----
-
-## Core Concepts
-
-| Concept | Summary |
-|---------|---------|
-| Channel Abstraction | Unified model for APNs (iOS), FCM (Android), Web Push + future channels. |
-| Device Intelligence | Per‑device capability flags (rich media, actions, background fetch) drive payload shaping. |
-| Secure Payload Flow | Optional end‑to‑end encrypted “passthrough” messages + provider‑level transport encryption. |
-| Minimal Retention | Messages & attachments retained only until confirmed delivery to all target devices or max 7 days. |
-| Multi Auth Models | Public & private OAuth providers + system access tokens + email links for critical flows. |
----
-
-## High-level Architecture
-
-```
-Client (iOS / Android / Web)  <--->  API (REST / GraphQL)
-					  | 
-			Domain Layer (NestJS Modules)
-					  |
-		Provider Adapters (APNs / FCM / Web Push)
-					  |
-		   External Delivery Networks
-```
-
-**Backend** exposes REST + GraphQL, orchestrates device registration, encryption, routing, and persistence. **Frontend (mobile)** focuses on a rich native experience, local caching and secure rendering of payloads & attachments.
+Zentik is another notifier system, yes another one. Why did I create it? I was looking for a versatile system to use the potential of iOS push notifications and to be able to interface any of my system. I tried all of them but no one had all the functionalities I was looking for. My main issues were:
+- Limited possibilities to have custom actions on the push notifications
+- Limited amount of attachments to be sent on a notification
+- I had to adapt the system to send the notifications, or have a server in the middle to translate messages
 
 ---
 
-## Backend Architecture
+## Main functionalities
+- Mobile focused, especially iOS, to show very rich notifications with multiple attachments and custom actions
+- Versatile, send any kind of notifications from any system, any method, any payload. Create your own mappers to shape the notifications.
+- Full configurability of notifications. Add any action you would like to, many builtin included: znooses, postpones, repeat-until-confirm, and many more
+- Self hostable!
 
-Built with **NestJS (TypeScript)** leveraging modular, strongly‑typed domains and dependency inversion.
+### Backend
+Based on NestJS, it contains the whole system of notifications orchestration to all main providers (iOS, Android, Web) and will interface with clients via REST and GQL, you could potentially write your own client. The Zentik principal backend will contain all the tools to send notifications to all the devices (certificates, configurations, problems.), but no worries! Self-hosted will be able to passthrough notifications to the main Zentik server to dispatch them on their behalf, just ask for a token. The system ensures a short live for both notifications and attachments. Notifications will be deleted as soon as all the devices have acked the receipt (max 7 days), attachments will be deleted as well after 7 days
 
-### Key Building Blocks
-
-- **Flexible notification delivery**
-- **Retention policy**
-- **Authentication (email flows + public/private OAuth providers)**
-- **APN / FCM / Web Push support (passthrough for self‑hosted)**
-- **Self hostable**
-
----
-
-## Frontend (Mobile) Architecture
-
-Implemented with **React Native + Expo** (native‑first orientation), focusing on resilience, offline usability and advanced notification UX.
-
-### Strengths
-
-- **Local Caching (SQLite,IDB)**: Messages, metadata and attachments cached for offline viewing and fast cold starts.
-- **Rich Native Presentation**: Support for actionable notifications, deep links, category mapping, rich (multiple) media preview, silent/background updates.
-- **Secure Storage Segmentation**: Sensitive tokens / encryption material separated from general cache.
-- **Background Sync Hooks**: Periodic wake to reconcile acknowledgements & fetch newly available attachments.
-
----
+### Frontend
+Based on React native (Expo). Zentik will offer official iOS and Android apps. Self hosters will be able to use them configuring the app to point to their own server, or just use the onboarded self hosted PWA instance.
+Mobile will make massive use of SQLlite (iOS/Android) and IDB (Web/PWA) to store data. All notifications and medias will be retained locally for a configurable amount of time, your devices will be the source of truth, not the server. The server will retain only the metadata required to all your devices.
 
 ## First Steps
 
 Follow these initial actions to get a working end‑to‑end notification in seconds:
 
-1. **Access the app** – Log into the mobile (TestFlight) or forthcoming web client with your account.
-2. **Create a new bucket** – Buckets group users/devices for targeted delivery (e.g. "engineering", "beta-testers").
-3. **Create a new access token** – Generate a new token for server‑to‑server or CLI usage.
-4. **Send your first notification** – Use the Notifications guide or the `Notification settings` section on app to send a test notification.
-
-<!-- ![First steps demo placeholder](/img/first-steps-demo.gif) -->
+1. **Access the app** – Get the mobile app ([iOS](https://testflight.apple.com/join/dFqETQEm)) or access the PWA ([Official one](https://notifier.zentik.app) or your onboarded self hosted) and register to the platform
+2. **Go through the onboarding** – An onboarding will be shown right away to go through the main steps
+3. **Create a new bucket** – Create a new Bucket, it will be the target for your notifications, it will identify one of your system. Check the token creation checkbox, it will automatically generate a token specific for the newly created bucket
+4. **Send your first notification** – Head to the settings page, straight to bucket. Selecting the newly created bucket you will see the list of access tokens usable with the bucket. Click on the second button and check all the possible endpoints usable 
 
 ---
 
+### See it in action
+
+<Carousel
+  items={[
+    { type: 'image', src: '/img/login-page.png', alt: 'Login page', description: 'Login to your Zentik account' },
+    { type: 'image', src: '/img/ios-push-notification.jpg', alt: 'iOS rich push notification', description: 'Rich notifications with attachments' },
+    { type: 'video', src: '/video/onboarding.mp4', description: 'Onboarding experience' },
+    { type: 'video', src: '/video/bucket_creation.mp4', description: 'Creating a bucket' }
+  ]}
+/>
+
 ## Next Steps
 1. Start sending messages: [Notifications](./notifications)
-2. Manage application identities: [Applications](./applications)
-3. Configure delivery & retention: [Retention Policy](./retention-policy)
-4. Configure your experience: [Settings](./settings)
-5. Explore real-time & webhooks: [Webhooks](./webhooks)
+2. Configure your experience: [Settings](./settings)
+3. Deploy or try locally: [Self-hosted](./self-hosted)
 
 ---
 

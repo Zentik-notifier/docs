@@ -118,35 +118,6 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
-      // links: [
-      //   {
-      //     title: 'Documentation',
-      //     items: [
-      //       {
-      //         label: 'Introduction',
-      //         to: '/docs/intro',
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     title: 'Community',
-      //     items: [
-      //       {
-      //         label: 'GitHub',
-      //         href: 'https://github.com/Zentik-notifier',
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     title: 'Other',
-      //     items: [
-      //       {
-      //         label: 'Mobile App',
-      //         href: 'https://zentik.app',
-      //       },
-      //     ],
-      //   },
-      // ],
       copyright: `Copyright © ${new Date().getFullYear()} Zentik. Built with Docusaurus.`,
     },
     prism: {
@@ -161,10 +132,8 @@ const config: Config = {
       {
         label: 'API',
         route: '/scalar',
-        showNavLink: true, // optional, default is true
+        showNavLink: true,
         configuration: {
-          // url: 'http://192.168.1.193:3000/api/openapi.json',
-          // url: 'https://notifier-api.zentik.app/api/openapi.json',
           url: backendApi,
         },
       } as ScalarOptions,

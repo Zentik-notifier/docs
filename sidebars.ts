@@ -29,6 +29,7 @@ const sidebars: SidebarsConfig = {
         'notifications/transform-parsers'
       ],
     },
+    'self-hosted',
     'webhooks',
     'settings',
     {

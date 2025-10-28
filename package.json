@@ -16,7 +16,8 @@
     "deploy:patch": "node scripts/deploy.js patch",
     "deploy:minor": "node scripts/deploy.js minor",
     "deploy:major": "node scripts/deploy.js major",
-    "generate:diagrams": "node scripts/generate-diagrams.js"
+    "generate:diagrams": "node scripts/generate-diagrams.js",
+    "optimize-videos": "node scripts/optimize-videos.js"
   },
   "dependencies": {
     "@docusaurus/core": "3.8.1",

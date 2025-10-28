@@ -5,11 +5,11 @@ sidebar_position: 3
 
 This section describes in detail how to use Zentik's notification endpoints, including all possible values and available configurations.
 
-## Delivery Flows Overview
+<!-- ## Delivery Flows Overview -->
 
-### Cloud & Self-hosted Flows (Side by Side)
+<!-- ### Cloud & Self-hosted Flows (Side by Side) -->
 
-<div style={{display:'flex',gap:'1.5rem',flexWrap:'wrap',alignItems:'flex-start'}}>
+<!-- <div style={{display:'flex',gap:'1.5rem',flexWrap:'wrap',alignItems:'flex-start'}}>
   <figure style={{margin:0,flex:'1 1 420px',minWidth:'340px'}}>
     <img src="/img/cloud-flow-vertical.svg" alt="Cloud (Managed) Flow" style={{width:'100%',height:'auto',border:'1px solid var(--ifm-toc-border-color)',borderRadius:8,padding:'4px',background:'var(--ifm-background-surface-color)'}} />
     <figcaption style={{textAlign:'center',marginTop:'.5rem',fontSize:'0.85rem',opacity:.8}}>Cloud (Managed) Flow</figcaption>
@@ -18,7 +18,25 @@ This section describes in detail how to use Zentik's notification endpoints, inc
     <img src="/img/self-hosted-flow-vertical.svg" alt="Self-hosted Flow" style={{width:'100%',height:'auto',border:'1px solid var(--ifm-toc-border-color)',borderRadius:8,padding:'4px',background:'var(--ifm-background-surface-color)'}} />
   <figcaption style={{textAlign:'center',marginTop:'.5rem',fontSize:'0.85rem',opacity:.8}}>Self-hosted Flow (Encrypted payload via Pass-through Relay)</figcaption>
   </figure>
-</div>
+</div> -->
+
+## How it works
+
+Zentik can send notification to all the main providers:
+- iOS via APN
+- Android via FCM
+- PWA/web via Webpush
+
+The flow goes as following:
+- User creates a message
+- The message gets notified to all user's registered devices
+- The devices will ack the notification to the server when received
+- When all notifications are acked, the message will be deleted from the server and kept only locally on the devices (or after 7 days regardless)
+- If postpone/reminder is used, the message is protected until the notifications are finalized
+
+The notification are always end-to-end encrypted with keys stored on server and device, providers won't see the messages in clear. 
+
+If you are a self hoster and you want to have access to iOS/FCM notifications without struggling with the hassle of the configuration, you will be able to "passthrough" the notifications to the zentik servers, which will act as a simple bridge, nothing will be stored (messages will be anyways encrypted). To do so ask for a passthrough token.
 
 ## Quick Start: Create and Send a Message
 This concise guide covers only the essentials: (1) authenticate, (2) create a bucket and an access token, (3) create and send your first message. For advanced options see the API Reference.
