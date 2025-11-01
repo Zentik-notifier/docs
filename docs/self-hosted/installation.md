@@ -40,7 +40,7 @@ services:
       - "5432:5432"
 
   backend:
-    image: ghcr.io/zentik-notifier/zentik-notifier-backend:latest
+    image: ghcr.io/zentik-notifier/zentik-notifier:latest
     environment:
       DB_HOST: db
       DB_PORT: 5432
