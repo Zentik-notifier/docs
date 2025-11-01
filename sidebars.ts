@@ -29,7 +29,15 @@ const sidebars: SidebarsConfig = {
         'notifications/transform-parsers'
       ],
     },
-    'self-hosted',
+    {
+      type: 'category',
+      label: 'Self-hosted',
+      collapsed: false,
+      items: [
+        'self-hosted/settings',
+        'self-hosted/installation',
+      ],
+    },
     'webhooks',
     'settings',
     {

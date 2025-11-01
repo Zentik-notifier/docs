@@ -5,8 +5,6 @@ title: Introduction
 
 import Carousel from '@site/src/components/Carousel';
 
-## What is this
-
 Zentik is another notifier system, yes another one. Why did I create it? I was looking for a versatile system to use the potential of iOS push notifications and to be able to interface any of my system. I tried all of them but no one had all the functionalities I was looking for. My main issues were:
 - Limited possibilities to have custom actions on the push notifications
 - Limited amount of attachments to be sent on a notification
@@ -21,7 +19,7 @@ Zentik is another notifier system, yes another one. Why did I create it? I was l
 - Self hostable!
 
 ### Backend
-Based on NestJS, it contains the whole system of notifications orchestration to all main providers (iOS, Android, Web) and will interface with clients via REST and GQL, you could potentially write your own client. The Zentik principal backend will contain all the tools to send notifications to all the devices (certificates, configurations, problems.), but no worries! Self-hosted will be able to passthrough notifications to the main Zentik server to dispatch them on their behalf, just ask for a token. The system ensures a short live for both notifications and attachments. Notifications will be deleted as soon as all the devices have acked the receipt (max 7 days), attachments will be deleted as well after 7 days
+Based on NestJS, it contains the whole system of notifications orchestration to all main providers (iOS, Android, Web) and will interface with clients via REST and GQL, you could potentially write your own client. The Zentik principal backend will contain all the tools to send notifications to all the devices (certificates, configurations, problems.), but no worries! Self-hosted will be able to passthrough notifications to the main Zentik server to dispatch them on their behalf, request a token [here](https://notifier.zentik.app/self-service/token-requests). The system ensures a short live for both notifications and attachments. Notifications will be deleted as soon as all the devices have acked the receipt (max 7 days), attachments will be deleted as well after 7 days
 
 ### Frontend
 Based on React native (Expo). Zentik will offer official iOS and Android apps. Self hosters will be able to use them configuring the app to point to their own server, or just use the onboarded self hosted PWA instance.

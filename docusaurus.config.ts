@@ -105,6 +105,11 @@ const config: Config = {
           label: 'Documentation',
         },
         {
+          href: 'https://notifier.zentik.app/self-service/token-requests',
+          label: 'Request a passthrough token',
+          position: 'right',
+        },
+        {
           href: 'https://discord.gg/DzhJ4s7N',
           label: 'Discord',
           position: 'right',

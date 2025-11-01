@@ -38,6 +38,8 @@ The notification are always end-to-end encrypted with keys stored on server and 
 
 If you are a self hoster and you want to have access to iOS/FCM notifications without struggling with the hassle of the configuration, you will be able to "passthrough" the notifications to the zentik servers, which will act as a simple bridge, nothing will be stored (messages will be anyways encrypted). To do so ask for a passthrough token.
 
+PWA notifications will work out of the box even on self hosted servers
+
 ## Quick Start: Create and Send a Message
 This concise guide covers only the essentials: (1) authenticate, (2) create a bucket and an access token, (3) create and send your first message. For advanced options see the API Reference.
 
