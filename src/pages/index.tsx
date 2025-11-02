@@ -99,8 +99,9 @@ function HomepageSteps() {
               <div className={styles.stepText}>
                 <Heading as="h3">Create a Bucket & Access Token</Heading>
                 <p>
-                  Create a bucket and an access token to track one system.
+                  Create a bucket and an access token to track one system. 
                   This gives you the foundation to start sending notifications.
+                  Or use the bucket's magic code! A personal unique code to quickly send notifications 
                 </p>
               </div>
             </div>

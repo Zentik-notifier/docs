@@ -141,7 +141,8 @@ Below is the complete list of fields you can send when creating a message. Unles
 | title | string (max 100) | Yes | - | Primary title shown to user | "Order Confirmed" |
 | subtitle | string (max 100) | No | - | Secondary line below title | "Payment received" |
 | body | string (max 500) | No | - | Longer descriptive text | "Your order #12345 has been confirmed" |
-| bucketId | string | Yes | - | Bucket UUID or name; name will be resolved server-side | "d3f0..." or "Marketing" |
+| bucketId | string | No | - | Bucket UUID or name; name will be resolved server-side | "d3f0..." or "Marketing" |
+| magicCode | string | No | - | Bucket magic code, identifies an user's bucket | "d3f0..." |
 | deliveryType | enum NotificationDeliveryType | Yes | - | `SILENT` | `NORMAL` | `CRITICAL` (SILENT=no alert, CRITICAL=high priority) | "NORMAL" |
 | attachments | AttachmentDto[] | No | [] | Rich media attachments (see attachment fields) | See below |
 | actions | ActionDto[] | No | [] | Array of interactive actions/buttons | See below |
@@ -190,6 +191,7 @@ Automatic shortcuts:
 - attachments / actions / tapAction accept JSON strings (when sent as multipart form fields) which are parsed server-side.
 
 Validation & limits:
+- Either magicCode or bucketId + authentication mean should be provided
 - title ≤ 100 chars; subtitle ≤ 100; body ≤ 500.
 - Each attachment/action object validated individually; unknown fields ignored.
 - Invalid JSON in stringified arrays will cause a validation error.

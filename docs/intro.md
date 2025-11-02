@@ -31,7 +31,8 @@ Follow these initial actions to get a working end‑to‑end notification in sec
 
 1. **Access the app** – Get the mobile app ([iOS](https://testflight.apple.com/join/dFqETQEm)) or access the PWA ([Official one](https://notifier.zentik.app) or your onboarded self hosted) and register to the platform
 2. **Go through the onboarding** – An onboarding will be shown right away to go through the main steps
-3. **Create a new bucket** – Create a new Bucket, it will be the target for your notifications, it will identify one of your system. Check the token creation checkbox, it will automatically generate a token specific for the newly created bucket
+3. **Create a new bucket** – Create a new Bucket, it will be the target for your notifications, it will identify one of your system. 
+Check the magic code, it will allow to send notifications with one single identifier, or check the token creation checkbox, it will automatically generate a token specific for the newly created bucket
 4. **Send your first notification** – Head to the settings page, straight to bucket. Selecting the newly created bucket you will see the list of access tokens usable with the bucket. Click on the second button and check all the possible endpoints usable 
 
 ---
