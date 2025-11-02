@@ -40,97 +40,44 @@ If you are a self hoster and you want to have access to iOS/FCM notifications wi
 
 PWA notifications will work out of the box even on self hosted servers
 
-## Quick Start: Create and Send a Message
-This concise guide covers only the essentials: (1) authenticate, (2) create a bucket and an access token, (3) create and send your first message. For advanced options see the API Reference.
 
+### Quick start
+- Register to the platform with email/password or using one of the many available social providers
+- Create a bucket (or follow the onboarding), enable the magic code to uniquely identify your bucket in the whole system. Keep it safe since it won't require any authentication
+- Send a notification in any of the possible ways
 
-### Step 1 · Login with Username/Password
-Endpoint: **POST** `/api/v1/auth/login`  <a href="/scalar#tag/Auth/POST/api/v1/auth/login" target="_blank" rel="noopener">Open in API Reference ↗</a>
+## GET
+```bash
+curl "https://your-public-url/api/v1/messages?magicCode=b0f59f31&title=Hello&body=Test message"
+``` 
 
-Request:
-```jsonc
-{
-  "email": "user@example.com",
-  "password": "your_password"
-}
+## GET with payload mapping
+```bash
+curl -X POST \
+  "https://your-public-url/api/v1/messages/transform?parser=authentik&bucketId=<bucket-uuid>" \
+  -H "Authorization: Bearer <jwt-access-token>" \
+  -H "Content-Type: application/json" \
+  -d '{"body":"loginSuccess: {...}","severity":"info","user_email":"user@example.com","user_username":"alice"}'
 ```
-Response (excerpt):
-```json
-{
-  "accessToken": "<jwt-access-token>",
-  "refreshToken": "<jwt-refresh-token>",
-  "user": { "id": "<user-uuid>", "email": "user@example.com" }
-}
-```
-Keep the `accessToken`; you'll use it in `Authorization: Bearer <accessToken>` for the next steps.
 
-### Step 2 · Create a Bucket
-Endpoint: **POST** `/api/v1/buckets`  <a href="/scalar#tag/buckets/post/api/v1/buckets" target="_blank" rel="noopener">Open in API Reference ↗</a>
+## POST
+```bash
+curl -X POST "https://your-public-url/api/v1/messages" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "magicCode": "b0f59f31",
+    "title": "Hello",
+    "body": "Test message"
+  }'
+``` 
 
-Request:
-```jsonc
-{
-  "name": "Marketing",
-  "description": "Marketing campaign bucket"
-}
-```
-Response (excerpt):
-```json
-{
-  "id": "<bucket-uuid>",
-  "name": "Marketing",
-  "description": "Marketing campaign bucket"
-}
-```
-Store `id` as `bucketId`.
-
-### Step 3 · Create a User Access Token
-Endpoint: **POST** `/api/v1/access-tokens`  <a href="/scalar#tag/access-tokens/post/api/v1/access-tokens" target="_blank" rel="noopener">Open in API Reference ↗</a>
-
-Header: `Authorization: Bearer <jwt-access-token>`
-
-Minimal request:
-```jsonc
-{
-  "name": "CI Pipeline",
-  "scopes": ["messages:create"]
-}
-```
-Response (excerpt):
-```json
-{
-  "id": "<token-uuid>",
-  "token": "zat_<raw-token>",
-  "scopes": ["messages:create"],
-  "createdAt": "2025-01-01T00:00:00.000Z"
-}
-```
-Store the full `token` (with `zat_` prefix). You can now use `Authorization: Bearer zat_<raw-token>` for server-to-server calls.
-
-### Step 4 · Create a Message (REST)
-Endpoint: **POST** `/api/v1/messages`  <a href="http://localhost:3001/scalar#tag/messages/post/api/v1/messages" target="_blank" rel="noopener">Open in API Reference ↗</a>
-
-Typical headers:
-```http
-Authorization: Bearer <jwt-access-token>
-Content-Type: application/json
-```
-Minimal body:
-```jsonc
-{
-  "title": "Welcome!",
-  "bucketId": "<bucket-uuid>",
-  "deliveryType": "NORMAL"
-}
-```
-Response (excerpt):
-```json
-{
-  "id": "<message-uuid>",
-  "title": "Order Confirmed",
-  "bucketId": "<bucket-uuid>",
-  "createdAt": "2025-01-01T12:00:00.000Z"
-}
+## POST with form data
+```bash
+curl -X POST "https://your-public-url/api/v1/messages" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "magicCode=b0f59f31" \
+  -d "title=Hello" \
+  -d "body=Test message"
 ```
 
 ### Message Parameters

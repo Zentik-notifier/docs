@@ -42,6 +42,7 @@ Check the magic code, it will allow to send notifications with one single identi
 <Carousel
   items={[
     { type: 'image', src: '/img/login-page.png', alt: 'Login page', description: 'Login to your Zentik account' },
+    { type: 'image', src: '/img/login.png', alt: 'Login page', description: 'Login with SSOs' },
     { type: 'image', src: '/img/ios-push-notification.jpg', alt: 'iOS rich push notification', description: 'Rich notifications with attachments' },
     { type: 'video', src: '/video/onboarding.mp4', description: 'Onboarding experience' },
     { type: 'video', src: '/video/bucket_creation.mp4', description: 'Creating a bucket' }
