@@ -22,7 +22,6 @@ The following environment variables can be configured in the backend `.env` file
 
 ### Server Configuration
 
-- `SERVER_FILES_DIR` - Directory for server file storage (default: `/data`)
 - `PUBLIC_BACKEND_URL` - Public backend URL
 
 ### Administration
