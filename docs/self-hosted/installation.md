@@ -69,9 +69,8 @@ volumes:
 ## Next Steps
 
 - Configure [Server Settings](./settings.md) for your environment
-- Set up [Push Notifications](./push-notifications.md)
-- Create your first [Bucket](../getting-started/buckets.md)
-- Review [API Documentation](../api/graphql.md)
+- Learn about [Notifications](../notifications) and how to send them
+- Review [Administration](../administration) for advanced configuration
 
 ## Troubleshooting
 

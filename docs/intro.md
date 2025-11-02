@@ -51,7 +51,7 @@ Check the magic code, it will allow to send notifications with one single identi
 ## Next Steps
 1. Start sending messages: [Notifications](./notifications)
 2. Configure your experience: [Settings](./settings)
-3. Deploy or try locally: [Self-hosted](./self-hosted)
+3. Deploy or try locally: [Self-hosted Installation](./self-hosted/installation)
 
 ---
 
