@@ -70,7 +70,6 @@ volumes:
 
 - Configure [Server Settings](./settings.md) for your environment
 - Learn about [Notifications](../notifications) and how to send them
-- Review [Administration](../administration) for advanced configuration
 
 ## Troubleshooting
 
