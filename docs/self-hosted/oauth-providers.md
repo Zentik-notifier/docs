@@ -1,0 +1,212 @@
+---
+sidebar_position: 3
+title: OAuth Providers
+---
+
+# OAuth Providers
+
+Zentik supports multiple OAuth providers for user authentication and registration. You can configure built-in providers or create custom OAuth integrations.
+
+## Built-in OAuth Providers
+
+The following OAuth providers are supported out of the box:
+
+| Provider | Type | Passport Strategy | Developer Portal | How to Get Credentials |
+|----------|------|------------------|------------------|----------------------|
+| **GitHub** | `GITHUB` | [passport-github2](https://www.passportjs.org/packages/passport-github2/) | [GitHub Developer Settings](https://github.com/settings/developers) | Create a new OAuth App in your GitHub account. Set the Authorization callback URL to your Zentik callback endpoint. |
+| **Google** | `GOOGLE` | [passport-google-oauth20](https://www.passportjs.org/packages/passport-google-oauth20/) | [Google Cloud Console](https://console.cloud.google.com/) | Create/select a project, enable Google+ API, create OAuth 2.0 credentials in the APIs & Services section. |
+| **Discord** | `DISCORD` | [passport-discord](https://www.passportjs.org/packages/passport-discord/) | [Discord Developer Portal](https://discord.com/developers/applications) | Create a new application, go to OAuth2 section, and copy the Client ID and Client Secret. |
+| **Apple** | `APPLE` | [passport-apple](https://www.passportjs.org/packages/passport-apple/) | [Apple Developer Portal](https://developer.apple.com/) | Create a new identifier for "Sign in with Apple" in your Apple Developer account. Requires paid Apple Developer membership. |
+| **Facebook** | `FACEBOOK` | [passport-facebook](https://www.passportjs.org/packages/passport-facebook/) | [Facebook Developers](https://developers.facebook.com/) | Create a new app, add "Facebook Login" product, and get credentials from the app dashboard. |
+| **Microsoft** | `MICROSOFT` | [passport-microsoft](https://www.passportjs.org/packages/passport-microsoft/) | [Azure Portal](https://portal.azure.com/) | Register a new application in Azure AD, go to "Certificates & secrets" to create a client secret. |
+
+All built-in providers come pre-configured with:
+- Standard callback URLs (`/api/v1/auth/{provider}/callback`)
+- Appropriate default scopes for user identification (email, profile info)
+- Brand colors and icons
+- Proper profile field mappings
+- Tested Passport.js strategies for reliable authentication
+
+## Configuring Built-in Providers
+
+### 1. Enable OAuth Authentication
+
+First, ensure OAuth authentication is enabled in your server settings:
+
+```bash
+# In your .env file or server settings
+SOCIAL_LOGIN_ENABLED=true
+SOCIAL_REGISTRATION_ENABLED=true  # Optional: allow new user registration via OAuth
+```
+
+### 2. Configure Provider Credentials
+
+For each provider you want to use:
+
+1. **Access the Admin Panel**: Navigate to `/admin/oauth-providers` in your Zentik instance
+2. **Select Provider**: Choose the provider you want to configure
+3. **Add Credentials**: Enter your OAuth application credentials:
+   - **Client ID**: Your OAuth application's client ID
+   - **Client Secret**: Your OAuth application's client secret
+4. **Enable Provider**: Toggle the provider to "Enabled"
+
+### 3. Register OAuth Applications
+
+For each provider you want to use, follow these detailed steps:
+
+#### GitHub
+1. Visit [GitHub Developer Settings](https://github.com/settings/developers)
+2. Click "New OAuth App"
+3. Fill in the application details:
+   - **Application name**: Your app name (e.g., "My Zentik Instance")
+   - **Homepage URL**: Your Zentik instance URL
+   - **Authorization callback URL**: `https://your-domain.com/api/v1/auth/github/callback`
+4. Copy the **Client ID** and generate a **Client Secret**
+
+#### Google
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Navigate to "APIs & Services" > "Credentials"
+4. Click "Create Credentials" > "OAuth 2.0 Client IDs"
+5. Configure the consent screen if prompted
+6. Set application type to "Web application"
+7. Add authorized redirect URIs: `https://your-domain.com/api/v1/auth/google/callback`
+8. Copy the **Client ID** and **Client Secret**
+
+#### Discord
+1. Visit [Discord Developer Portal](https://discord.com/developers/applications)
+2. Click "New Application" and give it a name
+3. Go to the "OAuth2" tab in the sidebar
+4. Copy the **Client ID** and **Client Secret**
+5. Add redirect URL: `https://your-domain.com/api/v1/auth/discord/callback`
+6. Select appropriate scopes (`identify` and `email`)
+
+#### Apple
+1. Go to [Apple Developer Portal](https://developer.apple.com/) (requires paid membership)
+2. Navigate to "Certificates, Identifiers & Profiles"
+3. Click "Identifiers" and create a new "App ID"
+4. Enable "Sign in with Apple" capability
+5. Configure return URLs: `https://your-domain.com/api/v1/auth/apple/callback`
+6. Create a **Service ID** for web authentication
+7. Generate and download your **private key**
+
+#### Facebook
+1. Visit [Facebook Developers](https://developers.facebook.com/)
+2. Click "Create App" and choose "Consumer" type
+3. Add "Facebook Login" product to your app
+4. Go to Facebook Login settings
+5. Add Valid OAuth Redirect URIs: `https://your-domain.com/api/v1/auth/facebook/callback`
+6. Copy **App ID** (Client ID) and **App Secret** (Client Secret) from app dashboard
+
+#### Microsoft
+1. Go to [Azure Portal](https://portal.azure.com/)
+2. Navigate to "Azure Active Directory" > "App registrations"
+3. Click "New registration"
+4. Set redirect URI to: `https://your-domain.com/api/v1/auth/microsoft/callback`
+5. After creation, go to "Certificates & secrets"
+6. Create a new **Client Secret**
+7. Copy the **Application (client) ID** and the **Client Secret**
+
+## Custom OAuth Providers
+
+Zentik supports custom OAuth 2.0 providers for integration with services like Authentik, Keycloak, or any RFC-compliant OAuth 2.0 provider.
+
+### Creating a Custom Provider
+
+1. **Access Admin Panel**: Go to `/admin/oauth-providers`
+2. **Create New Provider**: Click "Add Provider"
+3. **Configure Provider**:
+
+```json
+{
+  "name": "Authentik",
+  "type": "CUSTOM",
+  "clientId": "your-client-id",
+  "clientSecret": "your-client-secret",
+  "callbackUrl": "https://your-domain.com/api/v1/auth/authentik/callback",
+  "scopes": ["openid", "email", "profile"],
+  "authorizationUrl": "https://your-authentik.com/application/o/authorize/",
+  "tokenUrl": "https://your-authentik.com/application/o/token/",
+  "userInfoUrl": "https://your-authentik.com/application/o/userinfo/",
+  "profileFields": ["sub", "email", "name", "preferred_username"],
+  "color": "#fd4b2d",
+  "textColor": "#ffffff"
+}
+```
+
+### Custom Provider Configuration
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `name` | ✅ | Display name for the provider |
+| `type` | ✅ | Set to `CUSTOM` |
+| `clientId` | ✅ | OAuth client ID from your provider |
+| `clientSecret` | ✅ | OAuth client secret from your provider |
+| `callbackUrl` | ✅ | Callback URL for OAuth flow |
+| `scopes` | ✅ | Array of OAuth scopes to request |
+| `authorizationUrl` | ✅ | OAuth authorization endpoint |
+| `tokenUrl` | ✅ | OAuth token exchange endpoint |
+| `userInfoUrl` | ✅ | User profile information endpoint |
+| `profileFields` | ⚪ | Array of profile fields to extract |
+| `color` | ⚪ | Hex color for provider button |
+| `textColor` | ⚪ | Hex color for button text |
+| `iconUrl` | ⚪ | URL to provider icon/logo |
+
+### Example: Authentik Integration
+
+Here's a complete example for integrating with Authentik:
+
+#### 1. Authentik Configuration
+
+1. **Create Application**: In Authentik admin, create a new OAuth2/OpenID Provider
+2. **Configure URLs**:
+   - Redirect URIs: `https://your-zentik.com/api/v1/auth/authentik/callback`
+   - Signing Key: Choose an appropriate key
+3. **Configure Scopes**: Ensure `openid`, `email`, and `profile` scopes are available
+4. **Create Application**: Link the provider to an application
+
+#### 2. Zentik Configuration
+
+Create the custom provider in Zentik with these settings:
+
+```json
+{
+  "name": "Authentik SSO",
+  "type": "CUSTOM",  
+  "clientId": "authentik-client-id",
+  "clientSecret": "authentik-client-secret",
+  "callbackUrl": "https://your-zentik.com/api/v1/auth/authentik/callback",
+  "scopes": ["openid", "email", "profile"],
+  "authorizationUrl": "https://your-authentik.com/application/o/authorize/",
+  "tokenUrl": "https://your-authentik.com/application/o/token/",
+  "userInfoUrl": "https://your-authentik.com/application/o/userinfo/",
+  "profileFields": ["sub", "email", "name", "preferred_username", "groups"],
+  "color": "#fd4b2d",
+  "textColor": "#ffffff",
+  "iconUrl": "https://goauthentik.io/img/icon.png"
+}
+```
+
+### Profile Field Mapping
+
+For custom providers, you can specify which fields to extract from the user profile:
+
+| Standard Field | Common OAuth Fields | Description |
+|---------------|-------------------|-------------|
+| `id` | `sub`, `id`, `user_id` | Unique user identifier |
+| `email` | `email`, `mail` | User email address |
+| `name` | `name`, `displayName`, `full_name` | Full display name |
+| `username` | `preferred_username`, `username`, `login` | Username/handle |
+| `avatar` | `picture`, `avatar_url`, `photo` | Profile picture URL |
+| `groups` | `groups`, `roles`, `permissions` | User groups/roles |
+
+### Troubleshooting
+
+#### Common Issues
+
+1. **Invalid Redirect URI**: Ensure the callback URL exactly matches what's configured in your OAuth provider
+2. **Scope Issues**: Verify that requested scopes are available and approved in your OAuth provider
+3. **SSL/HTTPS**: Most OAuth providers require HTTPS for production callback URLs
+4. **CORS Issues**: Ensure your OAuth provider allows requests from your Zentik domain
+
+Check server logs for OAuth-related messages during the authentication flow.

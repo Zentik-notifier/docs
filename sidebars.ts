@@ -34,8 +34,9 @@ const sidebars: SidebarsConfig = {
       label: 'Self-hosted',
       collapsed: false,
       items: [
-        'self-hosted/settings',
         'self-hosted/installation',
+        'self-hosted/settings',
+        'self-hosted/oauth-providers',
       ],
     },
     'webhooks',

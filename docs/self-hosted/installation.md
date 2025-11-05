@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 title: Installation
 ---
 
@@ -65,49 +65,3 @@ services:
 volumes:
   db_data:
 ```
-
-## Next Steps
-
-- Configure [Server Settings](./settings.md) for your environment
-- Learn about [Notifications](../notifications) and how to send them
-
-## Troubleshooting
-
-### Check Health
-
-```bash
-curl http://localhost:3000/api/health
-```
-
-### Database Connection Issues
-
-```bash
-# Check PostgreSQL is running
-docker ps | grep postgres
-
-# Check backend can connect
-docker logs zentik-notifier_backend_1 | grep -i "database"
-```
-
-### Port Conflicts
-
-Edit the `docker-compose.yml` file to change ports:
-
-```yaml
-ports:
-  - "3001:3000"  # Change host port to 3001
-```
-
-### Migration Issues
-
-Migrations run automatically on startup. To check:
-
-```bash
-docker logs zentik-notifier_backend_1 | grep -i migration
-```
-
-## Support
-
-- Documentation: [docs.zentik.app](https://docs.zentik.app)
-- Repository: [GitHub](https://github.com/Zentik-notifier/zentik-notifier)
-- Issues: [GitHub Issues](https://github.com/Zentik-notifier/zentik-notifier/issues)

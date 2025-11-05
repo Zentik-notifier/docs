@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 title: Settings
 ---
 
@@ -33,105 +33,144 @@ The following environment variables can be configured in the backend `.env` file
 
 In addition to environment variables, Zentik provides a wide range of configurable settings through the `ServerSetting` entity. These settings are stored in the database and can be fully configured through the admin UI or GraphQL API.
 
-### JWT (JSON Web Tokens)
+### Authentication & JWT
 
-- `JwtAccessTokenExpiration` - Access token duration
-- `JwtRefreshTokenExpiration` - Refresh token duration
-- `JwtSecret` - Secret key for JWT tokens
-- `JwtRefreshSecret` - Secret key for refresh tokens
+Configuration for JWT tokens and user authentication:
 
-### Push Notifications - APN (Apple Push Notification)
+- `JwtAccessTokenExpiration` - Duration for access token validity (default: `3h`)
+- `JwtRefreshTokenExpiration` - Duration for refresh token validity (default: `7d`) 
+- `JwtSecret` - Secret key for JWT access tokens (auto-generated)
+- `JwtRefreshSecret` - Secret key for JWT refresh tokens (auto-generated)
+- `SocialLoginEnabled` - Enable social login functionality (default: `false`), oauth providers will need to be setup in the proper administration section
+- `LocalRegistrationEnabled` - Enable local user registration via email/password (default: `false`)
+- `SocialRegistrationEnabled` - Enable social registration functionality (default: `false`). If disabled, oauth providers can be used only for the login following a local registration
 
-- `ApnPush` - Enable APN push notifications
-- `ApnKeyId` - APN key ID
-- `ApnTeamId` - APN team ID
-- `ApnPrivateKeyPath` - Path to APN private key
-- `ApnBundleId` - Application bundle ID
-- `ApnProduction` - Production mode for APN
+### Apple Push Notification (APN)
 
-### Push Notifications - Firebase
+Configuration for Apple Push Notifications. All these configurations will require the mobile app to be built locally with the whole Apple setup. Request a passthrough token and set ApnPush to Passthrough to utilize the public server:
 
-- `FirebasePush` - Enable Firebase push notifications
-- `FirebaseProjectId` - Firebase project ID
-- `FirebasePrivateKey` - Firebase private key
-- `FirebaseClientEmail` - Firebase client email
+- `ApnPush` - APN push mode: `Off`, `Local`, `Onboard`, `Passthrough` (default: `Off`)
+- `ApnKeyId` - Apple Push Notification Key ID (required for `Onboard` mode)
+- `ApnTeamId` - Apple Team ID (required for `Onboard` mode)
+- `ApnPrivateKeyPath` - Path to APN private key file (required for `Onboard` mode)
+- `ApnBundleId` - App bundle identifier (required for `Onboard` mode)
+- `ApnProduction` - Use production APN environment (default: `true`)
 
-### Push Notifications - Web Push
+### Firebase Cloud Messaging (FCM)
 
-- `WebPush` - Enable Web Push notifications
-- `VapidSubject` - Subject for VAPID keys
+Configuration for Firebase push notifications. All these configurations will require the mobile app to be built locally with the whole FCM setup. Request a passthrough token and set FirebasePush to Passthrough to utilize the public server:
 
-### Push Notifications - Passthrough
+- `FirebasePush` - Firebase push mode: `Off`, `Local`, `Onboard`, `Passthrough` (default: `Off`)
+- `FirebaseProjectId` - Firebase project ID (required for `Onboard` mode)
+- `FirebasePrivateKey` - Firebase service account private key (required for `Onboard` mode)
+- `FirebaseClientEmail` - Firebase service account client email (required for `Onboard` mode)
 
-- `PushNotificationsPassthroughServer` - Passthrough server for notifications
-- `PushPassthroughToken` - Passthrough token
+### Web Push Notification
+
+Configuration for web push notifications:
+
+- `WebPush` - Web push mode: `Off`, `Local`, `Onboard`, `Passthrough` (default: `Onboard`)
+- `VapidSubject` - VAPID subject for web push (required for `Onboard` mode, default to `mailto:zentik@notifier.com`)
+
+### Push Passthrough
+
+Configuration for push notification passthrough service:
+
+- `PushNotificationsPassthroughServer` - Passthrough server URL (default: `https://notifier-api.zentik.app/api/v1`)
+- `PushPassthroughToken` - Authentication token for passthrough service
+- `SystemTokenUsageStats` - System token usage statistics (JSON format). Contains the montly calls left to the requested token
+
+### Email Configuration
+
+Configuration for email notifications. The server can send emails for the various auth flows and some more events. It supports out of the box a generig SMTP ([Brevo](https://www.brevo.com/) is  very easy to setup with a good free tier) or Resend as HTTP protocol
+
+- `EmailEnabled` - Enable email functionality (default: `false`)
+- `EmailFrom` - Sender email address
+- `EmailFromName` - Sender display name
+- `EmailType` - Email service type: `SMTP`, `Resend` (default: `SMTP`)
+- `EmailHost` - SMTP server host (for SMTP type)
+- `EmailPort` - SMTP server port (for SMTP type)
+- `EmailSecure` - Use secure SMTP connection (for SMTP type)
+- `EmailUser` - SMTP username (for SMTP type)
+- `EmailPass` - SMTP password (for SMTP type)
+- `ResendApiKey` - Resend service API key (for Resend type)
 
 ### Attachments
 
-- `AttachmentsEnabled` - Enable attachments
-- `AttachmentsStoragePath` - Path for attachment storage (default: `/attachments`)
-- `AttachmentsMaxFileSize` - Maximum file size
-- `AttachmentsAllowedMimeTypes` - Allowed MIME types
-- `AttachmentsDeleteJobEnabled` - Enable automatic deletion job
-- `AttachmentsMaxAge` - Maximum attachment age
+Configuration for file attachments:
 
-### Backup
+- `AttachmentsEnabled` - Enable attachment functionality (default: `false`)
+- `IconUploaderEnabled` - Enable icon upload feature (default: `true`)
+- `AttachmentsStoragePath` - File storage path for attachments (default: `/attachments`)
+- `AttachmentsMaxFileSize` - Maximum file size in bytes (default: `10485760` - 10MB)
+- `AttachmentsAllowedMimeTypes` - Comma-separated list of allowed MIME types
+- `AttachmentsDeleteJobEnabled` - Enable automatic cleanup of old attachments (default: `true`)
+- `AttachmentsMaxAge` - Maximum age for attachments before cleanup (default: `7d`)
 
-- `BackupEnabled` - Enable automatic backups
-- `BackupExecuteOnStart` - Execute backup on startup
-- `BackupStoragePath` - Path for backup storage (default: `/backups`)
-- `BackupMaxToKeep` - Maximum number of backups to keep
-- `BackupCronJob` - Cron expression for backups
+### Database Backup
+
+Configuration for automated database backups:
+
+- `BackupEnabled` - Enable automatic database backups (default: `false`)
+- `BackupExecuteOnStart` - Execute backup on server startup (default: `true`)
+- `BackupStoragePath` - Directory for backup files (default: `/backups`)
+- `BackupMaxToKeep` - Maximum number of backup files to retain (default: `10`)
+- `BackupCronJob` - Cron expression for backup schedule (default: `0 */12 * * *` - every 12 hours)
 
 ### Server Files
 
-- `ServerFilesDirectory` - Directory for server file storage
+Configuration for server file storage. Utility to handle files stored on backend, i.e. keys for notification providers
 
-### Messages
+- `ServerFilesDirectory` - Directory for server files (default: `/data`)
 
-- `MessagesMaxAge` - Maximum message age
-- `MessagesDeleteJobEnabled` - Enable automatic deletion job
+### Messages Retention
 
-### Email
+Configuration for message cleanup:
 
-- `EmailEnabled` - Enable email sending
-- `EmailType` - Email service type (SMTP, Resend, etc.)
-- `EmailHost` - SMTP host
-- `EmailPort` - SMTP port
-- `EmailSecure` - Enable secure connection
-- `EmailUser` - SMTP username
-- `EmailPass` - SMTP password
-- `EmailFrom` - Sender email address
-- `EmailFromName` - Sender name
-- `ResendApiKey` - Resend API key
+- `MessagesDeleteJobEnabled` - Enable automatic message cleanup (default: `true`)
+- `MessagesMaxAge` - Maximum age for messages before cleanup (default: `7d`)
 
 ### Rate Limiting
 
-- `RateLimitTrustProxyEnabled` - Enable trust proxy for rate limiting
-- `RateLimitForwardHeader` - Header for IP forwarding
-- `RateLimitTtlMs` - Time-to-live for rate limiting
-- `RateLimitLimit` - Maximum request limit
-- `RateLimitBlockMs` - Block duration
-- `RateLimitMessagesRps` - Requests per second for messages
-- `RateLimitMessagesTtlMs` - TTL for message rate limiting
+Configuration for API rate limiting. Needed when the server runs behind a proxy server to avoid limiting of the clients, which will be recognized by the same proxy IP
 
-### CORS
+- `RateLimitTrustProxyEnabled` - Trust proxy headers for rate limiting
+- `RateLimitForwardHeader` - Header to use for forwarded IP addresses
+- `RateLimitTtlMs` - Rate limit window duration in milliseconds (default: `60000` - 1 minute)
+- `RateLimitLimit` - Maximum requests per window (default: `100`)
+- `RateLimitBlockMs` - Block duration after limit exceeded in milliseconds (default: `10000` - 10 seconds)
+- `RateLimitMessagesRps` - Messages per second rate limit (default: `10`)
+- `RateLimitMessagesTtlMs` - Messages rate limit window in milliseconds (default: `1000` - 1 second)
 
-- `CorsOrigin` - Allowed origins for CORS
-- `CorsCredentials` - Enable CORS credentials
+### CORS & Security
+
+Configuration for Cross-Origin Resource Sharing:
+
+- `CorsOrigin` - Allowed CORS origins (comma-separated)
+- `CorsCredentials` - Allow credentials in CORS requests
 
 ### Logging
 
-- `LogLevel` - Logging level (DEBUG, INFO, WARN, ERROR)
-- `LogStorageEnabled` - Enable log storage
-- `LogRetentionDays` - Log retention days
+Configuration for application logging:
+
+- `LogLevel` - Logging level (debug, info, warn, error)
+
+### Log Storage
+
+Configuration for log storage and retention:
+
+- `LogStorageEnabled` - Enable log storage to database
+- `LogRetentionDays` - Number of days to retain logs
 
 ### Prometheus Metrics
 
-- `PrometheusEnabled` - Enable Prometheus metrics
+Configuration for metrics collection, exposes a /metrics endpoint. Generate a system token with `prometheus` to authorize the pull.
 
-### Advanced Configuration
+- `PrometheusEnabled` - Enable Prometheus metrics endpoint (default: `false`)
 
-- `ServerStableIdentifier` - Stable server identifier (UUID generated at bootstrap)
-- `EnableSystemTokenRequests` - Enable system token requests
-- `SystemTokenUsageStats` - System token usage statistics
+### System Access Tokens
+
+Configuration for system-level access tokens:
+
+- `EnableSystemTokenRequests` - Enable system token request functionality (default: `false`)
+
