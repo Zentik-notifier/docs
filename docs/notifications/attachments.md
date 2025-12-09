@@ -9,10 +9,30 @@ This page explains how attachments work, storage rules, validation and ways to i
 
 | Method | Endpoint | Use Case | Notes |
 |--------|----------|----------|-------|
-| Inline URL shortcut | POST /api/v1/messages | Quick add of a single media via `imageUrl` / `videoUrl` / `gifUrl` | Creates transient attachment objects (not persisted if `saveOnServer=false`). |
-| JSON attachments array | POST /api/v1/messages | Multiple attachments or fine-grained control | Provide objects with `mediaType` + `url` OR `attachmentUuid`. |
-| Uploaded file (multipart) | POST /api/v1/messages/with-attachment | Direct file upload | Returns a message with linked stored attachment. |
-| Reuse stored file | POST /api/v1/messages | Reference existing `attachmentUuid` | Avoids re-upload / re-download.
+| Inline URL shortcut | POST /message | Quick add of a single media via `imageUrl` / `videoUrl` / `gifUrl` | Creates transient attachment objects (not persisted if `saveOnServer=false`). |
+| JSON attachments array | POST /message | Multiple attachments or fine-grained control | Provide objects with `mediaType` + `url` OR `attachmentUuid`. |
+| Uploaded file (multipart) | POST /message | Direct file upload | Returns a message with linked stored attachment. |
+| Reuse stored file | POST /message | Reference existing `attachmentUuid` | Avoids re-upload / re-download.
+
+## Uploading a File (Multipart Endpoint)
+When you need to attach a binary file directly you can use the multipart endpoint instead of crafting an `attachments` array manually.
+
+Endpoint: **POST** `/message`  <a href="http://localhost:3001/scalar#tag/messages-root/post/message" target="_blank" rel="noopener">Open in API Reference ↗</a>
+
+Example:
+```bash
+curl -X POST http://localhost:3001/message \
+  -H "Authorization: Bearer zat_<raw-token>" \
+  -F "title=Invoice" \
+  -F "bucketId=<bucket-uuid>" \
+  -F "deliveryType=NORMAL" \
+  -F "attachment=@invoice.pdf"
+```
+
+Notes:
+- Booleans can be passed as `true`/`false` strings (they are transformed server-side).
+- You can still mix a JSON `attachments` array plus the uploaded file if you need multiple attachments.
+- To reuse a previously uploaded file, call the JSON endpoint with `attachmentUuid` instead.
 
 ## Attachments API Reference
 Use these endpoints when you want to upload or register files ahead of time and later reference them by `attachmentUuid` inside a message `attachments` array.

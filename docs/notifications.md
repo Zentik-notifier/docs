@@ -48,7 +48,7 @@ PWA notifications will work out of the box even on self hosted servers
 
 ## GET
 ```bash
-curl "https://your-public-url/messages?magicCode=b0f59f31&title=Hello&body=Test message"
+curl "https://your-public-url/message?magicCode=b0f59f31&title=Hello&body=Test message"
 ``` 
 
 ## GET with payload mapping
@@ -62,7 +62,7 @@ curl -X POST \
 
 ## POST
 ```bash
-curl -X POST "https://your-public-url/messages" \
+curl -X POST "https://your-public-url/message" \
   -H "Content-Type: application/json" \
   -d '{
     "magicCode": "b0f59f31",
@@ -73,7 +73,7 @@ curl -X POST "https://your-public-url/messages" \
 
 ## POST with form data
 ```bash
-curl -X POST "https://your-public-url/messages" \
+curl -X POST "https://your-public-url/message" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "magicCode=b0f59f31" \
   -d "title=Hello" \
@@ -85,7 +85,7 @@ You can also pass message parameters via headers. Headers take precedence over b
 Prefix the parameter name with `x-message-`.
 
 ```bash
-curl -X POST "https://your-public-url/messages" \
+curl -X POST "https://your-public-url/message" \
   -H "x-message-magicCode: b0f59f31" \
   -H "x-message-title: Hello from Headers" \
   -H "x-message-body: This message was sent using headers" \
@@ -97,7 +97,7 @@ You can combine parameters from different sources (headers, query, body).
 Precedence: Headers > Path Params > Query Params > Body.
 
 ```bash
-curl -X POST "https://your-public-url/messages?priority=low" \
+curl -X POST "https://your-public-url/message?priority=low" \
   -H "Content-Type: application/json" \
   -H "x-message-title: Title from Header" \
   -d '{
@@ -178,33 +178,18 @@ Validation & limits:
 ### Uploading a File (Multipart Endpoint)
 When you need to attach a binary file directly you can use the multipart endpoint instead of crafting an `attachments` array manually.
 
-Endpoint: **POST** `/api/v1/messages/with-attachment`  <a href="http://localhost:3001/scalar#tag/messages/post/api/v1/messages/with-attachment" target="_blank" rel="noopener">Open in API Reference ↗</a>
-
-Example:
-```bash
-curl -X POST http://localhost:3001/api/v1/messages/with-attachment \
-  -H "Authorization: Bearer zat_<raw-token>" \
-  -F "title=Invoice" \
-  -F "bucketId=<bucket-uuid>" \
-  -F "deliveryType=NORMAL" \
-  -F "attachment=@invoice.pdf"
-```
-
-Notes:
-- Booleans can be passed as `true`/`false` strings (they are transformed server-side).
-- You can still mix a JSON `attachments` array plus the uploaded file if you need multiple attachments.
-- To reuse a previously uploaded file, call the JSON endpoint with `attachmentUuid` instead.
+For detailed instructions on uploading files, see [Attachments](./notifications/attachments.md).
 
 ### Sending a Message via GET (Query Parameters)
 For very simple integrations or quick tests you can trigger a message using a GET request with query parameters. This requires an Access Token (`Authorization: Bearer zat_<raw-token>`). Avoid using GET in production for complex or sensitive payloads (limited length, appears in logs).
 
-Endpoint: **GET** `/api/v1/messages`  <a href="http://localhost:3001/scalar#tag/messages/get/api/v1/messages" target="_blank" rel="noopener">Open in API Reference ↗</a>
+Endpoint: **GET** `/message`  <a href="http://localhost:3001/scalar#tag/messages-root/get/message" target="_blank" rel="noopener">Open in API Reference ↗</a>
 
 > Note: This pattern is especially useful for legacy / constrained platforms that only allow configuring outbound webhooks as HTTP GET (no POST support). Keep payload minimal (title, bucketId, deliveryType) to avoid URL length issues and leaking excessive data in logs.
 
 Example:
 ```bash
-curl "http://localhost:3001/api/v1/messages?title=Ping&bucketId=<bucket-uuid>&deliveryType=NORMAL" \\
+curl "http://localhost:3001/message?title=Ping&bucketId=<bucket-uuid>&deliveryType=NORMAL" \\
   -H "Authorization: Bearer zat_<raw-token>"
 ```
 
@@ -213,7 +198,7 @@ You can pass any field supported by the POST endpoint as a query string (arrays/
 ### Transform & Create Endpoint
 Use this when you receive a webhook/payload from a known external system and want Zentik to parse it into a message automatically.
 
-Endpoint: **POST** `/api/v1/messages/transform?parser=<parser>&bucketId=<bucket-uuid>`  <a href="http://localhost:3001/scalar#tag/messages/post/api/v1/messages/transform" target="_blank" rel="noopener">Open in API Reference ↗</a>
+Endpoint: **POST** `/transform?parser=<parser>&bucketId=<bucket-uuid>`  <a href="http://localhost:3001/scalar#tag/messages-root/post/transform" target="_blank" rel="noopener">Open in API Reference ↗</a>
 
 Required query params:
 - `parser` – the builtin parser name (e.g. `authentik`)
@@ -225,7 +210,7 @@ For a complete list of available parsers, examples, and detailed usage instructi
 
 Example (Token + Bucket ID):
 ```bash
-curl -X POST "http://localhost:3001/api/v1/messages/transform?parser=authentik&bucketId=<bucket-uuid>" \
+curl -X POST "http://localhost:3001/transform?parser=authentik&bucketId=<bucket-uuid>" \
   -H "Authorization: Bearer <jwt-access-token>" \
   -H "Content-Type: application/json" \
   -d '{"event":"user.login","username":"alice"}'
@@ -233,7 +218,7 @@ curl -X POST "http://localhost:3001/api/v1/messages/transform?parser=authentik&b
 
 Example (Magic Code):
 ```bash
-curl -X POST "http://localhost:3001/api/v1/messages/transform?parser=authentik&magicCode=<magic-code>" \
+curl -X POST "http://localhost:3001/transform?parser=authentik&magicCode=<magic-code>" \
   -H "Content-Type: application/json" \
   -d '{"event":"user.login","username":"alice"}'
 ```
@@ -243,7 +228,7 @@ If the parser matches, it will map the incoming structure to a standard message 
 ### Template Messages
 Use this when you want to send messages using a pre-defined template.
 
-Endpoint: **POST** `/api/v1/messages/template`
+Endpoint: **POST** `/template`
 
 Required query params:
 - `template` – the template name or UUID
@@ -256,7 +241,7 @@ For more details, see [Template Messages](./notifications/template-messages.md).
 
 Example (Token + Bucket ID):
 ```bash
-curl -X POST "http://localhost:3001/api/v1/messages/template?template=welcome-alert&bucketId=<bucket-uuid>" \
+curl -X POST "http://localhost:3001/template?template=welcome-alert&bucketId=<bucket-uuid>" \
   -H "Authorization: Bearer <jwt-access-token>" \
   -H "Content-Type: application/json" \
   -d '{ "username": "Alice" }'
@@ -264,7 +249,7 @@ curl -X POST "http://localhost:3001/api/v1/messages/template?template=welcome-al
 
 Example (Magic Code):
 ```bash
-curl -X POST "http://localhost:3001/api/v1/messages/template?template=welcome-alert&magicCode=<magic-code>" \
+curl -X POST "http://localhost:3001/template?template=welcome-alert&magicCode=<magic-code>" \
   -H "Content-Type: application/json" \
   -d '{ "username": "Alice" }'
 ```
