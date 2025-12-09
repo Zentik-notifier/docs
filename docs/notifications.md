@@ -48,13 +48,13 @@ PWA notifications will work out of the box even on self hosted servers
 
 ## GET
 ```bash
-curl "https://your-public-url/api/v1/messages?magicCode=b0f59f31&title=Hello&body=Test message"
+curl "https://your-public-url/messages?magicCode=b0f59f31&title=Hello&body=Test message"
 ``` 
 
 ## GET with payload mapping
 ```bash
 curl -X POST \
-  "https://your-public-url/api/v1/messages/transform?parser=authentik&bucketId=<bucket-uuid>" \
+  "https://your-public-url/transform?parser=authentik&bucketId=<bucket-uuid>" \
   -H "Authorization: Bearer <jwt-access-token>" \
   -H "Content-Type: application/json" \
   -d '{"body":"loginSuccess: {...}","severity":"info","user_email":"user@example.com","user_username":"alice"}'
@@ -62,7 +62,7 @@ curl -X POST \
 
 ## POST
 ```bash
-curl -X POST "https://your-public-url/api/v1/messages" \
+curl -X POST "https://your-public-url/messages" \
   -H "Content-Type: application/json" \
   -d '{
     "magicCode": "b0f59f31",
@@ -73,12 +73,44 @@ curl -X POST "https://your-public-url/api/v1/messages" \
 
 ## POST with form data
 ```bash
-curl -X POST "https://your-public-url/api/v1/messages" \
+curl -X POST "https://your-public-url/messages" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "magicCode=b0f59f31" \
   -d "title=Hello" \
   -d "body=Test message"
 ```
+
+## POST with headers
+You can also pass message parameters via headers. Headers take precedence over body and query parameters.
+Prefix the parameter name with `x-message-`.
+
+```bash
+curl -X POST "https://your-public-url/messages" \
+  -H "x-message-magicCode: b0f59f31" \
+  -H "x-message-title: Hello from Headers" \
+  -H "x-message-body: This message was sent using headers" \
+  -H "x-message-priority: high"
+```
+
+## POST with mixed sources
+You can combine parameters from different sources (headers, query, body).
+Precedence: Headers > Path Params > Query Params > Body.
+
+```bash
+curl -X POST "https://your-public-url/messages?priority=low" \
+  -H "Content-Type: application/json" \
+  -H "x-message-title: Title from Header" \
+  -d '{
+    "magicCode": "b0f59f31",
+    "title": "Title from Body (Ignored)",
+    "body": "Body from Body Payload"
+  }'
+```
+In this example:
+- `title` will be "Title from Header" (Header > Body)
+- `body` will be "Body from Body Payload"
+- `priority` will be "low" (Query Param)
+
 
 ### Message Parameters
 Below is the complete list of fields you can send when creating a message. Unless marked Required, all fields are optional.
@@ -191,15 +223,51 @@ Body: raw JSON payload from the source system.
 
 For a complete list of available parsers, examples, and detailed usage instructions, see [Transform Parsers](./notifications/transform-parsers.md).
 
-Example:
+Example (Token + Bucket ID):
 ```bash
-curl -X POST "http://localhost:3001/api/v1/messages/transform?parser=authentik&bucketId=<bucket-uuid>" \\
-  -H "Authorization: Bearer <jwt-access-token>" \\
-  -H "Content-Type: application/json" \\
+curl -X POST "http://localhost:3001/api/v1/messages/transform?parser=authentik&bucketId=<bucket-uuid>" \
+  -H "Authorization: Bearer <jwt-access-token>" \
+  -H "Content-Type: application/json" \
+  -d '{"event":"user.login","username":"alice"}'
+```
+
+Example (Magic Code):
+```bash
+curl -X POST "http://localhost:3001/api/v1/messages/transform?parser=authentik&magicCode=<magic-code>" \
+  -H "Content-Type: application/json" \
   -d '{"event":"user.login","username":"alice"}'
 ```
 
 If the parser matches, it will map the incoming structure to a standard message (title/body/actions). If required query params are missing or parser not found, a 400/404 is returned.
+
+### Template Messages
+Use this when you want to send messages using a pre-defined template.
+
+Endpoint: **POST** `/api/v1/messages/template`
+
+Required query params:
+- `template` – the template name or UUID
+- `bucketId` – target bucket id or name (if using token)
+- `magicCode` – magic code (if not using token)
+
+Body: JSON object with values for template placeholders
+
+For more details, see [Template Messages](./notifications/template-messages.md).
+
+Example (Token + Bucket ID):
+```bash
+curl -X POST "http://localhost:3001/api/v1/messages/template?template=welcome-alert&bucketId=<bucket-uuid>" \
+  -H "Authorization: Bearer <jwt-access-token>" \
+  -H "Content-Type: application/json" \
+  -d '{ "username": "Alice" }'
+```
+
+Example (Magic Code):
+```bash
+curl -X POST "http://localhost:3001/api/v1/messages/template?template=welcome-alert&magicCode=<magic-code>" \
+  -H "Content-Type: application/json" \
+  -d '{ "username": "Alice" }'
+```
 
 ---
 For advanced features (custom actions, multiple attachments, snooze, media types) visit the <a href="/scalar" target="_blank" rel="noopener">full API Reference ↗</a>.

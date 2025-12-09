@@ -26,7 +26,8 @@ const sidebars: SidebarsConfig = {
         'notifications/attachments',
         'notifications/actions',
         'notifications/delivery-types',
-        'notifications/transform-parsers'
+        'notifications/transform-parsers',
+        'notifications/template-messages'
       ],
     },
     {

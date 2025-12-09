@@ -6,7 +6,7 @@ sidebar_position: 13
 Builtin payload transformers convert external webhook payloads into standard message structures without you crafting titles/bodies manually.
 
 ## How It Works
-1. You POST raw JSON to `/api/v1/messages/transform?parser=<name>&bucketId=<bucket>`
+1. You POST raw JSON to `/transform?parser=<name>&bucketId=<bucket>`
 2. Zentik validates the parser name and payload shape.
 3. The parser returns a `CreateMessageDto` (title, subtitle, body, deliveryType, etc.).
 4. A message + notifications are created as normal.
@@ -36,10 +36,20 @@ Other parsers work without additional configuration.
 Parsers decide `deliveryType` based on severity / eventType (implementation may evolve; inspect produced messages if tuning priority is needed).
 
 ## Example Authentik
+
+### Option 1: Using Token + Bucket ID
 ```bash
 curl -X POST \
-  "http://localhost:3001/api/v1/messages/transform?parser=authentik&bucketId=<bucket-uuid>" \
+  "https://your-public-url/transform?parser=authentik&bucketId=<bucket-uuid>" \
   -H "Authorization: Bearer <jwt-access-token>" \
+  -H "Content-Type: application/json" \
+  -d '{"body":"loginSuccess: {...}","severity":"info","user_email":"user@example.com","user_username":"alice"}'
+```
+
+### Option 2: Using Magic Code
+```bash
+curl -X POST \
+  "https://your-public-url/transform?parser=authentik&magicCode=<your-magic-code>" \
   -H "Content-Type: application/json" \
   -d '{"body":"loginSuccess: {...}","severity":"info","user_email":"user@example.com","user_username":"alice"}'
 ```
@@ -63,7 +73,7 @@ You can now create custom parsers directly from the Zentik web app! Visit the Pa
 | Invalid payload shape | 400 Bad Request |
 
 ## Debugging
-If output seems incomplete, log the raw payload you send and compare with parser expectations (see source code for interim logic). For rapid iteration, start with the standard POST /messages endpoint before formalizing a parser request.
+If output seems incomplete, log the raw payload you send and compare with parser expectations (see source code for interim logic). For rapid iteration, start with the standard POST /message endpoint before formalizing a parser request.
 
 ---
 Return to main notifications: [Notifications Overview](../notifications)
