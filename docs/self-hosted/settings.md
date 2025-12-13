@@ -80,6 +80,12 @@ Configuration for push notification passthrough service:
 - `PushPassthroughToken` - Authentication token for passthrough service
 - `SystemTokenUsageStats` - System token usage statistics (JSON format). Contains the montly calls left to the requested token
 
+### Changelog
+
+Configuration for fetching changelog entries from a remote Zentik backend:
+
+- `ChangelogRemoteServer` - Base URL of the remote backend used to serve changelogs (should include the API prefix, e.g. `https://notifier-api.zentik.app/api/v1`). When set, the public `/changelogs` endpoints on this instance proxy reads to that remote server first and fall back to the local database if the remote is unavailable.
+
 ### Email Configuration
 
 Configuration for email notifications. The server can send emails for the various auth flows and some more events. It supports out of the box a generig SMTP ([Brevo](https://www.brevo.com/) is  very easy to setup with a good free tier) or Resend as HTTP protocol
