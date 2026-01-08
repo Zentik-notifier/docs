@@ -82,20 +82,19 @@ const config: Config = {
   themeConfig: {
     // PWA Metadata
     metadata: [
-      {name: 'theme-color', content: '#0056b3'},
-      {name: 'apple-mobile-web-app-capable', content: 'yes'},
-      {name: 'apple-mobile-web-app-status-bar-style', content: 'default'},
-      {name: 'apple-mobile-web-app-title', content: 'Zentik'},
-      {name: 'msapplication-TileColor', content: '#0056b3'},
-      {name: 'msapplication-config', content: '/browserconfig.xml'},
+      { name: 'theme-color', content: '#0056b3' },
+      { name: 'apple-mobile-web-app-capable', content: 'yes' },
+      { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
+      { name: 'apple-mobile-web-app-title', content: 'Zentik' },
+      { name: 'msapplication-TileColor', content: '#0056b3' },
+      { name: 'msapplication-config', content: '/browserconfig.xml' },
     ],
 
     // Replace with your project's social card
     navbar: {
-      title: 'Zentik',
       logo: {
         alt: 'Zentik Logo',
-        src: 'logos/glas_default.png',
+        src: 'logos/brand-logo.png',
       },
       items: [
         {
