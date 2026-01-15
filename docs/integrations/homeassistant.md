@@ -1,8 +1,181 @@
 ---
+sidebar_position: 1
 title: Home Assistant
 ---
 
-# Home Assistant Integration
-https://github.com/Zentik-notifier/zentik-homeassistant-component
+import Carousel from '@site/src/components/Carousel';
 
-🚧 **Work In Progress** 🚧
+# Home Assistant Integration
+
+Zentik is fully supported on Home Assistant through a custom HACS component. This integration allows you to send rich notifications from Home Assistant automations to your Zentik-connected devices.
+
+## Overview
+
+The Zentik Notifier integration exposes a `notify` service in Home Assistant that sends notifications through the Zentik cloud API. Each configured instance can target specific users or buckets, enabling fine-grained control over notification delivery.
+
+## Installation
+
+### Via HACS (Recommended)
+
+The easiest way to install Zentik Notifier is through HACS:
+
+<div style={{ display: 'inline-block', margin: '10px 0' }}>
+  <a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=Zentik-notifier&repository=zentik-homeassistant-component&category=integration" target="_blank">
+    <img src="https://img.shields.io/badge/HACS-Add%20Repository-41BDF5?style=for-the-badge&logo=home-assistant" alt="Add to HACS" />
+  </a>
+</div>
+
+Or add it manually:
+
+1. Open HACS in your Home Assistant instance
+2. Click on the **Integrations** tab
+3. Click the menu button (⋮) in the top right corner
+4. Select **Custom repositories**
+5. Add the repository:
+   - **Repository URL**: `https://github.com/Zentik-notifier/zentik-homeassistant-component`
+   - **Category**: Integration
+6. Click **Add** and then **Add Integration**
+7. Search for "Zentik Notifier" and install it
+8. Restart Home Assistant
+
+<Carousel
+  items={[
+    { type: 'image', src: '/homeassistant/Screenshot 2026-01-15 alle 15.41.23.png', alt: 'Add HACS repository', description: 'Add the Zentik Notifier repository to HACS' },
+    { type: 'image', src: '/homeassistant/Screenshot 2026-01-15 alle 16.23.50.png', alt: 'Install from HACS', description: 'Install Zentik Notifier from HACS integrations' },
+    { type: 'image', src: '/homeassistant/Screenshot 2026-01-15 alle 16.29.37.png', alt: 'Configure integration', description: 'Configure the Zentik Notifier integration' }
+  ]}
+/>
+
+### Manual Installation
+
+If you prefer to install manually:
+
+1. Clone or download the [repository](https://github.com/Zentik-notifier/zentik-homeassistant-component)
+2. Copy the `custom_components/zentik_notifier` folder to your Home Assistant `config/custom_components` directory
+3. Restart Home Assistant
+
+## Configuration
+
+After installation, add the integration:
+
+1. Go to **Settings** → **Devices & Services**
+2. Click **Add Integration**
+3. Search for "Zentik Notifier"
+4. Fill in the configuration fields:
+   - **Friendly name**: A name for this notifier instance (e.g., "Phone", "Tablet")
+   - **Bucket ID** + **Access Token**: Your Zentik bucket credentials
+   - **OR Magic Code**: Alternative authentication method
+   - **Server URL** (optional): Custom Zentik API endpoint (defaults to `https://notifier-api.zentik.app/messages`)
+   - **User IDs** (optional): Comma-separated list of target user IDs
+
+### Authentication
+
+You can authenticate using one of these methods:
+
+- **Bucket ID + Access Token**: Provide your Zentik bucket ID and access token
+- **Magic Code**: Use a Zentik magic code for authentication
+
+Both methods are supported, but you only need to provide one.
+
+### Configuration Options
+
+You can adjust all configuration settings later via the integration Options dialog in Home Assistant.
+
+## Usage
+
+Once configured, the integration exposes a `notify` service that you can use in automations, scripts, or from Developer Tools.
+
+### Service Name
+
+The service name follows the pattern: `notify.zentik_notifier_name`
+
+Where `zentik_notifier_name` is the friendly name you configured (lowercase, with spaces replaced by underscores).
+
+### Service Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| `title` | string | Notification title | Yes |
+| `message` | string | Notification message/body | Yes |
+| `subtitle` | string | Notification subtitle | No |
+| `collapseId` | string | Collapse ID for grouping notifications | No |
+| `groupId` | string | Group ID for notification grouping | No |
+| `imageUrl` | string | URL to an image attachment | No |
+| `addMarkAsReadAction` | boolean | Add a "Mark as Read" action button | No |
+| `addDeleteAction` | boolean | Add a "Delete" action button | No |
+| `actions` | array | Custom action buttons | No |
+
+### Example: Basic Notification
+
+```yaml
+service: notify.zentik_phone
+data:
+  title: "Home Assistant Alert"
+  message: "The front door has been opened"
+```
+
+### Example: Rich Notification with Actions
+
+```yaml
+service: notify.zentik_phone
+data:
+  title: "Motion Detected"
+  message: "Motion detected in the living room"
+  subtitle: "Front Camera"
+  imageUrl: "https://example.com/camera-snapshot.jpg"
+  addMarkAsReadAction: true
+  addDeleteAction: true
+  actions:
+    - type: NAVIGATE
+      value: "/cameras/living-room"
+      icon: camera
+      title: "View Camera"
+```
+
+### Example: Using in Automation
+
+```yaml
+automation:
+  - alias: "Notify on Door Open"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.front_door
+        to: "on"
+    action:
+      - service: notify.zentik_phone
+        data:
+          title: "Front Door Opened"
+          message: "The front door was opened at {{ now().strftime('%H:%M') }}"
+          addMarkAsReadAction: true
+```
+
+## Multiple Instances
+
+You can configure multiple Zentik Notifier instances to send notifications to different devices, users, or buckets. Each instance will have its own service name based on the friendly name you assign.
+
+## Troubleshooting
+
+### Service Not Found
+
+- Verify the integration is installed and configured correctly
+- Check that the service name matches your configured friendly name (lowercase, underscores instead of spaces)
+- Restart Home Assistant after installation
+
+### Notifications Not Received
+
+- Verify your Bucket ID and Access Token (or Magic Code) are correct
+- Check the Home Assistant logs for error messages
+- Ensure your Zentik bucket is active and has valid credentials
+- Verify target User IDs if you specified them in configuration
+
+### Authentication Errors
+
+- Double-check your authentication credentials
+- Ensure you're using either Bucket ID + Access Token OR Magic Code (not both)
+- Verify the Server URL if you're using a custom endpoint
+
+## Resources
+
+- **GitHub Repository**: [zentik-homeassistant-component](https://github.com/Zentik-notifier/zentik-homeassistant-component)
+- **HACS Integration**: Available in HACS → Integrations
+- **Zentik Documentation**: See [Notifications](../notifications) for more details about notification features
