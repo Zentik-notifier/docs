@@ -1,0 +1,83 @@
+---
+title: Uptime Kuma
+---
+
+import Carousel from '@site/src/components/Carousel';
+
+# Uptime Kuma Integration
+
+## Overview
+
+Zentik integrates with Uptime Kuma to send monitoring alerts and status notifications directly to your Zentik-connected devices. When Uptime Kuma detects that a monitored service goes down, comes back up, or experiences issues, you'll receive rich notifications on your mobile devices.
+
+This integration allows you to stay informed about your infrastructure's health in real-time, with detailed notification content including service names, status information, and monitoring data.
+
+## Prerequisites
+
+Before proceeding, ensure you have:
+
+- ✅ A Zentik account
+- ✅ Uptime Kuma installed and running
+- ✅ A bucket created with an **Access Token** generated
+
+For detailed instructions on creating a bucket and generating access tokens, see [Bucket Creation](../notifications/bucket-creation.md).
+
+## Create a Bucket with Access Token
+
+First, you need to create a bucket in Zentik and generate an access token:
+
+1. Create a new bucket in Zentik (or use an existing one)
+2. Navigate to your bucket settings
+3. Go to the **Access Tokens** section
+4. Click **Generate New Token**
+5. Copy both the **Bucket ID** and **Access Token** - you'll need both for the Uptime Kuma configuration
+
+> **Note**: Make sure to save your Access Token securely, as it won't be shown again after generation.
+
+## Configure in Uptime Kuma
+
+Configure Zentik as a webhook notification in Uptime Kuma:
+
+1. Open your Uptime Kuma dashboard
+2. Go to **Settings** → **Notifications**
+3. Click **Set up Notification**
+4. Set **Notification Type** to **Webhook**
+5. Configure the webhook settings:
+   - **POST URL**: `https://notifier-api.zentik.app/message`
+   - **Method**: `POST`
+   - **Request Body**: Select **Custom Body** and paste the following JSON:
+     ```json
+     {
+       "title": "{{ name }} - {{ status }}",
+       "deliveryType": "NORMAL",
+       "bucketId": "your_bucket_id",
+       "body": "{{ msg }}\n{{ hostnameOrURL }}",
+       "locale": "en-EN",
+       "addMarkAsReadAction": true,
+       "addDeleteAction": true,
+       "addOpenNotificationAction": true
+     }
+     ```
+     > **Note**: Replace `your_bucket_id` with your actual Zentik bucket ID. You can use any attribute from the [Message](../notifications#message-parameters) documentation.
+   - **Additional Headers**: Enable this option and configure:
+     ```json
+     {
+       "Authorization": "Bearer Your_token",
+       "Content-Type": "application/json"
+     }
+     ```
+     > **Note**: Replace `Your_token` with your actual Zentik access token.
+
+<Carousel
+  items={[
+    { type: 'image', src: '/kuma/1.png', alt: 'Navigate to Uptime Kuma notifications', description: 'Go to Settings → Notifications in Uptime Kuma' },
+    { type: 'image', src: '/kuma/2.png', alt: 'Set up webhook notification', description: 'Click Set up Notification and select Webhook type' },
+    { type: 'image', src: '/kuma/3.png', alt: 'Configure webhook with Zentik credentials', description: 'Configure POST URL, request body, and additional headers with bucket ID and access token' }
+  ]}
+/>
+
+## Resources
+
+- **Bucket Creation Guide**: [How to create buckets and generate credentials](../notifications/bucket-creation.md)
+- **Uptime Kuma Documentation**: [Official Uptime Kuma documentation](https://github.com/louislam/uptime-kuma)
+- **Notifications Documentation**: [Learn more about Zentik notifications](../notifications/)

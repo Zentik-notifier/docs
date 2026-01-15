@@ -23,6 +23,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         { type: 'doc', id: 'notifications', label: 'General info' },
+        'notifications/bucket-creation',
         'notifications/attachments',
         'notifications/actions',
         'notifications/delivery-types',
@@ -49,6 +50,8 @@ const sidebars: SidebarsConfig = {
       items: [
         'integrations/unraid',
         'integrations/homeassistant',
+        'integrations/scrypted',
+        'integrations/uptime-kuma',
         'integrations/servarr',
         'integrations/authentik'
       ],
