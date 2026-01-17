@@ -43,6 +43,7 @@ const sidebars: SidebarsConfig = {
     },
     'webhooks',
     'settings',
+    'privacy-policy',
     {
       type: 'category',
       label: 'Integrations',
