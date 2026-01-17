@@ -1,13 +1,13 @@
 ---
-sidebar_position: 10
+sidebar_position: 100
 title: Privacy Policy
 ---
 
 # Privacy Policy
 
-**Effective Date:** [DATE]
+**Effective Date:** 2026-01-17
 
-**Last Updated:** [DATE]
+**Last Updated:** 2026-01-17
 
 ## 1. Introduction
 

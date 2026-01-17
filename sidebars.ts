@@ -43,7 +43,6 @@ const sidebars: SidebarsConfig = {
     },
     'webhooks',
     'settings',
-    'privacy-policy',
     {
       type: 'category',
       label: 'Integrations',
@@ -69,6 +68,7 @@ const sidebars: SidebarsConfig = {
       ],
     },
     'roadmap',
+    'privacy-policy',
   ],
 
   // Sezioni commentate temporaneamente:
