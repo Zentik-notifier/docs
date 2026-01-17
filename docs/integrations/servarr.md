@@ -3,6 +3,7 @@ title: Servarr (Sonarr/Radarr)
 ---
 
 import Carousel from '@site/src/components/Carousel';
+import ApiAuthMethods from '@site/src/components/ApiAuthMethods';
 
 # Servarr Integration
 
@@ -50,21 +51,12 @@ To receive notifications from your \*arr service, you need to create a new webho
 
 After creating the connection, you need to manually build the webhook URL using your bucket credentials. Use this URL when configuring the webhook in your \*arr service.
 
-### Using Magic Code (Recommended)
+### Webhook URL
 
-```
-https://notifier-api.zentik.app/transform?parser=ZENTIK_SERVARR&magicCode=YOUR_MAGIC_CODE
-```
-
-Replace `YOUR_MAGIC_CODE` with your actual Magic Code from your bucket settings.
-
-### Using Bucket ID + Access Token
-
-```
-https://notifier-api.zentik.app/transform?parser=ZENTIK_SERVARR&bucketId=YOUR_BUCKET_ID&token=YOUR_ACCESS_TOKEN
-```
-
-Replace `YOUR_BUCKET_ID` and `YOUR_ACCESS_TOKEN` with your actual credentials from your bucket settings.
+     <ApiAuthMethods 
+       endpoint="https://notifier-api.zentik.app/transform?parser=ZENTIK_SERVARR"
+       method="POST"
+     />
 
 > **Note**: The `parser=ZENTIK_SERVARR` parameter tells Zentik to automatically parse and transform the \*arr webhook payload into a formatted Zentik notification.
 

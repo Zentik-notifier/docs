@@ -1,6 +1,9 @@
 ---
 sidebar_position: 14
 ---
+
+import ApiAuthMethods from '@site/src/components/ApiAuthMethods';
+
 # Template Messages
 
 Template messages allow you to define reusable message structures with placeholders, which are then populated dynamically using data provided at runtime.
@@ -46,26 +49,12 @@ Assuming you have a template named `welcome-alert` with:
 
 You can send a message using this template:
 
-#### Option 1: Using Token + Bucket ID
-```bash
-curl -X POST "https://your-public-url/template?template=welcome-alert&bucketId=<bucket-uuid>&deliveryType=CRITICAL&imageUrl=https://example.com/image.png" \
-  -H "Authorization: Bearer <jwt-access-token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "Alice",
-    "date": "2023-10-27"
-  }'
-```
-
-#### Option 2: Using Magic Code
-```bash
-curl -X POST "https://your-public-url/template?template=welcome-user&magicCode=YOUR_MAGIC_CODE&deliveryType=CRITICAL&imageUrl=https://example.com/image.png" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "mario_rossi",
-    "serviceName": "Zentik"
-  }'
-```
+<ApiAuthMethods 
+  endpoint="/template?template=welcome-alert&deliveryType=CRITICAL&imageUrl=https://example.com/image.png"
+  method="POST"
+  headers='-H "Content-Type: application/json"'
+  body='{"username":"Alice","date":"2023-10-27"}'
+/>
 
 This will result in a message with:
 - Title: "Welcome Alice!"

@@ -1,6 +1,9 @@
 ---
 sidebar_position: 3
 ---
+
+import ApiAuthMethods from '@site/src/components/ApiAuthMethods';
+
 # Notifications
 
 This section describes in detail how to use Zentik's notification endpoints, including all possible values and available configurations.
@@ -47,29 +50,30 @@ PWA notifications will work out of the box even on self hosted servers
 - Send a notification in any of the possible ways
 
 ## GET
-```bash
-curl "https://your-public-url/message?magicCode=b0f59f31&title=Hello&body=Test message"
-``` 
+
+<ApiAuthMethods 
+  endpoint="/message"
+  method="GET"
+  queryParams="&title=Hello&body=Test message"
+/> 
 
 ## GET with payload mapping
-```bash
-curl -X POST \
-  "https://your-public-url/transform?parser=authentik&bucketId=<bucket-uuid>" \
-  -H "Authorization: Bearer <jwt-access-token>" \
-  -H "Content-Type: application/json" \
-  -d '{"body":"loginSuccess: {...}","severity":"info","user_email":"user@example.com","user_username":"alice"}'
-```
+
+<ApiAuthMethods 
+  endpoint="/transform?parser=authentik"
+  method="POST"
+  headers='-H "Content-Type: application/json"'
+  body='{"body":"loginSuccess: {...}","severity":"info","user_email":"user@example.com","user_username":"alice"}'
+/>
 
 ## POST
-```bash
-curl -X POST "https://your-public-url/message" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "magicCode": "b0f59f31",
-    "title": "Hello",
-    "body": "Test message"
-  }'
-``` 
+
+<ApiAuthMethods 
+  endpoint="/message"
+  method="POST"
+  headers='-H "Content-Type: application/json"'
+  body='{"title":"Hello","body":"Test message"}'
+/> 
 
 ## POST with form data
 ```bash
@@ -198,30 +202,24 @@ You can pass any field supported by the POST endpoint as a query string (arrays/
 ### Transform & Create Endpoint
 Use this when you receive a webhook/payload from a known external system and want Zentik to parse it into a message automatically.
 
-Endpoint: **POST** `/transform?parser=<parser>&bucketId=<bucket-uuid>`  <a href="http://localhost:3001/scalar#tag/messages-root/post/transform" target="_blank" rel="noopener">Open in API Reference ↗</a>
+Endpoint: **POST** `/transform?parser=<parser>&magicCode=<magic-code>`  <a href="http://localhost:3001/scalar#tag/messages-root/post/transform" target="_blank" rel="noopener">Open in API Reference ↗</a>
 
 Required query params:
 - `parser` – the builtin parser name (e.g. `authentik`)
-- `bucketId` – target bucket id or name
+- `magicCode` – target bucket magic code
 
 Body: raw JSON payload from the source system.
 
 For a complete list of available parsers, examples, and detailed usage instructions, see [Transform Parsers](./notifications/transform-parsers.md).
 
-Example (Token + Bucket ID):
-```bash
-curl -X POST "http://localhost:3001/transform?parser=authentik&bucketId=<bucket-uuid>" \
-  -H "Authorization: Bearer <jwt-access-token>" \
-  -H "Content-Type: application/json" \
-  -d '{"event":"user.login","username":"alice"}'
-```
+Example:
 
-Example (Magic Code):
-```bash
-curl -X POST "http://localhost:3001/transform?parser=authentik&magicCode=<magic-code>" \
-  -H "Content-Type: application/json" \
-  -d '{"event":"user.login","username":"alice"}'
-```
+<ApiAuthMethods 
+  endpoint="/transform?parser=authentik"
+  method="POST"
+  headers='-H "Content-Type: application/json"'
+  body='{"event":"user.login","username":"alice"}'
+/>
 
 If the parser matches, it will map the incoming structure to a standard message (title/body/actions). If required query params are missing or parser not found, a 400/404 is returned.
 
@@ -239,20 +237,14 @@ Body: JSON object with values for template placeholders
 
 For more details, see [Template Messages](./notifications/template-messages.md).
 
-Example (Token + Bucket ID):
-```bash
-curl -X POST "http://localhost:3001/template?template=welcome-alert&bucketId=<bucket-uuid>" \
-  -H "Authorization: Bearer <jwt-access-token>" \
-  -H "Content-Type: application/json" \
-  -d '{ "username": "Alice" }'
-```
+Example:
 
-Example (Magic Code):
-```bash
-curl -X POST "http://localhost:3001/template?template=welcome-alert&magicCode=<magic-code>" \
-  -H "Content-Type: application/json" \
-  -d '{ "username": "Alice" }'
-```
+<ApiAuthMethods 
+  endpoint="/template?template=welcome-alert"
+  method="POST"
+  headers='-H "Content-Type: application/json"'
+  body='{"username":"Alice"}'
+/>
 
 ---
 For advanced features (custom actions, multiple attachments, snooze, media types) visit the <a href="/scalar" target="_blank" rel="noopener">full API Reference ↗</a>.

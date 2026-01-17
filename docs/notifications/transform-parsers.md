@@ -1,12 +1,15 @@
 ---
 sidebar_position: 13
 ---
+
+import ApiAuthMethods from '@site/src/components/ApiAuthMethods';
+
 # Transform Parsers
 
 Builtin payload transformers convert external webhook payloads into standard message structures without you crafting titles/bodies manually.
 
 ## How It Works
-1. You POST raw JSON to `/transform?parser=<name>&bucketId=<bucket>`
+1. You POST raw JSON to `/transform?parser=<name>&magicCode=<magic-code>`
 2. Zentik validates the parser name and payload shape.
 3. The parser returns a `CreateMessageDto` (title, subtitle, body, deliveryType, etc.).
 4. A message + notifications are created as normal.
@@ -37,22 +40,12 @@ Parsers decide `deliveryType` based on severity / eventType (implementation may 
 
 ## Example Authentik
 
-### Option 1: Using Token + Bucket ID
-```bash
-curl -X POST \
-  "https://your-public-url/transform?parser=authentik&bucketId=<bucket-uuid>" \
-  -H "Authorization: Bearer <jwt-access-token>" \
-  -H "Content-Type: application/json" \
-  -d '{"body":"loginSuccess: {...}","severity":"info","user_email":"user@example.com","user_username":"alice"}'
-```
-
-### Option 2: Using Magic Code
-```bash
-curl -X POST \
-  "https://your-public-url/transform?parser=authentik&magicCode=<your-magic-code>" \
-  -H "Content-Type: application/json" \
-  -d '{"body":"loginSuccess: {...}","severity":"info","user_email":"user@example.com","user_username":"alice"}'
-```
+<ApiAuthMethods 
+  endpoint="/transform?parser=authentik"
+  method="POST"
+  headers='-H "Content-Type: application/json"'
+  body='{"body":"loginSuccess: {...}","severity":"info","user_email":"user@example.com","user_username":"alice"}'
+/>
 ## Adding New Parsers
 Need another integration? Request it—new built-ins can be added on demand.
 

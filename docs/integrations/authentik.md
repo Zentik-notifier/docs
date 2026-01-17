@@ -3,6 +3,7 @@ title: Authentik
 ---
 
 import Carousel from '@site/src/components/Carousel';
+import ApiAuthMethods from '@site/src/components/ApiAuthMethods';
 
 # Authentik Integration
 
@@ -49,19 +50,12 @@ Configure Zentik as a webhook notification transport in Authentik:
 4. Configure the transport:
    - **Name**: Give your transport a descriptive name (e.g., "Zentik Notifications")
    - **Mode**: Select **Webhook (generic)**
-   - **Webhook URL**: Build the webhook URL using one of the following formats:
+   - **Webhook URL**: Build the webhook URL:
      
-     **Using Bucket ID + Access Token**:
-     ```
-     https://notifier-api.zentik.app/transform?parser=ZENTIK_AUTHENTIK&bucketId=YOUR_BUCKET_ID&token=YOUR_ACCESS_TOKEN
-     ```
-     
-     **Using Magic Code** (recommended):
-     ```
-     https://notifier-api.zentik.app/transform?parser=ZENTIK_AUTHENTIK&magicCode=YOUR_MAGIC_CODE
-     ```
-     
-     Replace `YOUR_BUCKET_ID`, `YOUR_ACCESS_TOKEN`, or `YOUR_MAGIC_CODE` with your actual credentials from the bucket settings.
+     <ApiAuthMethods 
+       endpoint="https://notifier-api.zentik.app/transform?parser=ZENTIK_AUTHENTIK"
+       method="POST"
+     />
 5. Click **Save** to create the transport
 6. Click **Test** to send a test notification and verify the integration is working
 

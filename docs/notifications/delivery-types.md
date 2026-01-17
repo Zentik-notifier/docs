@@ -12,6 +12,7 @@ Understanding how `NotificationDeliveryType` influences user experience and plat
 | `SILENT` | No alert sound / minimal visual interruption | Background sync, counters, passive updates | Still stored & retrievable; may not wake device |
 | `NORMAL` | Standard notification delivery | Most product messages | Default choice |
 | `CRITICAL` | High-priority; may bypass Do Not Disturb / focus (platform permitting) | Security incident, urgent operational alert | Use sparingly; abuse can reduce trust |
+| `NO_PUSH` | Local push notification (not instant) | Background sync, delayed notifications, non-urgent updates | Message triggers a local push notification but not an instant one |
 
 ## Choosing the Right Type
 - Prefer `NORMAL` unless clear UX reason otherwise.
