@@ -21,7 +21,7 @@ Before proceeding, ensure you have:
 - ✅ Authentik installed and running
 - ✅ A bucket created with an **Access Token** generated (or Magic Code enabled)
 
-For detailed instructions on creating a bucket and generating credentials, see [Bucket Creation](../notifications/bucket-creation.md).
+For detailed instructions on creating a bucket and generating credentials, see [Bucket Creation](../notifications/buckets/creation).
 
 ## Create a Bucket with Access Token
 
@@ -90,7 +90,7 @@ The Zentik transport will now send notifications to your Zentik-connected device
 
 ## Resources
 
-- **Bucket Creation Guide**: [How to create buckets and generate credentials](../notifications/bucket-creation.md)
+- **Bucket Creation Guide**: [How to create buckets and generate credentials](../notifications/buckets/creation)
 - **Authentik Documentation**: [Official Authentik documentation](https://goauthentik.io/docs/)
 - **Transform Parsers**: [Learn more about Zentik parsers](../notifications/transform-parsers.md)
 - **Notifications Documentation**: [Learn more about Zentik notifications](../notifications/)

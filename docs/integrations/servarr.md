@@ -19,7 +19,7 @@ This tutorial is valid for all \*arr services that support webhook notifications
 
 Before proceeding, you need to create a bucket in Zentik. When creating the bucket, you can optionally select the **Servarr** preset from the available presets to get pre-configured settings optimized for \*arr services.
 
-For detailed instructions on creating a bucket and generating credentials, see [Bucket Creation](../notifications/bucket-creation.md).
+For detailed instructions on creating a bucket and generating credentials, see [Bucket Creation](../notifications/buckets/creation).
 
 You'll need either:
 - Your bucket **Magic Code**, or
@@ -89,6 +89,6 @@ For more information, see the [Payload Mappers](../notifications/transform-parse
 
 ## Resources
 
-- **Bucket Creation Guide**: [How to create buckets and generate credentials](../notifications/bucket-creation.md)
+- **Bucket Creation Guide**: [How to create buckets and generate credentials](../notifications/buckets/creation)
 - **Transform Parsers Documentation**: [Learn more about Zentik parsers](../notifications/transform-parsers.md)
 - **Preset Available**: Yes - Select "Servarr" preset when creating a bucket for optimized settings

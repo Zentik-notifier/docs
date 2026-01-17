@@ -20,7 +20,7 @@ Before proceeding, ensure you have:
 - ✅ Uptime Kuma installed and running
 - ✅ A bucket created with an **Access Token** generated
 
-For detailed instructions on creating a bucket and generating access tokens, see [Bucket Creation](../notifications/bucket-creation.md).
+For detailed instructions on creating a bucket and generating access tokens, see [Bucket Creation](../notifications/buckets/creation).
 
 ## Create a Bucket with Access Token
 
@@ -78,6 +78,6 @@ Configure Zentik as a webhook notification in Uptime Kuma:
 
 ## Resources
 
-- **Bucket Creation Guide**: [How to create buckets and generate credentials](../notifications/bucket-creation.md)
+- **Bucket Creation Guide**: [How to create buckets and generate credentials](../notifications/buckets/creation)
 - **Uptime Kuma Documentation**: [Official Uptime Kuma documentation](https://github.com/louislam/uptime-kuma)
 - **Notifications Documentation**: [Learn more about Zentik notifications](../notifications/)

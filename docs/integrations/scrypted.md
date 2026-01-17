@@ -20,7 +20,7 @@ Before proceeding, ensure you have:
 - ✅ Scrypted installed and running
 - ✅ A bucket created with an **Access Token** generated
 
-For detailed instructions on creating a bucket and generating access tokens, see [Bucket Creation](../notifications/bucket-creation.md).
+For detailed instructions on creating a bucket and generating access tokens, see [Bucket Creation](../notifications/buckets/creation).
 
 ## Create a Bucket with Access Token
 
@@ -104,6 +104,6 @@ If you don't receive notifications, verify:
 
 ## Resources
 
-- **Bucket Creation Guide**: [How to create buckets and generate credentials](../notifications/bucket-creation.md)
+- **Bucket Creation Guide**: [How to create buckets and generate credentials](../notifications/buckets/creation)
 - **Scrypted Documentation**: [Official Scrypted documentation](https://docs.scrypted.app/)
 - **Notifications Documentation**: [Learn more about Zentik notifications](../notifications/)
