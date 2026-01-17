@@ -226,7 +226,8 @@ function main() {
       totalOriginalSize += originalSize;
 
       if (optimizeVideo(inputPath, outputPath)) {
-        const newSize = parseFloat(getFileSizeMB(outputPath));
+        const mp4OutputPath = outputPath.replace(/\.[^/.]+$/, '.mp4');
+        const newSize = parseFloat(getFileSizeMB(mp4OutputPath));
         totalNewSize += newSize;
         processedCount++;
         console.log(`📤 File ottimizzato salvato in: ${path.basename(mp4OutputPath)} (convertito a MP4)`);

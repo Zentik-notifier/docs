@@ -4,6 +4,8 @@ title: Introduction
 ---
 
 import Carousel from '@site/src/components/Carousel';
+import MediaViewer from '@site/src/components/MediaViewer';
+import TwoColumnLayout from '@site/src/components/TwoColumnLayout';
 
 Zentik is another notifier system, yes another one. Why did I create it? I was looking for a versatile system to use the potential of iOS push notifications and to be able to interface any of my system. I tried all of them but no one had all the functionalities I was looking for. My main issues were:
 - Limited possibilities to have custom actions on the push notifications
@@ -39,14 +41,23 @@ Check the magic code, it will allow to send notifications with one single identi
 
 ### See it in action
 
-<Carousel
-  items={[
-    { type: 'image', src: '/img/login-page.png', alt: 'Login page', description: 'Login to your Zentik account' },
-    { type: 'image', src: '/img/login.png', alt: 'Login page', description: 'Login with SSOs' },
-    { type: 'image', src: '/img/ios-push-notification.jpg', alt: 'iOS rich push notification', description: 'Rich notifications with attachments' },
-    { type: 'video', src: '/video/onboarding.mp4', description: 'Onboarding experience' },
-    { type: 'video', src: '/video/bucket_creation.mp4', description: 'Creating a bucket' }
-  ]}
+<TwoColumnLayout
+  left={
+    <Carousel
+      items={[
+        { type: 'image', src: '/img/login-page.png', alt: 'Login page', description: 'Login to your Zentik account' },
+        { type: 'image', src: '/img/login.png', alt: 'Login page', description: 'Login with SSOs' },
+        { type: 'image', src: '/img/ios-push-notification.jpg', alt: 'iOS rich push notification', description: 'Rich notifications with attachments' }
+      ]}
+    />
+  }
+  right={
+    <MediaViewer
+      type="video"
+      src="/video/onboarding.mp4"
+      description="Onboarding experience"
+    />
+  }
 />
 
 ## Next Steps

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Carousel.module.css';
 import ImageModal from './ImageModal';
+import MediaViewer from './MediaViewer';
 
 interface CarouselProps {
   items: Array<{
@@ -31,6 +32,14 @@ export default function Carousel({ items }: CarouselProps) {
     setCurrentIndex(index);
   };
 
+  const handleFullscreen = () => {
+    const currentItem = items[currentIndex];
+    if (currentItem.type === 'image') {
+      setIsImageModalOpen(true);
+    }
+    // Video fullscreen is handled by MediaViewer component
+  };
+
   return (
     <div className={styles.carousel}>
       <div className={styles.carouselContainer}>
@@ -55,7 +64,7 @@ export default function Carousel({ items }: CarouselProps) {
                   />
                   <button
                     className={styles.fullscreenButton}
-                    onClick={() => setIsImageModalOpen(true)}
+                    onClick={handleFullscreen}
                     aria-label="View full screen"
                     title="View full screen"
                   >
@@ -74,15 +83,14 @@ export default function Carousel({ items }: CarouselProps) {
                   </button>
                 </div>
               ) : (
-                <video
-                  src={item.src}
-                  controls
-                  autoPlay={index === currentIndex}
-                  muted
-                  loop
-                  playsInline
-                  className={styles.carouselMedia}
-                />
+                <div className={styles.videoWrapper}>
+                  <MediaViewer
+                    type="video"
+                    src={item.src}
+                    description={item.description}
+                    className={styles.carouselMediaViewer}
+                  />
+                </div>
               )}
               {item.description && (
                 <p className={styles.carouselDescription}>{item.description}</p>

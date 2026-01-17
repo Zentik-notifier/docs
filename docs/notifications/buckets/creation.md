@@ -1,6 +1,8 @@
 ---
-title: Bucket Creation
+title: Creation
 ---
+
+import MediaViewer from '@site/src/components/MediaViewer';
 
 # Bucket Creation
 
@@ -23,6 +25,12 @@ To create a new bucket:
 3. Click **Create Bucket** or use the onboarding flow
 4. Choose a name for your bucket
 5. (Optional) Select a **preset** if available (e.g., "Servarr", "Home Assistant", etc.) to get pre-configured settings
+
+<MediaViewer
+  type="video"
+  src="/video/bucket_creation.mp4"
+  description="Creating a bucket in Zentik"
+/>
 
 ## Generating Credentials
 

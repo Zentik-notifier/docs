@@ -66,7 +66,8 @@
   pointer-events: none;
 }
 
-.imageWrapper {
+.imageWrapper,
+.videoWrapper {
   position: relative;
   width: 100%;
   height: 100%;
@@ -77,6 +78,62 @@
   height: 100%;
   object-fit: contain;
   border-radius: 12px;
+}
+
+.carouselMediaViewer {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+.carouselMediaViewer :global(.mediaWrapper) {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  margin: 0;
+  border-radius: 12px;
+}
+
+.carouselMediaViewer :global(.imageContainer) {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carouselMediaViewer :global(.videoContainer) {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 0 !important;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.carouselMediaViewer :global(.imageContainer .media) {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  top: auto;
+  left: auto;
+}
+
+.carouselMediaViewer :global(.videoContainer .media) {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  display: block;
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  bottom: 0;
 }
 
 .fullscreenButton {

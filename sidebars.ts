@@ -19,11 +19,19 @@ const sidebars: SidebarsConfig = {
     'intro',
     {
       type: 'category',
+      label: 'Buckets',
+      collapsed: false,
+      items: [
+        'notifications/buckets/creation',
+        'notifications/buckets/sharing',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Notifications',
       collapsed: false,
       items: [
         { type: 'doc', id: 'notifications', label: 'General info' },
-        'notifications/bucket-creation',
         'notifications/attachments',
         'notifications/actions',
         'notifications/delivery-types',
@@ -56,18 +64,19 @@ const sidebars: SidebarsConfig = {
         'integrations/authentik'
       ],
     },
-    {
-      type: 'category',
-      label: 'Development',
-      collapsed: false,
-      items: [
-        'development/backend',
-        'development/ios',
-        'development/android',
-        'development/web'
-      ],
-    },
-    'roadmap',
+    // Hidden for now
+    // {
+    //   type: 'category',
+    //   label: 'Development',
+    //   collapsed: false,
+    //   items: [
+    //     'development/backend',
+    //     'development/ios',
+    //     'development/android',
+    //     'development/web'
+    //   ],
+    // },
+    // 'roadmap',
     'privacy-policy',
   ],
 
