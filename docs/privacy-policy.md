@@ -31,7 +31,7 @@ When you use authentication through external providers (GitHub, Google, Apple, e
 - **Email**: Email address associated with the OAuth provider
 - **Avatar URL**: Profile image URL from the provider
 - **Provider Type**: Identification of the OAuth provider used
-- **Metadata**: Additional information provided by the provider (in JSON format)
+- **Metadata**: Technical authentication data provided by the provider (excluding sensitive or advertising-related information)
 
 This data is saved in the database to enable future authentication and improve user experience.
 
@@ -40,7 +40,7 @@ This data is saved in the database to enable future authentication and improve u
 For each login session, Zentik records:
 
 - **User ID**: Unique user identifier
-- **IP Address**: IP address used for access
+- **IP Address**: IP address used temporarily for security, fraud prevention, and abuse detection purposes. IP addresses are not used for tracking and are not retained beyond what is necessary for security purposes.
 - **User Agent**: Information about the browser or application used
 - **Operating System**: Device operating system
 - **Browser**: Browser name and version (for web access)
@@ -59,7 +59,7 @@ When you register a device to receive push notifications, Zentik collects:
 - **OS Version**: Operating system version
 - **Device Name**: Name assigned to the device
 - **Encryption Keys**: Public/private keys for end-to-end encryption (if enabled)
-- **Metadata**: Additional information about the device (app versions, build info, etc.)
+- **Metadata**: Technical device information (app versions, build info, etc., excluding sensitive or advertising-related data)
 
 ### 2.5 Messages and Notifications
 
@@ -95,12 +95,14 @@ Each event includes:
 - **User ID**: User identifier associated with the event
 - **Object ID**: Identifier of the related object (if applicable)
 - **Target ID**: Identifier of the event target (if applicable)
-- **Additional Information**: Additional data in JSON format (if necessary)
+- **Additional Information**: Technical event data in JSON format (excluding sensitive or advertising-related information)
 - **Creation Date**: Event creation timestamp
 
 ### 2.8 Application Logs
 
 The mobile application tracks certain user interface events for debugging and service improvement. **You can disable this UI tracking at any time through the Privacy settings in the app.** When disabled, these logs will not include your user ID.
+
+UI interaction tracking is used solely for debugging and improving app usability and is never used for advertising, profiling, or cross-app tracking.
 
 - **App Logs**: Error events and information about app usage
 - **User Feedback**: Feedback and reports sent by users
@@ -191,6 +193,8 @@ You have the right to:
 
 ### 7.1 Disabling UI Action Tracking
 
+This setting applies only to optional user interface interaction logs and does not affect essential server-side events required for service operation and security.
+
 You can disable user interface action tracking at any time through the Privacy settings in the app. When tracking is disabled:
 
 - **Application Logs**: App logs and error tracking sent from the mobile application will not include your user ID
@@ -228,7 +232,7 @@ For questions, requests, or reports regarding this Privacy Policy or the process
 The processing of personal data is based on:
 
 - **Contract Performance**: To provide the service requested by the user
-- **Consent**: For processing optional data and using additional services
+- **Consent**: For processing optional data and using additional services. Users may withdraw consent at any time for optional data processing through the app settings.
 - **Legitimate Interest**: For service improvement, security, and fraud prevention
 - **Legal Obligations**: To comply with legal and regulatory obligations
 
