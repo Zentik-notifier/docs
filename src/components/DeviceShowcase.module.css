@@ -1,0 +1,178 @@
+.showcase {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto 1.5rem;
+}
+
+.showcaseIpad {
+  max-width: 900px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: stretch;
+  position: relative;
+  padding: 0.25rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  margin-bottom: 1.25rem;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.tab {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.25s ease;
+  text-align: center;
+}
+
+.tab:hover {
+  color: #fff;
+}
+
+.tabActive {
+  color: #fff;
+}
+
+.tabGlider {
+  position: absolute;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  width: calc((100% - 0.5rem) / 3);
+  left: calc(0.25rem + var(--tab-index) * (100% - 0.5rem) / 3);
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.panel {
+  animation: panelIn 0.4s ease-out;
+  transform: scale(0.9);
+  transform-origin: top center;
+}
+
+.panelIpad {
+  transform: scale(1.2);
+  transform-origin: top center;
+  animation: panelInIpad 0.4s ease-out;
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(0.9) translateY(0);
+  }
+}
+
+@keyframes panelInIpad {
+  from {
+    opacity: 0;
+    transform: scale(1.2) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.2) translateY(0);
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.5rem;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.row::-webkit-scrollbar {
+  height: 6px;
+}
+
+.row::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+
+.row::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 3px;
+}
+
+.gridItem {
+  flex: 0 0 auto;
+  min-width: 200px;
+  max-width: 280px;
+  animation: itemIn 0.45s ease-out backwards;
+}
+
+@keyframes itemIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.frame {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.frame:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+  .showcase {
+    max-width: 100%;
+    margin-bottom: 1.25rem;
+  }
+
+  .tab {
+    padding: 0.45rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .gridItem {
+    min-width: 160px;
+    max-width: 220px;
+  }
+
+  .row {
+    gap: 0.5rem;
+  }
+}
