@@ -63,3 +63,17 @@ Depending on your integration, you can use either authentication method:
 - **Bucket ID + Access Token**: Use for authenticated requests with `Authorization: Bearer <token>` header
 
 Both methods are secure, but Magic Code is more convenient for simple webhook integrations that don't support custom headers.
+
+## Linking to external systems
+
+You can connect a bucket to an **external notification system** (e.g. [NTFY](/docs/integrations/ntfy)) so that Zentik subscribes to a topic or channel and delivers those messages as notifications in the bucket. You can also send notifications from Zentik to the same external system.
+
+To link a bucket to an external system:
+
+1. **Create an external system** (if you haven’t already) in your Zentik settings. Add a system of the desired type (e.g. NTFY), set its **base URL** and, if the service requires it, **auth** (user/password or token).
+2. **Edit the bucket** and set **External notify system** to that system.
+3. **Set the channel** (e.g. **External system channel**): for NTFY this is the topic name; for other systems it may be a channel ID or similar. This identifies the stream you subscribe to and, when sending from Zentik, the target you publish to.
+
+After saving, Zentik will subscribe to the configured channel. Incoming messages are created as notifications in the bucket; notifications you send to the bucket can be published to the same channel (behavior depends on the integration).
+
+For step-by-step and supported parameters per system, see the integration docs (e.g. [NTFY](/docs/integrations/ntfy)).

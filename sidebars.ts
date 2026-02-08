@@ -61,7 +61,8 @@ const sidebars: SidebarsConfig = {
         'integrations/scrypted',
         'integrations/uptime-kuma',
         'integrations/servarr',
-        'integrations/authentik'
+        'integrations/authentik',
+        'integrations/ntfy'
       ],
     },
     // Hidden for now

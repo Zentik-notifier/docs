@@ -34,11 +34,10 @@ function HomepageHeader() {
               styles.platformButton,
               styles.appleButton
             )}
-            to="https://testflight.apple.com/join/dFqETQEm"
-            aria-label="Join the iOS TestFlight beta for iPhone, iPad and Mac"
+            to="https://apps.apple.com/de/app/zentik-notifier/id6749312723"
+            aria-label="Zentik Notifier on the App Store"
           >
             <span className={styles.buttonIcon} aria-hidden="true">
-              {/* Apple logo/icon */}
               <svg
                 width="18"
                 height="18"
@@ -50,7 +49,32 @@ function HomepageHeader() {
               </svg>
             </span>
             <span className={styles.buttonText}>
-              <span className={styles.buttonLabel}>iOS TestFlight</span>
+              <span className={styles.buttonLabel}>iOS App</span>
+              <span className={styles.buttonSubtext}>iPhone • iPad • Mac</span>
+            </span>
+          </Link>
+          <Link
+            className={clsx(
+              "button button--success button--lg",
+              styles.platformButton,
+              styles.appleButton
+            )}
+            to="https://testflight.apple.com/join/dFqETQEm"
+            aria-label="Join the iOS beta for iPhone, iPad and Mac"
+          >
+            <span className={styles.buttonIcon} aria-hidden="true">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                role="img"
+              >
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+              </svg>
+            </span>
+            <span className={styles.buttonText}>
+              <span className={styles.buttonLabel}>iOS Beta</span>
               <span className={styles.buttonSubtext}>iPhone • iPad • Mac</span>
             </span>
           </Link>
@@ -64,7 +88,6 @@ function HomepageHeader() {
             aria-label="Open Zentik Notifier PWA"
           >
             <span className={styles.buttonIcon} aria-hidden="true">
-              {/* Web/PWA globe icon */}
               <svg
                 width="18"
                 height="18"
@@ -80,22 +103,6 @@ function HomepageHeader() {
               <span className={styles.buttonSubtext}>Available Now</span>
             </span>
           </Link>
-          <button
-            type="button"
-            className={clsx(
-              "button button--outline button--lg",
-              styles.platformButton,
-              styles.disabledButton
-            )}
-            disabled
-            aria-disabled="true"
-            title="Android app coming soon"
-          >
-            <span className={styles.buttonText}>
-              <span className={styles.buttonLabel}>Android</span>
-              <span className={styles.buttonSubtext}>Coming Soon</span>
-            </span>
-          </button>
         </div>
       </div>
     </header>
@@ -251,7 +258,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={`${siteConfig.title} - Native-first notification hub`}
-      description="Zentik is a native-first notification hub: unified APIs, device intelligence, multi-channel delivery analytics and secure token management for iOS (TestFlight), Android & Web (coming soon)."
+      description="Zentik is a native-first notification hub: unified APIs, device intelligence, multi-channel delivery and secure token management for iOS (App Store, TestFlight) and Web (PWA)."
     >
       <HomepageHeader />
       <main>

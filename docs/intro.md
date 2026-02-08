@@ -31,7 +31,10 @@ Mobile will make massive use of SQLlite (iOS/Android) and IDB (Web/PWA) to store
 
 Follow these initial actions to get a working end‑to‑end notification in seconds:
 
-1. **Access the app** – Get the mobile app (iOS: [App Store](https://apps.apple.com/de/app/zentik-notifier/id6749312723) / [Beta on TestFlight](https://testflight.apple.com/join/dFqETQEm)) or access the PWA ([Official one](https://notifier.zentik.app) or your onboarded self hosted) and register to the platform
+1. **Access the app** – Choose how to use Zentik and register to the platform:
+   - **iOS App** — [App Store](https://apps.apple.com/de/app/zentik-notifier/id6749312723)
+   - **iOS Beta** — [TestFlight](https://testflight.apple.com/join/dFqETQEm)
+   - **PWA** — [Official](https://notifier.zentik.app) or your self‑hosted instance
 2. **Go through the onboarding** – An onboarding will be shown right away to go through the main steps
 3. **Create a new bucket** – Create a new Bucket, it will be the target for your notifications, it will identify one of your system. 
 Check the magic code, it will allow to send notifications with one single identifier, or check the token creation checkbox, it will automatically generate a token specific for the newly created bucket
