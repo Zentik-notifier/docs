@@ -63,7 +63,8 @@ const sidebars: SidebarsConfig = {
         'integrations/uptime-kuma',
         'integrations/servarr',
         'integrations/authentik',
-        'integrations/ntfy'
+        'integrations/ntfy',
+        'integrations/gotify'
       ],
     },
     // Hidden for now

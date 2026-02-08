@@ -76,4 +76,4 @@ To link a bucket to an external system:
 
 After saving, Zentik will subscribe to the configured channel. Incoming messages are created as notifications in the bucket; notifications you send to the bucket can be published to the same channel (behavior depends on the integration).
 
-For step-by-step and supported parameters per system, see the integration docs (e.g. [NTFY](/docs/integrations/ntfy)).
+For step-by-step and supported parameters per system, see the integration docs (e.g. [NTFY](/docs/integrations/ntfy), [Gotify](/docs/integrations/gotify)).
