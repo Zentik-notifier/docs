@@ -45,6 +45,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'self-hosted/installation',
+        'self-hosted/self-service',
         'self-hosted/settings',
         'self-hosted/oauth-providers',
       ],

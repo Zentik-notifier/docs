@@ -84,6 +84,21 @@ curl -X POST "https://your-public-url/message" \
   -d "body=Test message"
 ```
 
+## POST with delay (scheduled send)
+Send a message that will be delivered at a specific time. Use `scheduledSendAt` with an ISO 8601 datetime.
+
+```bash
+curl -X POST "https://your-public-url/message" \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "bucketId": "<bucket-uuid>",
+    "title": "Scheduled reminder",
+    "body": "This notification is sent at the scheduled time",
+    "scheduledSendAt": "2025-02-10T14:00:00.000Z"
+  }'
+```
+
 ## POST with headers
 You can also pass message parameters via headers. Headers take precedence over body and query parameters.
 Prefix the parameter name with `x-message-`.
@@ -136,6 +151,7 @@ Below is the complete list of fields you can send when creating a message. Unles
 | addDeleteAction | boolean | No | true | Adds a predefined "Delete" action | true |
 | snoozes | number[] | No | [] | Predefined snooze actions (minutes) | [5,10,30] |
 | postpones | number[] | No | [] | Predefined postpone actions (minutes) | [5,10,30] |
+| scheduledSendAt | string (ISO 8601) | No | - | Send the message at a specific time (delayed/scheduled send) | "2025-02-10T14:00:00.000Z" |
 | locale | string | No | - | Locale override for client rendering | "en-EN" |
 | groupId | string | No | bucketId | Logical group for stacking | "orders" |
 | collapseId | string | No | - | APNs collapse identifier (replaces by same id) | "order-update-123" |
@@ -172,6 +188,10 @@ Automatic shortcuts:
 - tapUrl => sets tapAction `{ type: NAVIGATE, value: tapUrl }` if tapAction not explicitly provided.
 - userIds can be CSV or JSON array; server normalizes.
 - attachments / actions / tapAction accept JSON strings (when sent as multipart form fields) which are parsed server-side.
+
+Scheduling and reminders:
+- **scheduledSendAt**: ISO 8601 datetime (e.g. `2025-02-10T14:00:00.000Z`). The message is created but notifications are sent only at or after that time. Useful for delayed send or time-zone–aware delivery.
+- **remindEveryMinutes** + **maxReminders**: After the first notification, send repeat reminders at the given interval (minutes) until the user opens the notification or the max count is reached.
 
 Validation & limits:
 - Either magicCode or bucketId + authentication mean should be provided

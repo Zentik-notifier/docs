@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 title: Settings
 ---
 
@@ -47,7 +47,7 @@ Configuration for JWT tokens and user authentication:
 
 ### Apple Push Notification (APN)
 
-Configuration for Apple Push Notifications. All these configurations will require the mobile app to be built locally with the whole Apple setup. Request a passthrough token and set ApnPush to Passthrough to utilize the public server:
+Configuration for Apple Push Notifications. All these configurations will require the mobile app to be built locally with the whole Apple setup. To use the public server instead: [request a passthrough token](../self-service.md), wait for confirmation, then as an admin open **Server settings** in the app — the token will appear in a selector; select it and set ApnPush to **Passthrough**.
 
 - `ApnPush` - APN push mode: `Off`, `Local`, `Onboard`, `Passthrough` (default: `Off`)
 - `ApnKeyId` - Apple Push Notification Key ID (required for `Onboard` mode)
@@ -58,7 +58,7 @@ Configuration for Apple Push Notifications. All these configurations will requir
 
 ### Firebase Cloud Messaging (FCM)
 
-Configuration for Firebase push notifications. All these configurations will require the mobile app to be built locally with the whole FCM setup. Request a passthrough token and set FirebasePush to Passthrough to utilize the public server:
+Configuration for Firebase push notifications. All these configurations will require the mobile app to be built locally with the whole FCM setup. To use the public server: [request a passthrough token](../self-service.md), wait for confirmation, then in **Server settings** (as admin) select the token from the selector and set FirebasePush to **Passthrough**.
 
 - `FirebasePush` - Firebase push mode: `Off`, `Local`, `Onboard`, `Passthrough` (default: `Off`)
 - `FirebaseProjectId` - Firebase project ID (required for `Onboard` mode)
@@ -74,11 +74,11 @@ Configuration for web push notifications:
 
 ### Push Passthrough
 
-Configuration for push notification passthrough service:
+Configuration for push notification passthrough service. To obtain and use a token: see [Self-service passthrough token](../self-service.md) (request token → wait for confirmation → in the app, as admin, open **Server settings** and select the token from the selector to enable iOS passthrough).
 
 - `PushNotificationsPassthroughServer` - Passthrough server URL (default: `https://notifier-api.zentik.app/api/v1`)
-- `PushPassthroughToken` - Authentication token for passthrough service
-- `SystemTokenUsageStats` - System token usage statistics (JSON format). Contains the montly calls left to the requested token
+- `PushPassthroughToken` - Authentication token for passthrough service (set via the app selector when you select an approved token)
+- `SystemTokenUsageStats` - System token usage statistics (JSON format). Contains the monthly calls left for the selected token
 
 ### Changelog
 
