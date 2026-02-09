@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import styles from "./DeviceShowcase.module.css";
+
+export type DeviceShowcaseTab = "ios" | "ipad" | "watch" | "demo";
 
 const DEVICE_IMAGES: Record<
   "ios" | "ipad" | "watch",
@@ -26,60 +28,108 @@ const DEVICE_IMAGES: Record<
   ],
 };
 
-const DEVICE_LABELS: Record<"ios" | "ipad" | "watch", string> = {
+const TAB_LABELS: Record<DeviceShowcaseTab, string> = {
   ios: "iPhone",
   ipad: "iPad/macOS",
   watch: "Apple Watch",
+  demo: "Demo",
 };
 
-export default function DeviceShowcase() {
-  const [device, setDevice] = useState<"ios" | "ipad" | "watch">("ios");
-  const images = DEVICE_IMAGES[device];
+const DEMO_VIDEO_SRC = "/video/ScreenRecording_11-03-2025 22-38-37_1.mp4";
+const TABS: DeviceShowcaseTab[] = ["ios", "ipad", "watch", "demo"];
+
+interface DeviceShowcaseProps {
+  initialTab?: DeviceShowcaseTab;
+  onDemoFullscreen?: () => void;
+}
+
+export default function DeviceShowcase({
+  initialTab,
+  onDemoFullscreen,
+}: DeviceShowcaseProps) {
+  const [device, setDevice] = useState<DeviceShowcaseTab>(initialTab ?? "ios");
+
+  useEffect(() => {
+    if (initialTab) {
+      setDevice(initialTab);
+    }
+  }, [initialTab]);
+
+  const images = device !== "demo" ? DEVICE_IMAGES[device] : [];
 
   return (
-    <div className={clsx(styles.showcase, device === "ipad" && styles.showcaseIpad)}>
+    <div className={clsx(styles.showcase, device === "ipad" && styles.showcaseIpad, device === "demo" && styles.showcaseDemo)}>
       <div className={styles.tabs}>
-        {(["ios", "ipad", "watch"] as const).map((d) => (
+        {TABS.map((d) => (
           <button
             key={d}
             type="button"
             className={clsx(styles.tab, device === d && styles.tabActive)}
             onClick={() => setDevice(d)}
             aria-pressed={device === d}
-            aria-label={`Show ${DEVICE_LABELS[d]} screenshots`}
+            aria-label={d === "demo" ? "Show demo video" : `Show ${TAB_LABELS[d]} screenshots`}
           >
-            <span className={styles.tabLabel}>{DEVICE_LABELS[d]}</span>
+            <span className={styles.tabLabel}>{TAB_LABELS[d]}</span>
           </button>
         ))}
         <span
           className={styles.tabGlider}
           style={{
-            "--tab-index": ["ios", "ipad", "watch"].indexOf(device),
+            "--tab-index": TABS.indexOf(device),
+            "--tab-count": TABS.length,
           } as React.CSSProperties}
         />
       </div>
       <div
-        className={clsx(styles.panel, device === "ipad" && styles.panelIpad)}
+        className={clsx(
+          styles.panel,
+          device === "ipad" && styles.panelIpad,
+          device === "demo" && styles.panelDemo
+        )}
         key={device}
       >
-        <div className={styles.row}>
-          {images.map((img, i) => (
-            <div
-              key={img.src}
-              className={styles.gridItem}
-              style={{ animationDelay: `${i * 0.06}s` }}
-            >
-              <div className={styles.frame}>
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  className={styles.img}
-                  loading="lazy"
-                />
+        {device === "demo" ? (
+          <div className={styles.demoPanel}>
+            <video
+              src={DEMO_VIDEO_SRC}
+              className={styles.demoVideo}
+              controls
+              playsInline
+              aria-label="Demo video"
+            />
+            {onDemoFullscreen && (
+              <p className={styles.demoHint}>
+                Or{" "}
+                <button
+                  type="button"
+                  className={styles.demoOpenModalLink}
+                  onClick={onDemoFullscreen}
+                >
+                  open in fullscreen
+                </button>
+              </p>
+            )}
+          </div>
+        ) : (
+          <div className={styles.row}>
+            {images.map((img, i) => (
+              <div
+                key={img.src}
+                className={styles.gridItem}
+                style={{ animationDelay: `${i * 0.06}s` }}
+              >
+                <div className={styles.frame}>
+                  <img
+                    src={img.src}
+                    alt={img.alt}
+                    className={styles.img}
+                    loading="lazy"
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

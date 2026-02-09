@@ -415,6 +415,61 @@
   }
 }
 
+.tabList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+  padding-bottom: 0;
+}
+
+.tabButton {
+  padding: 0.75rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  background: transparent;
+  color: var(--ifm-font-color-secondary);
+  cursor: pointer;
+  border-radius: var(--ifm-button-border-radius) var(--ifm-button-border-radius) 0 0;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.tabButton:hover {
+  color: var(--ifm-font-color-base);
+}
+
+.tabButtonActive {
+  color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+.tabPanel {
+  padding: 1rem 0 2rem;
+  min-height: 320px;
+}
+
+.tabPanel[hidden] {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .tabList {
+    gap: 0.35rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tabButton {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.85rem;
+  }
+}
+
 .steps {
   display: flex;
   align-items: center;

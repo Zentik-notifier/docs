@@ -8,9 +8,17 @@ import type { ReactNode } from "react";
 
 import styles from "./index.module.css";
 import VideoModal from "../components/VideoModal";
-import DeviceShowcase from "../components/DeviceShowcase";
+import DeviceShowcase, {
+  type DeviceShowcaseTab,
+} from "../components/DeviceShowcase";
 
-function HomepageHeader() {
+function HomepageHeader({
+  initialShowcaseTab,
+  onDemoFullscreen,
+}: {
+  initialShowcaseTab?: DeviceShowcaseTab;
+  onDemoFullscreen?: () => void;
+}) {
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
@@ -20,7 +28,10 @@ function HomepageHeader() {
         <p className={styles.heroSubtitle}>
           Self-host it. Rich alerts, widgets, Apple Watch. iPhone, iPad & Watch.
         </p>
-        <DeviceShowcase />
+        <DeviceShowcase
+          initialTab={initialShowcaseTab}
+          onDemoFullscreen={onDemoFullscreen}
+        />
         <nav className={styles.heroLinks} aria-label="Get Zentik">
           <Link className={styles.heroLink} to="/docs/intro">
             Docs
@@ -55,38 +66,21 @@ function HomepageHeader() {
   );
 }
 
-function HomepageVideoSection({ onVideoOpen }: { onVideoOpen: () => void }) {
-  return (
-    <section className={styles.videoSection}>
-      <div className="container">
-        <div className="text--center">
-          <button
-            className={clsx(
-              "button button--primary button--lg",
-              styles.videoButton
-            )}
-            onClick={onVideoOpen}
-            aria-label="Watch demo video"
-          >
-            <span className={styles.videoButtonIcon}>
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </span>
-            <span>Watch Demo Video</span>
-          </button>
-        </div>
-      </div>
-    </section>
-  );
-}
+type StepsTabId = "step1" | "step2" | "step3";
 
-function HomepageSteps() {
+function HomepageStepsWithTabs({
+  activeTab,
+  onTabChange,
+}: {
+  activeTab: StepsTabId;
+  onTabChange: (tab: StepsTabId) => void;
+}) {
+  const tabs: { id: StepsTabId; label: string }[] = [
+    { id: "step1", label: "Create Bucket & Token" },
+    { id: "step2", label: "Send Notification" },
+    { id: "step3", label: "Manage Systems" },
+  ];
+
   return (
     <section className={styles.steps}>
       <div className="container">
@@ -96,78 +90,112 @@ function HomepageSteps() {
             From setup to notifications in seconds
           </p>
         </div>
-        <div className={clsx("row", styles.stepsContainer)}>
-          <div className={clsx("col col--4", styles.stepColumn)}>
-            <div className={styles.stepContent}>
-              <div className={styles.stepVisual}>
-                <div className={styles.stepNumber}>1</div>
-                <video
-                  src="/video/bucketAccestokenCreation.MP4"
-                  className={styles.stepVideo}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  controls
-                />
-              </div>
-              <div className={styles.stepText}>
-                <Heading as="h3">Create a Bucket & Access Token</Heading>
-                <p>
-                  Create a bucket and an access token to track one system. This
-                  gives you the foundation to start sending notifications. Or
-                  use the bucket's magic code! A personal unique code to quickly
-                  send notifications
-                </p>
-              </div>
+        <div className={styles.tabList} role="tablist" aria-label="Steps and demo">
+          {tabs.map(({ id, label }) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === id}
+              aria-controls={`panel-${id}`}
+              id={`tab-${id}`}
+              className={clsx(
+                styles.tabButton,
+                activeTab === id && styles.tabButtonActive
+              )}
+              onClick={() => onTabChange(id)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <div
+          id="panel-step1"
+          role="tabpanel"
+          aria-labelledby="tab-step1"
+          hidden={activeTab !== "step1"}
+          className={styles.tabPanel}
+        >
+          <div className={styles.stepContent}>
+            <div className={styles.stepVisual}>
+              <div className={styles.stepNumber}>1</div>
+              <video
+                src="/video/bucketAccestokenCreation.MP4"
+                className={styles.stepVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                controls
+              />
+            </div>
+            <div className={styles.stepText}>
+              <Heading as="h3">Create a Bucket & Access Token</Heading>
+              <p>
+                Create a bucket and an access token to track one system. This
+                gives you the foundation to start sending notifications. Or use
+                the bucket&apos;s magic code! A personal unique code to quickly
+                send notifications
+              </p>
             </div>
           </div>
-          <div className={clsx("col col--4", styles.stepColumn)}>
-            <div className={styles.stepContent}>
-              <div className={styles.stepVisual}>
-                <div className={styles.stepNumber}>2</div>
-                <video
-                  src="/video/testPushNotification.mp4"
-                  className={styles.stepVideo}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  controls
-                />
-              </div>
-              <div className={styles.stepText}>
-                <Heading as="h3">Send Your First Notification</Heading>
-                <p>
-                  Send a notification using the newly created entities. Try the
-                  push notifications section to build the payload and test it
-                  out.
-                </p>
-              </div>
+        </div>
+        <div
+          id="panel-step2"
+          role="tabpanel"
+          aria-labelledby="tab-step2"
+          hidden={activeTab !== "step2"}
+          className={styles.tabPanel}
+        >
+          <div className={styles.stepContent}>
+            <div className={styles.stepVisual}>
+              <div className={styles.stepNumber}>2</div>
+              <video
+                src="/video/testPushNotification.mp4"
+                className={styles.stepVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                controls
+              />
+            </div>
+            <div className={styles.stepText}>
+              <Heading as="h3">Send Your First Notification</Heading>
+              <p>
+                Send a notification using the newly created entities. Try the
+                push notifications section to build the payload and test it out.
+              </p>
             </div>
           </div>
-          <div className={clsx("col col--4", styles.stepColumn)}>
-            <div className={styles.stepContent}>
-              <div className={styles.stepVisual}>
-                <div className={styles.stepNumber}>3</div>
-                <video
-                  src="/video/home-hub.mp4"
-                  className={styles.stepVideo}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  controls
-                />
-              </div>
-              <div className={styles.stepText}>
-                <Heading as="h3">Manage All Your Systems</Heading>
-                <p>
-                  All your notifications will be available in the homepage, as
-                  hub for all your systems! The medias will be shown in their
-                  own gallery.
-                </p>
-              </div>
+        </div>
+        <div
+          id="panel-step3"
+          role="tabpanel"
+          aria-labelledby="tab-step3"
+          hidden={activeTab !== "step3"}
+          className={styles.tabPanel}
+        >
+          <div className={styles.stepContent}>
+            <div className={styles.stepVisual}>
+              <div className={styles.stepNumber}>3</div>
+              <video
+                src="/video/home-hub.mp4"
+                className={styles.stepVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                controls
+              />
+            </div>
+            <div className={styles.stepText}>
+              <Heading as="h3">Manage All Your Systems</Heading>
+              <p>
+                All your notifications will be available in the homepage, as hub
+                for all your systems! The medias will be shown in their own
+                gallery.
+              </p>
             </div>
           </div>
         </div>
@@ -176,24 +204,31 @@ function HomepageSteps() {
   );
 }
 
+const DEMO_VIDEO_SRC = "/video/ScreenRecording_11-03-2025 22-38-37_1.mp4";
+
 export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
   const [isVideoOpen, setIsVideoOpen] = useState(false);
-  const videoSrc = "/video/ScreenRecording_11-03-2025 22-38-37_1.mp4";
+  const [activeStepTab, setActiveStepTab] = useState<StepsTabId>("step1");
+  const [initialShowcaseTab, setInitialShowcaseTab] = useState<
+    DeviceShowcaseTab | undefined
+  >(undefined);
 
   useEffect(() => {
-    // Check URL parameters for video parameter
     const urlParams = new URLSearchParams(window.location.search);
     const videoParam = urlParams.get("startDemoVideo");
-    if (videoParam) {
-      setIsVideoOpen(true);
-      // Clean up URL parameter
+    const tabParam = urlParams.get("tab");
+    if (videoParam || tabParam === "demo") {
+      setInitialShowcaseTab("demo");
+      if (videoParam) {
+        setIsVideoOpen(true);
+      }
       const newUrl = window.location.pathname;
       window.history.replaceState({}, "", newUrl);
     }
   }, []);
 
-  const handleVideoOpen = () => {
+  const handleDemoFullscreen = () => {
     setIsVideoOpen(true);
   };
 
@@ -206,13 +241,18 @@ export default function Home(): ReactNode {
       title={`${siteConfig.title} - Notifications on iOS`}
       description="Zentik brings your notifications to iPhone, iPad and Apple Watch. Self-hostable, rich alerts and widgets — built to use the full iOS experience."
     >
-      <HomepageHeader />
+      <HomepageHeader
+        initialShowcaseTab={initialShowcaseTab}
+        onDemoFullscreen={handleDemoFullscreen}
+      />
       <main>
-        <HomepageVideoSection onVideoOpen={handleVideoOpen} />
-        <HomepageSteps />
+        <HomepageStepsWithTabs
+          activeTab={activeStepTab}
+          onTabChange={setActiveStepTab}
+        />
       </main>
       <VideoModal
-        videoSrc={videoSrc}
+        videoSrc={DEMO_VIDEO_SRC}
         isOpen={isVideoOpen}
         onClose={handleVideoClose}
       />

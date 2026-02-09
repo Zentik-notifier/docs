@@ -85,6 +85,10 @@ When Zentik publishes to Gotify (notification sent to a Gotify-linked bucket), t
 | Title | `title` |
 | Body / message | `message` |
 | Delivery type | `priority` (Silent→2, Normal→5, Critical→10) |
+| Tap action (Navigate / URL) | [Message Extras](https://gotify.net/docs/msgextras) `client::notification.click.url` – opens URL on notification click |
+| First image attachment URL | [Message Extras](https://gotify.net/docs/msgextras) `client::notification.bigImageUrl` – big image in the notification |
+
+So if you set a **tap action** with type *Navigate* and a URL on the message, Gotify clients that support [Message Extras](https://gotify.net/docs/msgextras) will open that URL when the user taps the notification. If the message has an **image attachment** (with a URL), it is sent as `bigImageUrl` so supported clients can show a big image in the notification.
 
 ### Incoming (Gotify → Zentik)
 
@@ -95,9 +99,14 @@ When a message is received from Gotify and created as a Zentik notification, sup
 | `title` | Notification title |
 | `message` | Notification body (or title if no body) |
 | `priority` | Delivery type (mapped to Silent / Normal / Critical) |
+| `extras["client::notification"].click.url` | Tap action (Navigate with that URL) |
+| `extras["client::notification"].bigImageUrl` | Image attachment (IMAGE with that URL) |
+
+So you can send from Gotify messages with [Message Extras](https://gotify.net/docs/msgextras) (e.g. click URL or big image); Zentik will map them to tap action and attachments when creating the notification.
 
 ## Resources
 
 - [Gotify documentation](https://gotify.net/docs/) (API, applications, messages)
+- [Message Extras](https://gotify.net/docs/msgextras) – click URL, big image, content type, etc.
 - [Bucket Creation](../notifications/buckets/creation) – create buckets and manage access
 - [Notifications](../notifications) – Zentik notification options
