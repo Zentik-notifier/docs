@@ -209,7 +209,6 @@ const DEMO_VIDEO_SRC = "/video/ScreenRecording_11-03-2025 22-38-37_1.mp4";
 export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
   const [isVideoOpen, setIsVideoOpen] = useState(false);
-  const [activeStepTab, setActiveStepTab] = useState<StepsTabId>("step1");
   const [initialShowcaseTab, setInitialShowcaseTab] = useState<
     DeviceShowcaseTab | undefined
   >(undefined);
@@ -246,10 +245,7 @@ export default function Home(): ReactNode {
         onDemoFullscreen={handleDemoFullscreen}
       />
       <main>
-        <HomepageStepsWithTabs
-          activeTab={activeStepTab}
-          onTabChange={setActiveStepTab}
-        />
+        {/* HomepageStepsWithTabs disabled for now */}
       </main>
       <VideoModal
         videoSrc={DEMO_VIDEO_SRC}

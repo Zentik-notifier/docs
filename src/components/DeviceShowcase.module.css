@@ -88,9 +88,11 @@
 .demoVideo {
   width: 100%;
   max-width: 640px;
+  max-height: 420px;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   background: #000;
+  object-fit: contain;
 }
 
 .demoHint {
@@ -219,5 +221,9 @@
 
   .row {
     gap: 0.5rem;
+  }
+
+  .demoVideo {
+    max-height: 380px;
   }
 }
