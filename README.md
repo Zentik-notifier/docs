@@ -1,41 +1,39 @@
-# Website
+# Zentik Documentation
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+This documentation site is built with [Fumadocs](https://fumadocs.dev) and Next.js.
 
 ## Installation
 
 ```bash
-yarn
+npm install
 ```
 
 ## Local Development
 
 ```bash
-yarn start
+npm run dev
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+Starts the dev server at [http://localhost:3000](http://localhost:3000).
 
 ## Build
 
 ```bash
-yarn build
+npm run build
+npm run start
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-## Deployment
-
-Using SSH:
+## Docker
 
 ```bash
-USE_SSH=true yarn deploy
+docker build -t zentik-docs .
+docker run -p 8080:8080 zentik-docs
 ```
 
-Not using SSH:
+Open [http://localhost:8080](http://localhost:8080).
 
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
+## Deployment (Railway)
 
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+Deploys via GitHub Actions on push to `main` or tags `v*.*.*`. Railway builds the Docker image and runs the Next.js server.
+
+**Setup:** Add secrets `RAILWAY_TOKEN` and `RAILWAY_SERVICE_ID` in GitHub. Railway sets `PORT` automatically.

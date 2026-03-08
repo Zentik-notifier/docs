@@ -1,29 +1,16 @@
-# Build stage
-FROM node:18-alpine AS builder
+FROM node:22-alpine
 
 WORKDIR /app
 
-# Copy package files
 COPY package*.json ./
+RUN npm ci --ignore-scripts
 
-# Install dependencies (including devDependencies for build)
-RUN npm ci
-
-# Copy source code
 COPY . .
-
-# Build the application
+RUN npx fumadocs-mdx
 RUN npm run build
 
-# Production stage
-FROM nginx:alpine
+ENV PORT=8080
+ENV HOSTNAME=0.0.0.0
+EXPOSE 8080
 
-# Copy built files from builder stage
-COPY --from=builder /app/build /usr/share/nginx/html
-
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "run", "start"]

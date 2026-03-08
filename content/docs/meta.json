@@ -1,0 +1,25 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "index",
+    "buckets",
+    "notifications",
+    "---Self-hosted---",
+    "self-hosted/installation",
+    "self-hosted/self-service",
+    "self-hosted/settings",
+    "self-hosted/oauth-providers",
+    "webhooks",
+    "settings",
+    "---Integrations---",
+    "integrations/unraid",
+    "integrations/homeassistant",
+    "integrations/scrypted",
+    "integrations/uptime-kuma",
+    "integrations/servarr",
+    "integrations/authentik",
+    "integrations/ntfy",
+    "integrations/gotify",
+    "privacy-policy"
+  ]
+}

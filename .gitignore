@@ -3,11 +3,11 @@
 
 # Production
 /build
+/out
+.next
 
 # Generated files
-.docusaurus
-.cache-loader
-/static/screenshots
+.source
 
 # Misc
 .DS_Store
