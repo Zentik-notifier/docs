@@ -57,7 +57,7 @@ export function baseOptions(): BaseLayoutProps {
       },
       {
         type: 'icon',
-        url: 'https://www.buymeacoffee.com/zentik',
+        url: 'https://buymeacoffee.com/apocaliss92',
         label: 'Buy me a coffee',
         icon: <span className="text-base">☕</span>,
         text: 'Buy me a coffee',
