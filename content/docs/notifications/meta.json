@@ -5,6 +5,7 @@
     "attachments",
     "actions",
     "delivery-types",
+    "delivery-strategies",
     "transform-parsers",
     "template-messages"
   ]

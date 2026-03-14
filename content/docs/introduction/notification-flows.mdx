@@ -93,3 +93,17 @@ flowchart LR
 `} />
 
 When a Zentik bucket is linked to an external channel, the backend subscribes to the external system and automatically creates notifications for incoming messages. Outgoing messages sent to that bucket are also published back to the external system.
+
+---
+
+## iOS Delivery Strategies
+
+APNs enforces a **4 KB payload limit**. When rich notifications exceed this limit, the backend automatically falls back through three strategies:
+
+| Strategy | When used | Privacy |
+|---|---|---|
+| **ENCRYPTED** | Default — full content encrypted with device key | End-to-end encrypted |
+| **UNENCRYPTED** | Fallback if encrypted payload too large (user opt-in) | Plaintext via push network |
+| **SELF_DOWNLOAD** | Last resort — device fetches content from server | Content never leaves server via push |
+
+For the full decision flowchart, configuration details, and how to enable the unencrypted fallback, see [Delivery Strategies](/docs/notifications/delivery-strategies).

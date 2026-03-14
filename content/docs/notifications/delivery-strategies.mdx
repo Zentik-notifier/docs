@@ -1,0 +1,73 @@
+---
+title: Delivery Strategies
+description: How Zentik handles iOS payload encryption and size limits with automatic fallbacks
+---
+
+APNs enforces a **4 KB payload limit** per push notification. When notifications contain rich content (multiple attachments, long text, many actions), the encrypted payload may exceed this limit. Zentik handles this transparently by building up to three payload variants and attempting them in order.
+
+## Strategy overview
+
+<Mermaid chart={`
+flowchart TD
+    A["Build notification payload"] --> B{"Device has\npublic key?"}
+    B -->|"Yes"| C["ENCRYPTED\nFull payload encrypted\nwith device public key"]
+    B -->|"No"| D["UNENCRYPTED\nPlaintext payload"]
+    C --> E{"APNs accepts?\n≤ 4 KB"}
+    E -->|"Yes"| OK1["Delivered"]
+    E -->|"PayloadTooLarge"| F{"User allows\nunencrypted\nfallback?"}
+    F -->|"Yes"| G["UNENCRYPTED\nRetry without encryption\n(smaller payload)"]
+    F -->|"No"| H["SELF_DOWNLOAD\nMinimal background push"]
+    G --> I{"APNs accepts?"}
+    I -->|"Yes"| OK2["Delivered"]
+    I -->|"PayloadTooLarge"| H
+    D --> J{"APNs accepts?"}
+    J -->|"Yes"| OK3["Delivered"]
+    J -->|"PayloadTooLarge"| H
+    H --> K["Device wakes\nin background"]
+    K --> L["Fetches full content\nGET /notifications/:id"]
+    L --> OK4["Displayed"]
+`} />
+
+## ENCRYPTED (default)
+
+The notification content is encrypted using the device's public key before being sent to APNs. The push payload contains an opaque encrypted blob and a generic alert text ("Encrypted Notification"). The device decrypts the content locally before displaying.
+
+This is always the first strategy attempted when the device has registered a public key. Encryption adds overhead to the payload size, which may push it beyond the 4 KB APNs limit for rich notifications.
+
+## UNENCRYPTED (fallback)
+
+If the encrypted payload exceeds the 4 KB limit and the user has enabled the **"Don't encrypt large payloads"** setting, the backend retries with plaintext content. Without encryption overhead, the payload is smaller and may fit within the limit.
+
+This is only used as a fallback — never as the first attempt when a device key is available.
+
+### How to enable
+
+The unencrypted fallback is **disabled by default**. To enable it:
+
+1. Open the Zentik app
+2. Go to **Settings** > **App Preferences**
+3. Under the **Notifications** section, enable **"Don't encrypt large payloads"**
+
+This is a **per-user setting** — each user controls their own preference. There is no server-level override.
+
+## SELF_DOWNLOAD (last resort)
+
+When neither encrypted nor unencrypted payloads fit within the 4 KB limit, the backend sends a **minimal silent push** containing only:
+- `content-available: 1` (background wake signal)
+- The notification ID
+
+The device wakes in the background, calls `GET /api/v1/notifications/:id` to fetch the full notification content from the server, and displays it locally. This strategy always fits within the APNs limit since the payload is just a few bytes.
+
+## Summary
+
+| Strategy | Payload content | Size | Privacy | Requires |
+|---|---|---|---|---|
+| **ENCRYPTED** | Encrypted blob + generic alert | Largest (encryption overhead) | Full end-to-end encryption | Device public key |
+| **UNENCRYPTED** | Plaintext title, body, actions | Medium | Content visible to push network | User opt-in (`Don't encrypt large payloads`) |
+| **SELF_DOWNLOAD** | Notification ID only | Minimal (~100 bytes) | Content never leaves your server via push | Device network access to server |
+
+---
+
+See also:
+- [Delivery Types](./delivery-types) — SILENT, NORMAL, CRITICAL, NO_PUSH priority levels
+- [Notification Flows](/docs/introduction/notification-flows) — Architecture overview and passthrough diagram
