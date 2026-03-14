@@ -1,0 +1,27 @@
+---
+title: Rate Limiting
+description: Backend rate limiting policies and configuration
+---
+
+The backend enforces rate limits to protect against abuse. Limits are applied per authenticated user or per IP address for unauthenticated requests.
+
+## Global limits
+
+| Setting | Default | Env variable |
+|---|---|---|
+| Time window | 60 seconds | `RATE_LIMIT_TTL_MS` |
+| Max requests per window | 100 | `RATE_LIMIT_LIMIT` |
+| Block duration after exceeding | 10 seconds | `RATE_LIMIT_BLOCK_MS` |
+
+## Message-specific limits
+
+| Setting | Default | Env variable |
+|---|---|---|
+| Time window | 1 second | `RATE_LIMIT_MESSAGES_TTL_MS` |
+| Max messages per window | 10 | `RATE_LIMIT_MESSAGES_RPS` |
+
+## Behavior
+
+When a rate limit is exceeded, the API returns HTTP `429 Too Many Requests`. After the block duration, requests are accepted again.
+
+Rate limits track by `user:{userId}` for authenticated requests and `ip:{address}` for unauthenticated ones. Proxy support can be enabled via `RATE_LIMIT_TRUST_PROXY` and configured with `RATE_LIMIT_FORWARD_HEADER` (default: `x-forwarded-for`).

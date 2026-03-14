@@ -26,7 +26,7 @@ export default function MediaViewer({
   return (
     <>
       <div
-        className={`relative w-full max-w-[800px] mx-auto cursor-pointer rounded-lg overflow-hidden shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-all ${className || ''}`}
+        className={`relative w-full max-w-[720px] mx-auto my-4 cursor-pointer rounded-xl overflow-hidden border border-fd-border bg-fd-card shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all ${className || ''}`}
         style={style}
         onClick={() => setIsModalOpen(true)}
       >

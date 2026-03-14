@@ -29,6 +29,13 @@ export function baseOptions(): BaseLayoutProps {
       },
       {
         type: 'main',
+        url: 'https://notifier-api.zentik.app/api/docs',
+        text: 'API Reference',
+        on: 'all',
+        external: true,
+      },
+      {
+        type: 'main',
         url: 'https://notifier.zentik.app/self-service/token-requests',
         text: 'Request Passthrough Token',
         on: 'nav',

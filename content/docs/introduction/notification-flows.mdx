@@ -1,0 +1,95 @@
+---
+title: Notification Flows
+description: How notifications are delivered across Cloud, Self-Hosted, and External Systems
+---
+
+## Cloud (Direct APNs)
+
+When the backend has direct access to Apple Push Notification certificates, notifications are sent straight to push networks without intermediaries.
+
+<Mermaid chart={`
+flowchart LR
+    subgraph Source["Message Source"]
+        A["Client / Integration"]
+    end
+    subgraph Backend["Zentik Backend"]
+        B["Persist & Schedule"]
+        C["Encrypt & Dispatch"]
+    end
+    subgraph Push["Push Networks"]
+        D["APNs"]
+        E["FCM"]
+        F["Web Push"]
+    end
+    G["Devices"]
+
+    A -->|"REST / GraphQL"| B
+    B --> C
+    C -->|"Encrypted"| D
+    C -->|"Encrypted"| E
+    C -->|"Encrypted"| F
+    D --> G
+    E --> G
+    F --> G
+`} />
+
+## Self-Hosted (Passthrough)
+
+Self-hosted instances without Apple certificates delegate iOS push delivery to the Zentik Cloud relay. The relay never sees the decrypted payload — it forwards the opaque encrypted package to APNs on behalf of the self-hosted server. Android (FCM) and Web Push are sent directly.
+
+<Mermaid chart={`
+flowchart LR
+    subgraph Source["Message Source"]
+        A["Client / Integration"]
+    end
+    subgraph SH["Self-Hosted Backend"]
+        B["Persist & Schedule"]
+        C["Encrypt & Package"]
+    end
+    subgraph Cloud["Zentik Cloud"]
+        D["Passthrough Relay"]
+    end
+    subgraph Apple["Apple"]
+        E["APNs"]
+    end
+    F["iOS Device"]
+
+    A -->|"REST / GraphQL"| B
+    B --> C
+    C -->|"Encrypted payload"| D
+    D -->|"Encrypted payload"| E
+    E -->|"Encrypted payload"| F
+    F -->|"Decrypt & display"| F
+`} />
+
+A passthrough token is required for self-hosted iOS delivery. Request one [here](https://notifier.zentik.app/self-service/token-requests).
+
+## External Systems (Ntfy / Gotify)
+
+Zentik acts as a bidirectional proxy for external notification systems. Incoming messages are mapped to Zentik notifications and delivered through the standard push pipeline.
+
+<Mermaid chart={`
+flowchart LR
+    subgraph External["External Systems"]
+        N["Ntfy Server"]
+        G["Gotify Server"]
+    end
+    subgraph Backend["Zentik Backend"]
+        S["SSE / WebSocket\nSubscription"]
+        M["Map & Persist"]
+        P["Push Orchestrator"]
+    end
+    subgraph Delivery["Push Delivery"]
+        D["APNs / FCM / Web Push"]
+    end
+    E["Devices"]
+
+    N -->|"SSE stream"| S
+    G -->|"WebSocket stream"| S
+    S --> M
+    M --> P
+    P --> D
+    D --> E
+`} />
+
+When a Zentik bucket is linked to an external channel, the backend subscribes to the external system and automatically creates notifications for incoming messages. Outgoing messages sent to that bucket are also published back to the external system.

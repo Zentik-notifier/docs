@@ -30,8 +30,8 @@ export default function Carousel({ items }: CarouselProps) {
   };
 
   return (
-    <div className="w-full max-w-[600px] mx-auto">
-      <div className="relative flex items-center gap-3">
+    <div className="w-full max-w-[720px] mx-auto my-4">
+      <div className="relative flex items-center gap-4">
         <button
           type="button"
           onClick={goToPrevious}
@@ -42,7 +42,7 @@ export default function Carousel({ items }: CarouselProps) {
             <path d="M15 18l-6-6 6-6" />
           </svg>
         </button>
-        <div className="relative w-full aspect-[4/3] overflow-hidden rounded-xl">
+        <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xl border border-fd-border bg-fd-card shadow-sm">
           {items.map((item, index) => (
             <div
               key={index}
@@ -102,7 +102,7 @@ export default function Carousel({ items }: CarouselProps) {
           </svg>
         </button>
       </div>
-      <div className="flex justify-center gap-2 mt-4">
+      <div className="flex justify-center gap-2 mt-5">
         {items.map((_, index) => (
           <button
             key={index}

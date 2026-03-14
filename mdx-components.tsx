@@ -4,6 +4,7 @@ import Carousel from '@/components/Carousel';
 import MediaViewer from '@/components/MediaViewer';
 import TwoColumnLayout from '@/components/TwoColumnLayout';
 import ApiAuthMethods from '@/components/ApiAuthMethods';
+import Mermaid from '@/components/Mermaid';
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
@@ -12,6 +13,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     MediaViewer,
     TwoColumnLayout,
     ApiAuthMethods,
+    Mermaid,
     ...components,
   };
 }

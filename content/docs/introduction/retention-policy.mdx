@@ -1,0 +1,24 @@
+---
+title: Retention Policy
+description: How long Zentik retains messages, attachments, and sessions
+---
+
+Zentik is designed for **short-lived notification delivery**, not long-term storage. The server retains data only until all devices have acknowledged receipt.
+
+| Resource | Default retention | Condition | Configurable |
+|---|---|---|---|
+| **Messages** | 7 days | Pruned when all device notifications are acknowledged, or after max age | `MESSAGES_MAX_AGE` (e.g. `7d`, `24h`, `30d`) |
+| **Attachments** | 7 days | Deleted after max age (icons excluded) | `ATTACHMENTS_MAX_AGE` |
+| **Sessions** | 14 days | Deleted when inactive for 14 days | No |
+| **Ephemeral messages** | 1 hour | Auto-deleted after 1 hour | No |
+
+## Cleanup schedules
+
+- Cleanup jobs run **every hour** for messages and attachments
+- Session cleanup runs **daily at 3:15 AM**
+- Both message and attachment cleanup jobs can be disabled via server settings (`MESSAGES_DELETE_JOB_ENABLED`, `ATTACHMENTS_DELETE_JOB_ENABLED`)
+- Supported duration formats: `ms`, `s`, `m`, `h`, `d`
+
+## Client-side retention
+
+Your **devices are the source of truth** — the mobile app retains all notifications and media locally for a configurable period. The server only keeps the metadata needed to coordinate delivery across your devices.
