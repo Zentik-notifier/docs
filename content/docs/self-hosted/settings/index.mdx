@@ -1,0 +1,40 @@
+---
+title: Overview
+---
+
+Zentik Notifier can be configured through environment variables at startup and through server settings at runtime. Server settings are stored in the database and can be managed from the **Administration** panel in the app.
+
+## Accessing Administration
+
+To access the administration panel, tap your avatar in the top-right corner and select **Administration**. This section is only available to users with the `ADMIN` role.
+
+<div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+  <img src="/admin/User%20dropdown%20-%20administration.png" alt="User dropdown showing Administration entry" style={{ width: '280px', borderRadius: '8px' }} />
+  <img src="/admin/Administration.png" alt="Administration panel" style={{ width: '280px', borderRadius: '8px' }} />
+</div>
+
+- **Server Settings** — Configure all runtime settings described in this section
+- **Changelog** — Manage changelog entries shown to users
+- **User Management** — Create, edit, and manage user accounts and roles
+- **OAuth Providers** — Configure social login providers (see [OAuth Providers](../oauth-providers))
+- **System Access Tokens** — Create and manage programmatic API tokens
+- **Events Review** — Review and moderate notification events
+- **Backup Management** — View, create, and restore database backups
+- **Server Logs** — Browse application logs (requires log storage enabled)
+- **User Logs** — Browse user activity logs
+- **Server Files** — Manage files stored on the server (e.g. APN keys)
+
+## Sections
+
+- [Server Settings](./server-settings) — All runtime settings (authentication, push, email, storage, security, monitoring)
+
+### Management
+
+- [Changelog](./changelog) — Manage changelog entries shown to users
+- [User Management](./user-management) — Create, edit, and manage user accounts and roles
+- [System Access Tokens](./system-access-tokens) — Create and manage programmatic API tokens
+- [Events Review](./events-review) — Review and moderate notification events
+- [Backup Management](./backup-management) — View, create, and restore database backups
+- [Server Logs](./server-logs) — Browse application logs
+- [User Logs](./user-logs) — Browse user activity logs
+- [Server Files](./server-files) — Manage files stored on the server

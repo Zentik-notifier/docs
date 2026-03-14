@@ -1,16 +1,10 @@
 {
-  "title": "Documentation",
   "pages": [
     "index",
     "buckets",
     "notifications",
-    "---Self-hosted---",
-    "self-hosted/installation",
-    "self-hosted/self-service",
-    "self-hosted/settings",
-    "self-hosted/oauth-providers",
-    "webhooks",
-    "settings",
+    "app-settings",
+    "self-hosted",
     "---Integrations---",
     "integrations/unraid",
     "integrations/homeassistant",

@@ -1,13 +1,8 @@
 ---
 sidebar_position: 1
 title: Installation
+description: Zentik is fully self-hostable and can be installed using Docker Compose. The backend is built with NestJS and uses PostgreSQL 14+ as the database.
 ---
-
-# Installation
-
-## Overview
-
-Zentik is fully self-hostable and can be installed using Docker Compose. The backend is built with **NestJS** and uses **PostgreSQL 14+** as the database.
 
 ## Prerequisites
 
@@ -65,3 +60,33 @@ services:
 volumes:
   db_data:
 ```
+
+## Environment Variables
+
+The following environment variables can be configured in the backend `.env` file. These are read at startup and cannot be changed at runtime.
+
+### Database
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DB_SYNCHRONIZE` | `false` | Enable automatic schema synchronization (development only) |
+| `DB_DROP_SCHEMA` | `false` | Drop existing schema on startup |
+| `DB_USERNAME` | `zentik_user` | Database username |
+| `DB_PASSWORD` | `zentik_password` | Database password |
+| `DB_NAME` | `zentik` | Database name |
+| `DB_HOST` | `localhost` | Database host |
+| `DB_PORT` | `5432` | Database port |
+| `DB_SSL` | `false` | Enable SSL connection |
+
+### Server Configuration
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PUBLIC_BACKEND_URL` | — | Public backend URL |
+
+### Administration
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `ADMIN_USERS` | `admin` | Comma-separated list of administrator usernames |
+| `ADMIN_DEFAULT_PASSWORD` | `admin` | Default password for administrator users |

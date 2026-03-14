@@ -1,11 +1,8 @@
 ---
 sidebar_position: 2
 title: Self-service passthrough token
+description: Self-hosted instances can use the official Zentik cloud to deliver push notifications to iOS (and optionally other providers) without configuring APNs, certificates, or Firebase yourself. To do this you need a passthrough token.
 ---
-
-# Self-service passthrough token
-
-Self-hosted instances can use the official Zentik cloud to deliver push notifications to iOS (and optionally other providers) without configuring APNs, certificates, or Firebase yourself. To do this you need a **passthrough token**.
 
 ## Steps
 
@@ -15,7 +12,12 @@ Self-hosted instances can use the official Zentik cloud to deliver push notifica
 2. **Wait for confirmation**  
    Once your request is approved, the token will be available to your account.
 
-3. **Use the token in the app**  
+3. **Use the token in the app**
    As an **admin** user, open **Server settings** in the app. The approved token will appear in a **selector**. Select it to enable **iOS passthrough** (and optionally other passthrough options) for your self-hosted instance.
+
+<div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', marginTop: '0.5rem' }}>
+  <img src="/admin/Server%20settings%20-%20passthrough%20settings.png" alt="Passthrough settings in Server Settings" style={{ width: '280px', borderRadius: '8px' }} />
+  <img src="/admin/passthrough%20token%20selection.png" alt="Passthrough token selection" style={{ width: '280px', borderRadius: '8px' }} />
+</div>
 
 After you select the token, your backend will use the Zentik cloud only as a bridge to deliver notifications; content remains encrypted and is not stored. See [Settings - Push Passthrough](./settings.md#push-passthrough) for the related server settings.

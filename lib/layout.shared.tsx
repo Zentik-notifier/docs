@@ -25,7 +25,14 @@ export function baseOptions(): BaseLayoutProps {
         type: 'main',
         url: '/docs',
         text: 'Docs',
-        on: 'all',
+        on: 'nav',
+      },
+      {
+        type: 'main',
+        url: 'https://notifier.zentik.app/self-service/token-requests',
+        text: 'Request Passthrough Token',
+        on: 'nav',
+        external: true,
       },
       {
         type: 'menu',

@@ -1,0 +1,22 @@
+---
+title: User Management
+---
+
+The User Management section allows administrators to view, create, edit, and delete user accounts.
+
+## Features
+
+- **View all users** — Browse the full list of registered users with their role, email, and registration date
+- **Edit user role** — Promote or demote users between `USER`, `MODERATOR`, and `ADMIN` roles
+- **Delete users** — Remove user accounts and their associated data
+- **Reset password** — Reset a user's password (when local authentication is enabled)
+
+## User Roles
+
+| Role | Description |
+|------|-------------|
+| `USER` | Standard user. Can create buckets, send and receive notifications |
+| `MODERATOR` | Can manage shared buckets and moderate content |
+| `ADMIN` | Full access to the Administration panel and all server settings |
+
+Admin users are initially created from the `ADMIN_USERS` environment variable at first startup.

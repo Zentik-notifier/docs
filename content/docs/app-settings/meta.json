@@ -1,0 +1,21 @@
+{
+  "title": "App Settings",
+  "pages": [
+    "index",
+    "user-profile",
+    "app-preferences",
+    "watch-and-icloud",
+    "push-notifications",
+    "buckets",
+    "access-tokens",
+    "webhooks",
+    "external-servers",
+    "my-attachments",
+    "payload-mappers",
+    "user-templates",
+    "application-logs",
+    "downloads",
+    "pending-messages",
+    "cached-data"
+  ]
+}

@@ -1,0 +1,229 @@
+---
+title: Server Settings
+---
+
+These settings are stored in the database and can be configured from the admin UI or GraphQL API. All settings can also be initialized from environment variables at startup.
+
+## Authentication & JWT
+
+Configuration for JWT tokens and user authentication. These settings control how users log in, register, and how long their sessions last.
+
+### JWT Tokens
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `JwtAccessTokenExpiration` | `JWT_ACCESS_TOKEN_EXPIRATION` | text | `3h` | Duration for access token validity |
+| `JwtRefreshTokenExpiration` | `JWT_REFRESH_TOKEN_EXPIRATION` | text | `7d` | Duration for refresh token validity |
+| `JwtSecret` | `JWT_SECRET` | text | auto-generated | Secret key for JWT access tokens |
+| `JwtRefreshSecret` | `JWT_REFRESH_SECRET` | text | auto-generated | Secret key for JWT refresh tokens |
+
+JWT secrets are auto-generated as random 64-byte hex strings at first startup if not provided via environment variables. Changing them will invalidate all existing sessions.
+
+### Registration & Social Login
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `LocalRegistrationEnabled` | `LOCAL_REGISTRATION_ENABLED` | bool | `false` | Enable local user registration via email/password |
+| `SocialLoginEnabled` | `SOCIAL_LOGIN_ENABLED` | bool | `false` | Enable social login functionality. OAuth providers must be configured in the [OAuth Providers](../oauth-providers) admin section |
+| `SocialRegistrationEnabled` | `SOCIAL_REGISTRATION_ENABLED` | bool | `false` | Enable social registration. If disabled, OAuth providers can only be used for login after a local registration |
+
+## Push Notifications
+
+Configuration for push notification delivery. Zentik supports Apple Push Notifications (APN), Web Push (VAPID), and a Passthrough mode that relays notifications through the official Zentik cloud server.
+
+Each provider can operate in one of these modes:
+
+- **Off** — Push notifications disabled for this provider
+- **Onboard** — Your server sends push notifications directly using your own credentials
+- **Passthrough** — Your server relays notifications through the Zentik cloud server
+
+### Apple Push Notification (APN)
+
+All `Onboard` settings require the mobile app to be built locally with the full Apple Developer setup. To use the public server instead: [request a passthrough token](../self-service), wait for confirmation, then as an admin open **Server Settings** — the token will appear in a selector; select it and set APN Push to **Passthrough**.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `ApnPush` | `APN_PUSH` | select | `Off` | APN push mode. Options: `Off`, `Local`, `Onboard`, `Passthrough` |
+| `ApnKeyId` | `APN_KEY_ID` | text | — | Apple Push Notification Key ID (required for `Onboard`) |
+| `ApnTeamId` | `APN_TEAM_ID` | text | — | Apple Team ID (required for `Onboard`) |
+| `ApnPrivateKeyPath` | `APN_PRIVATE_KEY_PATH` | text | — | Path to APN private key file (required for `Onboard`). Upload the key via **Server Files** |
+| `ApnBundleId` | `APN_BUNDLE_ID` | text | — | App bundle identifier (required for `Onboard`) |
+| `ApnProduction` | `APN_PRODUCTION` | bool | `true` | Use production APN environment |
+
+### Web Push Notification
+
+Configuration for web push notifications via VAPID protocol.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `WebPush` | `WEB_PUSH` | select | `Onboard` | Web push mode. Options: `Off`, `Local`, `Onboard`, `Passthrough` |
+| `VapidSubject` | `VAPID_SUBJECT` | text | `mailto:zentik@notifier.com` | VAPID subject for web push (required for `Onboard`) |
+
+### Push Passthrough
+
+Configuration for the push notification passthrough service. This section is visible in the admin UI only when at least one push provider is set to `Passthrough` mode. To obtain a token: see [Self-service passthrough token](../self-service).
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `PushNotificationsPassthroughServer` | `PUSH_NOTIFICATIONS_PASSTHROUGH_SERVER` | text | `https://notifier-api.zentik.app/api/v1` | Passthrough server URL |
+| `PushPassthroughToken` | `PUSH_PASSTHROUGH_TOKEN` | text | — | Authentication token for passthrough service. Can be selected from the system token dropdown in the UI |
+| `SystemTokenUsageStats` | — | json | `{}` | System token usage statistics (read-only). Shows monthly calls remaining for the selected token |
+
+## Email Configuration
+
+Configuration for email notifications. The server can send emails for authentication flows (password reset, email verification) and other events.
+
+Zentik supports two email providers out of the box:
+
+- **SMTP** — Any standard SMTP server. [Brevo](https://www.brevo.com/) is easy to set up and has a good free tier
+- **Resend** — HTTP-based email delivery via the [Resend](https://resend.com/) API
+
+### General
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `EmailEnabled` | `EMAIL_ENABLED` | bool | `false` | Enable email functionality |
+| `EmailFrom` | `EMAIL_FROM` | text | — | Sender email address |
+| `EmailFromName` | `EMAIL_FROM_NAME` | text | — | Sender display name |
+| `EmailType` | `EMAIL_TYPE` | select | `SMTP` | Email service type. Options: `SMTP`, `Resend` |
+
+### SMTP Settings
+
+Visible when `EmailType` is set to `SMTP`.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `EmailHost` | `EMAIL_HOST` | text | — | SMTP server host |
+| `EmailPort` | `EMAIL_PORT` | number | — | SMTP server port |
+| `EmailSecure` | `EMAIL_SECURE` | bool | — | Use secure SMTP connection (TLS) |
+| `EmailUser` | `EMAIL_USER` | text | — | SMTP username |
+| `EmailPass` | `EMAIL_PASS` | text | — | SMTP password |
+
+### Resend Settings
+
+Visible when `EmailType` is set to `Resend`.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `ResendApiKey` | `RESEND_API_KEY` | text | — | Resend service API key |
+
+## Storage & Retention
+
+Configuration for file storage, database backups, and automatic cleanup of old data.
+
+### Attachments
+
+Configuration for file attachments on messages.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `AttachmentsEnabled` | `ATTACHMENTS_ENABLED` | bool | `false` | Enable attachment functionality |
+| `IconUploaderEnabled` | `ICON_UPLOADER_ENABLED` | bool | `true` | Enable icon upload feature for buckets |
+| `AttachmentsStoragePath` | `ATTACHMENTS_STORAGE_PATH` | text | `/attachments` | File storage path for attachments |
+| `AttachmentsMaxFileSize` | `ATTACHMENTS_MAX_FILE_SIZE` | number | `10485760` | Maximum file size in bytes (default ~10 MB) |
+| `AttachmentsAllowedMimeTypes` | `ATTACHMENTS_ALLOWED_MIME_TYPES` | text | — | Comma-separated list of allowed MIME types |
+| `AttachmentsDeleteJobEnabled` | `ATTACHMENTS_DELETE_JOB_ENABLED` | bool | `true` | Enable automatic cleanup of old attachments |
+| `AttachmentsMaxAge` | `ATTACHMENTS_MAX_AGE` | text | `7d` | Maximum age for attachments before cleanup (visible when delete job is enabled) |
+
+### Database Backup
+
+Configuration for automated database backups. Backups can be managed from the **Backup Management** admin section.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `BackupEnabled` | `BACKUP_ENABLED` | bool | `false` | Enable automatic database backups |
+| `BackupExecuteOnStart` | `BACKUP_EXECUTE_ON_START` | bool | `true` | Execute a backup on server startup |
+| `BackupStoragePath` | `BACKUP_STORAGE_PATH` | text | `/backups` | Directory for backup files |
+| `BackupMaxToKeep` | `BACKUP_MAX_TO_KEEP` | number | `10` | Maximum number of backup files to retain |
+| `BackupCronJob` | `BACKUP_CRON_JOB` | text | `0 */12 * * *` | Cron expression for backup schedule (default: every 12 hours) |
+
+### Server Files
+
+Configuration for server file storage. Used to manage files stored on the backend, such as APN keys for push notification providers.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `ServerFilesDirectory` | `SERVER_FILES_DIR` | text | `/data` | Directory for server files |
+
+### Changelog
+
+Configuration for fetching changelog entries from a remote Zentik backend.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `ChangelogRemoteServer` | `CHANGELOG_REMOTE_SERVER` | text | `https://notifier-api.zentik.app` | Base URL of the remote backend for changelogs. When set, the local `/changelogs` endpoints proxy to that remote server and fall back to the local database if unavailable |
+
+### Messages Retention
+
+Configuration for automatic message cleanup.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `MessagesDeleteJobEnabled` | `MESSAGES_DELETE_JOB_ENABLED` | bool | `true` | Enable automatic message cleanup |
+| `MessagesMaxAge` | `MESSAGES_MAX_AGE` | text | `7d` | Maximum age for messages before cleanup (visible when delete job is enabled) |
+
+## Security & Network
+
+Configuration for rate limiting, CORS, and external notification systems.
+
+### Rate Limiting
+
+Configuration for API rate limiting. Required when the server runs behind a reverse proxy to correctly identify clients by their real IP instead of the proxy IP.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `RateLimitTrustProxyEnabled` | `RATE_LIMIT_TRUST_PROXY` | bool | `false` | Trust proxy headers for client IP detection |
+| `RateLimitForwardHeader` | `RATE_LIMIT_FORWARD_HEADER` | text | `x-forwarded-for` | Header to use for forwarded IP addresses |
+| `RateLimitTtlMs` | `RATE_LIMIT_TTL_MS` | number | `60000` | Rate limit window duration in milliseconds (default: 1 minute) |
+| `RateLimitLimit` | `RATE_LIMIT_LIMIT` | number | `100` | Maximum requests per window |
+| `RateLimitBlockMs` | `RATE_LIMIT_BLOCK_MS` | number | `10000` | Block duration after limit exceeded in milliseconds (default: 10 seconds) |
+| `RateLimitMessagesRps` | `RATE_LIMIT_MESSAGES_RPS` | number | `10` | Messages endpoint requests per second limit |
+| `RateLimitMessagesTtlMs` | `RATE_LIMIT_MESSAGES_TTL_MS` | number | `1000` | Messages rate limit window in milliseconds (default: 1 second) |
+
+### CORS
+
+Configuration for Cross-Origin Resource Sharing.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `CorsOrigin` | `CORS_ORIGIN` | text | `*` | Allowed CORS origins (comma-separated) |
+| `CorsCredentials` | `CORS_CREDENTIALS` | bool | `true` | Allow credentials in CORS requests |
+
+### External Notify Systems
+
+Configuration for external notification systems (e.g. Ntfy, Gotify). When enabled, the server listens for incoming events via SSE from configured external sources.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `ExternalNotifySystemsEnabled` | `EXTERNAL_NOTIFY_SYSTEMS_ENABLED` | bool | `true` | Enable external notify systems |
+
+## Monitoring
+
+Configuration for application logging, metrics collection, and system access tokens.
+
+### Logging
+
+Configuration for application logging and log file storage. When filesystem logging is enabled, logs can be browsed from the **Server Logs** admin section.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `StoreLogsOnFs` | `STORE_LOGS_ON_FS` | bool | `false` | Enable log storage to filesystem |
+| `LogLevel` | `LOG_LEVEL` | select | `info` | Logging level. Options: `error`, `warn`, `info`, `debug`, `verbose` (visible when log storage is enabled) |
+| `LogRetentionDays` | `LOG_RETENTION_DAYS` | number | `3` | Number of days to retain log files (visible when log storage is enabled) |
+| `LogStorageDirectory` | `LOG_STORAGE_DIRECTORY` | text | `/logs` | Directory for log files (visible when log storage is enabled) |
+
+### Prometheus Metrics
+
+Configuration for metrics collection. Exposes a `/metrics` endpoint. Create a system access token with the `prometheus` scope to authorize scraping.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `PrometheusEnabled` | `PROMETHEUS_ENABLED` | bool | `false` | Enable Prometheus metrics endpoint |
+
+### System Access Tokens
+
+Configuration for system-level access tokens. When enabled, users can request system tokens from the self-service panel.
+
+| Setting | Env Variable | Type | Default | Description |
+|---------|-------------|------|---------|-------------|
+| `EnableSystemTokenRequests` | `ENABLE_SYSTEM_TOKEN_REQUESTS` | bool | `false` | Enable system token request functionality |

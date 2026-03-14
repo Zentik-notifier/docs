@@ -1,0 +1,29 @@
+---
+title: System Access Tokens
+---
+
+System Access Tokens provide programmatic API access scoped to specific buckets and operations. They are used to integrate external systems with Zentik without requiring user credentials.
+
+## Features
+
+- **Create tokens** — Generate tokens with a description and specific scope
+- **Manage tokens** — View, revoke, or delete existing tokens
+- **Scope control** — Tokens can be scoped to specific buckets and operations (e.g. `messages:write`, `prometheus`)
+
+## Configuration
+
+See [Server Settings — System Access Tokens](/docs/self-hosted/settings/server-settings/#system-access-tokens) for the related settings.
+
+## Usage
+
+System tokens are passed via the `Authorization` header:
+
+```
+Authorization: Bearer sat_xxxxxxxxxxxxxxxx
+```
+
+They are commonly used for:
+
+- Sending notifications from external systems (CI/CD, monitoring, home automation)
+- Prometheus metrics scraping (requires a token with `prometheus` scope)
+- Push notification passthrough authentication

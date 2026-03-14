@@ -1,0 +1,39 @@
+---
+title: External Servers
+---
+
+Connect to external notification systems such as [Ntfy](/docs/integrations/ntfy) and [Gotify](/docs/integrations/gotify) to receive their notifications through Zentik.
+
+> **Note:** External servers are only available for self-hosted instances.
+
+<div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+  <img src="/settings/External%20systems%201.png" alt="External Servers — List" style={{ width: '280px', borderRadius: '8px' }} />
+  <img src="/settings/External%20systems%202.png" alt="External Servers — Add Server" style={{ width: '280px', borderRadius: '8px' }} />
+</div>
+
+## Server List
+
+View all configured external servers. Each entry shows:
+
+- **Name** — The server name
+- **Type** badge — NTFY or Gotify
+- **Server URL** — The connection endpoint
+- **Created date** — When the server was added
+
+Tap the menu icon to edit or delete a server. Use the **+** button to add a new server.
+
+## Add Server
+
+Configure a new external server connection with the following fields:
+
+| Field | Description |
+|-------|-------------|
+| **Name** | A descriptive name for the server |
+| **Type** | The server type — NTFY or Gotify |
+| **Server URL** | The URL of the external server |
+| **Username** | Optional authentication username |
+| **Password** | Optional authentication password |
+| **Color** | A color to visually identify the server |
+| **Icon URL** | Optional custom icon URL for the server |
+
+Once created, the server can be linked to specific buckets from the [Buckets](/docs/app-settings/buckets) settings. Zentik will listen for incoming notifications from the external server via SSE and deliver them through your configured push providers.

@@ -1,0 +1,15 @@
+{
+  "title": "Administration",
+  "pages": [
+    "index",
+    "server-settings",
+    "changelog",
+    "user-management",
+    "system-access-tokens",
+    "events-review",
+    "backup-management",
+    "server-logs",
+    "user-logs",
+    "server-files"
+  ]
+}
